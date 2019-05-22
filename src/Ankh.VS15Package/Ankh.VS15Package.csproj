@@ -36,8 +36,8 @@
     <ProjectGuid>{53DCB3B1-A20C-472E-A914-F3A8F1C57BB2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ankh.VS15Package</RootNamespace>
-    <AssemblyName>Ankh.VS15Package</AssemblyName>
+    <RootNamespace>Ankh.VS19Package</RootNamespace>
+    <AssemblyName>Ankh.VS19Package</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
