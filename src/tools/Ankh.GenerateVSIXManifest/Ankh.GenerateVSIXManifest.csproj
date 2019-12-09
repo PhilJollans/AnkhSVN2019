@@ -14,6 +14,8 @@
     <SccLocalPath>Svn</SccLocalPath>
     <SccAuxPath>Svn</SccAuxPath>
     <SccProvider>SubversionScc</SccProvider>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -47,34 +49,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.VisualStudio.OLE.Interop" />
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop" />
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0" />
-    <Reference Include="Microsoft.VisualStudio.TextManager.Interop" />
-    <Reference Include="Microsoft.VisualStudio.TextManager.Interop.8.0" />
-    <Reference Include="$(MsVsShellAssembly)" />
     <Reference Include="$(MsVsLangAssembly)" />
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop.9.0" Condition="'$(UseVsSdkVersion)' != '8.0'">
-      <Visible>false</Visible>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop.10.0" Condition="'$(UseVsSdkVersion)' != '8.0' and '$(UseVsSdkVersion)' != '9.0'">
-      <Visible>false</Visible>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.10.0" Condition="'$(UseVsSdkVersion)' &gt;= '10.0'">
-      <Visible>false</Visible>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.11.0" Condition="'$(UseVsSdkVersion)' &gt;= '11.0'">
-      <Visible>false</Visible>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.12.0" Condition="'$(UseVsSdkVersion)' &gt;= '12.0'">
-      <Visible>false</Visible>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.14.0" Condition="'$(UseVsSdkVersion)' &gt;= '14.0'">
-      <Visible>false</Visible>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.15.0" Condition="'$(UseVsSdkVersion)' &gt;= '15.0'">
-      <Visible>false</Visible>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -93,6 +68,19 @@
       <Project>{D90A8E89-66B2-451E-8B31-3D86F0CD4AFB}</Project>
       <Name>Ankh.Services</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.SDK">
+      <Version>15.9.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VSSDK.BuildTools">
+      <Version>15.9.3039</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

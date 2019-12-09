@@ -56,7 +56,7 @@ namespace IntegrationTests
         #endregion
 
         [TestMethod]
-        [HostType("VS IDE")]
+        //[HostType("VS IDE")]
         public void CreateEmptySolution()
         {
             UIThreadInvoker.Invoke((ThreadInvoker)delegate()

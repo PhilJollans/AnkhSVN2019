@@ -59,7 +59,7 @@ namespace IntegrationTestProject
         }
 
         [TestMethod]
-        [HostType("VS IDE")]
+        //[HostType("VS IDE")]
         public void PackageLoadTest()
         {
             UIThreadInvoker.Invoke((ThreadInvoker)delegate()

@@ -52,22 +52,6 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="$(MsVsShellAssembly)" />
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.10.0" Condition="'$(UseVsSdkVersion)' &gt;= '10.0' and '$(UseVsSdkVersion)' &lt; '15.0'">
-      <Visible>false</Visible>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.11.0" Condition="'$(UseVsSdkVersion)' &gt;= '11.0' and '$(UseVsSdkVersion)' &lt; '15.0'">
-      <Visible>false</Visible>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.12.0" Condition="'$(UseVsSdkVersion)' &gt;= '12.0' and '$(UseVsSdkVersion)' &lt; '15.0'">
-      <Visible>false</Visible>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.14.0" Condition="'$(UseVsSdkVersion)' &gt;= '14.0' and '$(UseVsSdkVersion)' &lt; '15.0'">
-      <Visible>false</Visible>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Framework" Condition="'$(UseVsSdkVersion)' &gt;= '15.0'">
-      <Visible>false</Visible>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PkgDefContext.cs" />
@@ -80,6 +64,11 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.SDK">
+      <Version>15.9.3</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

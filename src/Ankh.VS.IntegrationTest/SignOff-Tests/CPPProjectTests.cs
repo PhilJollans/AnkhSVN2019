@@ -73,7 +73,7 @@ namespace IntegrationTests
         //
         #endregion
 
-        [HostType("VS IDE")]
+        //[HostType("VS IDE")]
         [TestMethod]
         public void CPPWinformsApplication()
         {

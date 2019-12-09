@@ -24,6 +24,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VsSDK.IntegrationTestLibrary;
 using Microsoft.VSSDK.Tools.VsIdeTesting;
 using Ankh;
+using System.Fabric;
 
 namespace AnkhSvn_IntegrationTestProject
 {
@@ -60,7 +61,7 @@ namespace AnkhSvn_IntegrationTestProject
         ///A test for lauching the command and closing the associated dialogbox
         ///</summary>
         [TestMethod, Ignore] // show Dialog
-        [HostType("VS IDE")]
+        //[HostType("VS IDE")]
         public void LaunchCommand()
         {
             UIThreadInvoker.Invoke((ThreadInvoker)delegate()

@@ -35,11 +35,11 @@ using Microsoft.VisualStudio;
 using System.Windows.Forms.Design;
 using System.Windows.Forms;
 using System.IO;
-using Microsoft.VsSDK.UnitTestLibrary;
+//using Microsoft.VsSDK.UnitTestLibrary;
 
 namespace AnkhSvn_UnitTestProject.CommandRouting
 {
-    
+
     [TestFixture]
     public class CommandRoutingTest
     {
@@ -149,7 +149,7 @@ namespace AnkhSvn_UnitTestProject.CommandRouting
 
             using (ServiceProviderHelper.AddService(typeof(ISelectionContext), selC))
             {
-                Assert.That(CommandTester.TestExecution(AnkhCommand.ItemAnnotate), Is.False, 
+                Assert.That(CommandTester.TestExecution(AnkhCommand.ItemAnnotate), Is.False,
                     "Blame with empty selection doesn't execute");
             }
         }
@@ -293,7 +293,7 @@ namespace AnkhSvn_UnitTestProject.CommandRouting
             {
                 Assert.That(CommandTester.TestExecution(AnkhCommand.RemoveWorkingCopyExplorerRoot), Is.False);
             }
-        }       
+        }
 
         [Test]
         public void RevertItemCommand()

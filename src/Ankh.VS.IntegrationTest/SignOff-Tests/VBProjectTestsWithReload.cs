@@ -63,7 +63,7 @@ namespace IntegrationTests
         // [ClassCleanup()]
         // public static void MyClassCleanup() { }
         //
-        // Use TestInitialize to run code before running each test 
+        // Use TestInitialize to run code before running each test
         // [TestInitialize()]
         // public void MyTestInitialize() { }
         //
@@ -108,7 +108,7 @@ namespace IntegrationTests
         }
 
         [TestMethod]
-        [HostType("VS IDE")]
+        //[HostType("VS IDE")]
         public void VBWinformsApplicationReload()
         {
             UIThreadInvoker.Invoke((ThreadInvoker)delegate()

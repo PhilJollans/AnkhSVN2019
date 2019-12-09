@@ -259,7 +259,7 @@ namespace Ankh.VS.Selection
         {
             get { return (_solutionExistsAndNotBuildingAndNotDebugging ?? (_solutionExistsAndNotBuildingAndNotDebugging = GetCache(new Guid("D0E4DEEC-1B53-4CDA-8559-D454583AD23B")))).Active; }
         }
-        
+
         CmdStateCacheItem _solutionExistsAndFullyLoaded;
         public bool SolutionExistsAndFullyLoaded
         {
@@ -356,7 +356,7 @@ namespace Ankh.VS.Selection
         bool? _themed;
         bool _themeDark;
         bool _themeLight;
-        
+
         void OnThemeChanged(object sender, EventArgs e)
         {
             _themed = null;
@@ -406,10 +406,11 @@ namespace Ankh.VS.Selection
 
             _themeLight = _themeDark = false;
             IAnkhConfigurationService config = GetService<IAnkhConfigurationService>();
+            IWinFormsThemingService   wts    = GetService<IWinFormsThemingService>();
+
             Guid themeGuid;
 
-            if (config == null
-                || !GetService<IWinFormsThemingService>().GetCurrentTheme(out themeGuid))
+            if ( config == null || wts == null || !wts.GetCurrentTheme(out themeGuid) )
             {
                 _themed = false;
                 return;
@@ -424,7 +425,7 @@ namespace Ankh.VS.Selection
                 _themeDark = true;
                 return;
             }
-                
+
             using (RegistryKey rk = config.OpenVSInstanceKey("Extensions\\AnkhSVN\\Themes"))
             {
                 object v;
@@ -447,7 +448,7 @@ namespace Ankh.VS.Selection
             }
         }
 
-        
+
         #endregion
 
         #region Cache Item
