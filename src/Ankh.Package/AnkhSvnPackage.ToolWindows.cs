@@ -84,7 +84,7 @@ namespace Ankh.VSPackage
         public void ShowToolWindow(AnkhToolWindow toolWindow, int id, bool create)
         {
             ToolWindowPane pane = FindToolWindow(GetPaneType(toolWindow), id, create);
-            
+
             IVsWindowFrame frame = pane.Frame as IVsWindowFrame;
             if (frame == null)
             {
@@ -385,6 +385,9 @@ namespace Ankh.VSPackage
         protected AnkhToolWindowPane()
             : base(null)
         {
+            // I'n not really sure what I am doing here.
+            var prev = NativeImports.SetThreadDpiAwarenessContext ( NativeImports.DPI_AWARENESS_CONTEXT.SystemAware ) ;
+
             _host = new AnkhToolWindowHost(this);
         }
 
@@ -668,6 +671,10 @@ namespace Ankh.VSPackage
     {
         public LogToolWindow()
         {
+            // I'n not really sure what I am doing here.
+            // I have placed this in the constructor of AnkhToolWindowPane instead.
+            //var prev = NativeImports.SetThreadDpiAwarenessContext ( NativeImports.DPI_AWARENESS_CONTEXT.SystemAware ) ;
+
             Caption = Resources.LogToolWindowTitle;
             Control = new LogToolWindowControl();
 
