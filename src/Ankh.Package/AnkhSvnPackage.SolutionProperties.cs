@@ -157,7 +157,7 @@ namespace Ankh.VSPackage
                         case SubversionPropertyCategory:
                             map.SetRawValue(ManagedPropertyName, true.ToString());
                             // BH: Don't localize this text! Changing it will change all solutions marked as managed by Ankh
-                            map.SetRawValue(ManagerPropertyName, "AnkhSVN - Subversion Support for Visual Studio");
+                            map.SetRawValue(ManagerPropertyName, "AnkhSVN2019 - Subversion Support for Visual Studio");
                             break;
                         case AnkhId.SvnOriginName:
                             Scc.StoreProjectProperties(pHierarchy, map);

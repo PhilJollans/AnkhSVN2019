@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="AnkhSVN.AnkhSVN.Package" Version="2.7.0002" Language="en-US" Publisher="Phil Jollans" />
-        <DisplayName>AnkhSVN</DisplayName>
-        <Description>AnkhSVN - Subversion Support for Visual Studio</Description>
+        <Identity Id="AnkhSVN2019.321833BC-D00D-4076-9FDD-AC485EFDAEB2" Version="1.0.0000" Language="en-US" Publisher="Phil Jollans" />
+        <DisplayName>AnkhSVN2019</DisplayName>
+        <Description>AnkhSVN2019 - Subversion Support for Visual Studio</Description>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community"  Version="[16.0,17.0)" />

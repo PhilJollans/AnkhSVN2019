@@ -38,7 +38,9 @@ namespace Ankh.Services
     [GlobalService(typeof(IAnkhErrorHandler), AllowPreRegistered = true)]
     class AnkhErrorHandler : AnkhService, IAnkhErrorHandler
     {
-        const string _errorReportMailAddress = "error@support.ankhsvn.net";
+      //const string _errorReportMailAddress = "error@support.ankhsvn.net";
+        // Since this is my fork of AnkhSVN, I had better change the email address for error messages.
+        const string _errorReportMailAddress = "ankh@jollans.com";
         const string _errorReportSubject = "Exception";
         readonly HandlerDelegator Handler;
 
@@ -130,7 +132,7 @@ namespace Ankh.Services
 
             private void DoHandle(ProgressRunnerException ex, ExceptionInfo info)
             {
-                // we're only interested in the inner exception - we know where the 
+                // we're only interested in the inner exception - we know where the
                 // outer one comes from
                 Invoke(ex.InnerException, info);
             }
@@ -272,7 +274,7 @@ namespace Ankh.Services
             {
                 if (Enum.IsDefined(typeof(SvnWindowsErrorCode), ex.WindowsErrorCode))
                     return ex.WindowsErrorCode.ToString();
-                // 
+                //
                 int num = (int)ex.WindowsErrorCode;
 
                 if ((num & 0x80000000) == 0)

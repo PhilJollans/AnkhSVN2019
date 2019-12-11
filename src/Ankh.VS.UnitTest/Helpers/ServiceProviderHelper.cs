@@ -15,7 +15,7 @@
 //  limitations under the License.
 
 using System;
-//using Microsoft.VsSDK.UnitTestLibrary;
+using Microsoft.VsSDK.UnitTestLibrary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Collections.Generic;

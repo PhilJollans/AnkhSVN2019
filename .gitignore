@@ -347,3 +347,6 @@ healthchecksdb
 
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
+/src/Ankh.Package/source.extension.VsixManifest.old
+/src/Ankh.VS2019Package
+/src/autolib

@@ -1,4 +1,4 @@
-// $Id$
+﻿// $Id$
 //
 // Copyright 2008-2009 The AnkhSVN Project
 //
@@ -29,8 +29,10 @@ namespace Ankh
         /// <summary>
         /// The guid the AnkhSvn package is registered with inside Visual Studio
         /// </summary>
-        public const string PackageId = "604ad610-5cf9-4bd5-8acc-f49810e2efd4";
-        public const string PackageDescription = "AnkhSVN - Subversion Support for Visual Studio";
+        //public const string PackageId = "604ad610-5cf9-4bd5-8acc-f49810e2efd4";
+        // This is the only UUID which I have changed for AnkhSVN2019
+        public const string PackageId = "321833BC-D00D-4076-9FDD-AC485EFDAEB2";
+        public const string PackageDescription = "AnkhSVN2019 - Subversion Support for Visual Studio";
 
         /// <summary>The package version as used in the PLK</summary>
         public const string PlkVersion = "2.0";
@@ -40,8 +42,8 @@ namespace Ankh
         public const string PlkCompany = "AnkhSVN Core Team";
         //**********************************************************************************
 
-        public const string AssemblyCopyright = "Copyright � AnkhSVN Team 2003-2015";
-        public const string AssemblyProduct = "AnkhSVN - Subversion Support for Visual Studio";
+        public const string AssemblyCopyright = "Copyright © AnkhSVN Team 2003-2019";
+        public const string AssemblyProduct = "AnkhSVN2019 - Subversion Support for Visual Studio";
         public const string AssemblyCompany = "AnkhSVN Team";
         //**********************************************************************************
 
@@ -74,7 +76,7 @@ namespace Ankh
         /// <summary>The GUID of the SCC Service</summary>
         public const string SccServiceId = "d8c473d2-9634-4513-91d5-e1a671fe2df4";
         /// <summary>Language neutral SCC Provider title</summary>
-        public const string SccProviderTitle = "AnkhSVN - Subversion Support for Visual Studio";
+        public const string SccProviderTitle = "AnkhSVN2019 - Subversion Support for Visual Studio";
 
         /// <summary>The SCC Provider guid (used as SCC active marker by VS)</summary>
         public const string GitSccProviderId = "e2d67382-8a13-44e0-a613-5d7d99701727";
