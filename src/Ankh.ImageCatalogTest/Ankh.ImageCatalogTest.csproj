@@ -11,6 +11,8 @@
     <RootNamespace>Ankh.ImageCatalogTest</RootNamespace>
     <AssemblyName>Ankh.ImageCatalogTest</AssemblyName>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,6 +47,9 @@
       <Project>{b52ec60a-f421-4224-9038-6dd2ce9a7ab1}</Project>
       <Name>Ankh.ImageCatalog</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
