@@ -31,7 +31,7 @@ namespace Ankh.VSPackage
 {
     // This attribute is used to register the informations needed to show the this package
     // in the Help/About dialog of Visual Studio.
-    [InstalledProductRegistration(true, null, null, null)]
+    [InstalledProductRegistration("#110", "#100", "1.00.0.0001", IconResourceID = 400)]
     [Ankh.VSPackage.Attributes.ProvideUIVersion]
     public partial class AnkhSvnPackage : IVsInstalledProduct
     {
