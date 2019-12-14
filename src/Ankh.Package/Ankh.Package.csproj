@@ -7,6 +7,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
+    <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProjectGuid>{FA90174C-5763-46E8-9C95-328CA8451072}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -154,6 +155,10 @@
     <None Include="Ankh.Package.snk" />
     <None Include="app.config" />
     <None Include="Gui\Scc\CompareProperties.pdn" />
+    <Content Include="LICENSE.rtf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="source.extension.VsixManifest" />
     <None Include="Gui\Gui-To-Ctc.xsl" />
     <None Include="Gui\Gui.xsd">
@@ -225,6 +230,10 @@
     </Content>
     <None Include="Gui\Gui-To-Vsct.xsl" />
     <None Include="Gui\Gui-Common.xsl" />
+    <Content Include="ankhsvn-logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Gui\menu\CopyUrlToClipboard.png" />
     <Content Include="Gui\menu\Legacy\AddUrl.png" />
     <Content Include="Gui\menu\Legacy\CopyUrlToClipboard.png" />
