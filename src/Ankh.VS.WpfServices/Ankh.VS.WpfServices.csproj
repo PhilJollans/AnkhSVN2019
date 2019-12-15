@@ -78,11 +78,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Ankh.VS.WpfServices.wxs">
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Ankh.VS.WpfServices.snk" />
   </ItemGroup>
   <ItemGroup>
