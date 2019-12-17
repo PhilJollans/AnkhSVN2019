@@ -350,3 +350,4 @@ MigrationBackup/
 /src/Ankh.Package/source.extension.VsixManifest.old
 /src/Ankh.VS2019Package
 /src/autolib
+*.bak
