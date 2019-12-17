@@ -62,7 +62,7 @@ namespace Ankh
             : this((parentProvider as IServiceContainer) ?? new AnkhServiceContainer(parentProvider))
         {
             if (parentProvider == null)
-                throw new ArgumentNullException("parentProvider");            
+                throw new ArgumentNullException("parentProvider");
         }
 
         public void PreLoad()
