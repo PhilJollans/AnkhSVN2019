@@ -11,3 +11,11 @@ https://ctf.open.collab.net/svn/repos/ankhsvn
 ## Target environment
 
 AnkhSVN2019 is targeted only at Visual Studio 2019.
+
+## Version history
+
+| Version       | Date              | Description
+| ------------- | ----------------- | ----------------------- 
+| 1.00.0001     | 14-December-2019  | Initial release
+| 1.00.0002     | 17-December-2019  | Fix handling of (dark and light) themes.<br/>Include some license files for open source libraries. 
+
