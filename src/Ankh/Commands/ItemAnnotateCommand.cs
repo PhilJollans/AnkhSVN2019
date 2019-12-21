@@ -76,6 +76,10 @@ namespace Ankh.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
+#if true
+            MessageBox.Show ( "Unfortunately the Annotate function does not work in Visual Studio 2019. We are working to fix this problem." ) ;
+            return ;
+#else
             List<SvnOrigin> targets = new List<SvnOrigin>();
             SvnRevision startRev = SvnRevision.Zero;
             SvnRevision endRev = null;
@@ -153,6 +157,7 @@ namespace Ankh.Commands
             }
 
             DoBlame(e, target, startRev, endRev, ignoreEols, ignoreSpacing, retrieveMergeInfo);
+#endif
         }
 
         /*private void TryObtainBlock(CommandEventArgs e)
