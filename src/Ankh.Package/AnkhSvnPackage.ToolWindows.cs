@@ -385,8 +385,17 @@ namespace Ankh.VSPackage
         protected AnkhToolWindowPane()
             : base(null)
         {
-            // I'n not really sure what I am doing here.
-            var prev = NativeImports.SetThreadDpiAwarenessContext ( NativeImports.DPI_AWARENESS_CONTEXT.SystemAware ) ;
+            // Issue 3
+            // https://github.com/PhilJollans/AnkhSVN2019/issues/3
+            try
+            {
+                // I'n not really sure what I am doing here.
+                var prev = NativeImports.SetThreadDpiAwarenessContext ( NativeImports.DPI_AWARENESS_CONTEXT.SystemAware ) ;
+            }
+            catch ( EntryPointNotFoundException )
+            {
+                // Ignore if the entry point is not present
+            }
 
             _host = new AnkhToolWindowHost(this);
         }
