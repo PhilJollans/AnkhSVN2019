@@ -19,4 +19,5 @@ AnkhSVN2019 is targeted only at Visual Studio 2019.
 | 1.00.0001     | 14-December-2019  | Initial release
 | 1.00.0002     | 17-December-2019  | Fix handling of (dark and light) themes.<br/>Include some license files for open source libraries. 
 | 1.00.0003     | 21-December-2019  | Temporarily disable the Annotate function.<br/>In the previous version this function caused Visual Studio to crash.  
+| 1.00.0004     | 22-December-2019  | Catch an EntryPointNotFoundException on calling SetThreadDpiAwarenessContext. See Issue 3.  
 
