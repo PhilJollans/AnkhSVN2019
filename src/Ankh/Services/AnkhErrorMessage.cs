@@ -66,13 +66,9 @@ namespace Ankh.Services
 
             StringBuilder msg = new StringBuilder();
 
-            msg.AppendLine("[ Please send this as plain text to allow automatic pre-processing ]");
-            msg.AppendLine();
             msg.AppendLine(GetMessage(ex));
             msg.AppendLine();
             msg.AppendLine(GetAttributes(additionalInfo));
-            msg.AppendLine();
-            msg.AppendLine("[ Please send this as plain text to allow automatic pre-processing ]");
             msg.AppendLine();
 
             // Send mail using MAPI class instead of the mailto command, because mailto truncates
