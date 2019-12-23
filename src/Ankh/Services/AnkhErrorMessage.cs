@@ -57,7 +57,7 @@ namespace Ankh.Services
         /// <param name="recipient"></param>
         /// <param name="subject"></param>
         /// <param name="ex"></param>
-        /// <param name="assembly">The assembly where the error originated. This will 
+        /// <param name="assembly">The assembly where the error originated. This will
         /// be used to extract version information.</param>
         public static void SendByMail(string recipient, string subject, Exception ex,
             Assembly assembly, StringDictionary additionalInfo)
@@ -75,17 +75,11 @@ namespace Ankh.Services
             msg.AppendLine("[ Please send this as plain text to allow automatic pre-processing ]");
             msg.AppendLine();
 
-            string command = string.Format("mailto:{0}?subject={1}&body={2}",
-                recipient, 
-                Uri.EscapeDataString(subject),
-                Uri.EscapeDataString(msg.ToString()));
-
-            Debug.WriteLine(command);
-            Process p = new Process();
-            p.StartInfo.FileName = command;
-            p.StartInfo.UseShellExecute = true;
-
-            p.Start();
+            // Send mail using MAPI class instead of the mailto command, because mailto truncates
+            // the message text, probably removing all of the additional information :(
+            var MapiMail = new MAPI() ;
+            MapiMail.AddRecipientTo ( recipient ) ;
+            MapiMail.SendMailPopup  ( subject, msg.ToString() ) ;
         }
 
         private static string GetAttributes(StringDictionary additionalInfo)
