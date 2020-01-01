@@ -14,6 +14,7 @@
     <RootNamespace>Ankh.UI</RootNamespace>
     <AssemblyName>Ankh.UI</AssemblyName>
     <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)' == ''">v2.0</TargetFrameworkVersion>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Ankh.UI.snk</AssemblyOriginatorKeyFile>
     <SccProjectName>
@@ -35,7 +36,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>5</LangVersion>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\Release\</OutputPath>
@@ -45,9 +46,19 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>5</LangVersion>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Ankh.VS.WpfServices\Ankh.VS.WpfServices.csproj">
+      <Project>{fb146856-23a8-4151-9467-19ae22fb166f}</Project>
+      <Name>Ankh.VS.WpfServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ankh.VS\Ankh.VS.csproj">
+      <Project>{906e3f01-cd79-4f80-bca7-1105224328c4}</Project>
+      <Name>Ankh.VS</Name>
+    </ProjectReference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="SharpSvn, Version=1.4999.349.29523, Culture=neutral, PublicKeyToken=d729672594885a28, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\autolib\SharpSvn\SharpSvn.dll</HintPath>
@@ -63,6 +74,7 @@
     <Reference Include="System.Windows.Forms">
       <Name>System.Windows.Forms</Name>
     </Reference>
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
@@ -82,22 +94,33 @@
       <Project>{D90A8E89-66B2-451E-8B31-3D86F0CD4AFB}</Project>
       <Name>Ankh.Services</Name>
     </ProjectReference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Annotate\AnnotateEditorViewModel.cs" />
+    <Compile Include="Annotate\AnnotateFactory.cs" />
     <Compile Include="Annotate\AnnotateMarginControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Annotate\AnnotateMarginView.xaml.cs">
+      <DependentUpon>AnnotateMarginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Annotate\AnnotatePane.cs" />
+    <Compile Include="Annotate\AnnotateRegion.cs" />
     <Compile Include="Annotate\AnnotateResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AnnotateResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Annotate\AnnotateSection.cs" />
+    <Compile Include="Annotate\AnnotateSource.cs" />
     <Compile Include="Annotate\AnnotateEditorControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Annotate\AnnotateEditorControl.Designer.cs">
       <DependentUpon>AnnotateEditorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Annotate\AnnotateEditorView.xaml.cs">
+      <DependentUpon>AnnotateEditorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Commands\AnnotateDialog.cs">
       <SubType>Form</SubType>
@@ -1357,6 +1380,16 @@
     <PackageReference Include="Microsoft.VisualStudio.SDK">
       <Version>15.9.3</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Annotate\AnnotateMarginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Annotate\AnnotateEditorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

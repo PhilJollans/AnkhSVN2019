@@ -131,6 +131,7 @@ namespace Ankh
         public const string LogViewContext = "0d2ca125-6cdf-407a-9c03-e8427e27f34d";
 
         public const string AnnotateContext = "61ade608-f2f9-4983-ae28-623de0dca5c6";
+        public const string AnnotateEditorId = "679ED525-4960-4954-B9B0-288DF770F2D2";
         public const string DynamicEditorId = "923f6990-98c1-4dd5-983e-25088c02975d";
 
         public const string SvnSettingsPageGuid = "f362b52e-e8f8-43de-a02d-5072a2a96e6a";

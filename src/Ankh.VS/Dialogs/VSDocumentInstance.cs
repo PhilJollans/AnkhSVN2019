@@ -35,7 +35,7 @@ namespace Ankh.VS.Dialogs
 {
     [ComVisible(true)]
     [ComDefaultInterface(typeof(IVsPersistDocData))]
-    sealed class VSDocumentInstance : AnkhService/*, IOleCommandTarget*/, IVsPersistDocData, IPersistFileFormat, IVsPersistDocData2, IVsPersistDocData3, IVsFindTarget, IVsFindTarget2
+    public sealed class VSDocumentInstance : AnkhService/*, IOleCommandTarget*/, IVsPersistDocData, IPersistFileFormat, IVsPersistDocData2, IVsPersistDocData3, IVsFindTarget, IVsFindTarget2
     {
         readonly Guid _factoryId;
         public VSDocumentInstance(IAnkhServiceProvider context, Guid factoryId)

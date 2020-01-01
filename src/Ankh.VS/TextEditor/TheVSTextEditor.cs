@@ -235,6 +235,12 @@ namespace Ankh.VS.TextEditor
                     while (null != (parent = topParent.Parent))
                     {
                         topParent = parent;
+
+                        // Hack
+                        if ( topParent is VSEditorControl)
+                        {
+                            break ;
+                        }
                     }
                 }
 
@@ -413,7 +419,7 @@ namespace Ankh.VS.TextEditor
 
         /// <summary>
         /// Determines whether the specified key is a
-        /// regular input key or a special key that requires preprocessing.        
+        /// regular input key or a special key that requires preprocessing.
         /// </summary>
         /// <param name="keyData">Specifies key codes and modifiers</param>
         /// <returns>Always returns true</returns>
@@ -602,18 +608,18 @@ namespace Ankh.VS.TextEditor
         public event EventHandler<VSTextEditorScrollEventArgs> HorizontalTextScroll
         {
             add { _nativeWindow.HorizontalTextScroll += value; }
-            remove 
+            remove
             {
                 // Allow unhooking to succeed after disposing
                 if (_nativeWindow != null)
-                    _nativeWindow.HorizontalTextScroll -= value; 
+                    _nativeWindow.HorizontalTextScroll -= value;
             }
         }
 
         public event EventHandler<VSTextEditorScrollEventArgs> VerticalTextScroll
         {
             add { _nativeWindow.VerticalTextScroll += value; }
-            remove 
+            remove
             {
                 // Allow unhooking to succeed after disposing
                 if (_nativeWindow != null)
@@ -654,7 +660,7 @@ namespace Ankh.VS.TextEditor
 
         /// <summary>
         /// The IOleCommandTarget interface enables objects and their containers to dispatch commands to each other.
-        /// For example, an object's toolbars may contain buttons for commands such as Print, Print Preview, Save, New, and Zoom. 
+        /// For example, an object's toolbars may contain buttons for commands such as Print, Print Preview, Save, New, and Zoom.
         /// </summary>
         private IOleCommandTarget commandTarget;
 
@@ -732,7 +738,7 @@ namespace Ankh.VS.TextEditor
 
                 _textView.SetCaretPos(0, 0); // Move cursor to 0,0
                 _textView.SetScrollPosition(0, 0); // Scroll horizontally
-                _textView.SetScrollPosition(1, 0); // Scroll vertically     
+                _textView.SetScrollPosition(1, 0); // Scroll vertically
             }
         }
 
@@ -858,7 +864,7 @@ namespace Ankh.VS.TextEditor
 
                             if (VSErr.Succeeded(manager.GetUserPreferences2(null, items, lp, null)))
                             {
-                                // Only hide the horizontal scrollbar if one would have been visible 
+                                // Only hide the horizontal scrollbar if one would have been visible
                                 if (items[0].fHorzScrollbar != 0 && (lp == null || lp[0].fWordWrap == 0))
                                 {
                                     height += SystemInformation.HorizontalScrollBarHeight;
@@ -996,7 +1002,7 @@ namespace Ankh.VS.TextEditor
 
             Marshal.ThrowExceptionForHR(_windowPane.CreatePaneWindow(parentHandle, place.X, place.Y, place.Width, place.Height, out editorHwnd));
 
-            //set the inheritKeyBinding guid so that navigation keys work. The VS 2008 SDK does this from the language service. 
+            //set the inheritKeyBinding guid so that navigation keys work. The VS 2008 SDK does this from the language service.
             // The VS2005 sdk doesn't
             IOleServiceProvider sp = codeWindow as IOleServiceProvider;
             if (sp != null)
@@ -1127,7 +1133,7 @@ namespace Ankh.VS.TextEditor
 
         #endregion
 
-        //This implementation is a simple delegation to the implementation inside the text view 
+        //This implementation is a simple delegation to the implementation inside the text view
         /// <summary>
         /// Executes a specified command or displays help for a command.
         /// </summary>
@@ -1454,7 +1460,7 @@ namespace Ankh.VS.TextEditor
 
         /// <summary>
         /// These are IVsUserData properties that are supported by the TextBuffer (DocData) object
-        /// of the Source Code (Text) Editor. The IVsUserData interface is retrieved by 
+        /// of the Source Code (Text) Editor. The IVsUserData interface is retrieved by
         /// QueryInterface on the IVsTextLines object of the Text Editor.
         /// </summary>
         public static class Vs2010TextBufferUserDataGuid
@@ -1474,11 +1480,11 @@ namespace Ankh.VS.TextEditor
             /// <summary>uint: VS Text File Format (VSTFF) for buffer. codepage = bufferVSTFF & __VSTFF.VSTFF_CPMASK; vstffFlags = bufferVSTFF & __VSTFF.VSTFF_FLAGSMASK;</summary>
             public static readonly Guid VsBufferEncodingVSTFF_guid = new Guid(VsBufferEncodingVSTFF_string);
 
-            /// <summary>uint: This should only be used by editor factories that want to specify a codepage on loading from the openwith dialog. 
+            /// <summary>uint: This should only be used by editor factories that want to specify a codepage on loading from the openwith dialog.
             /// This data is only for a set purpose.  You cannot get the value of this back.
             /// </summary>
             public const string VsBufferEncodingPromptOnLoad_string = "{99EC03F0-C843-4C09-BE74-CDCA5158D36C}";
-            /// <summary>uint: This should only be used by editor factories that want to specify a codepage on loading from the openwith dialog. 
+            /// <summary>uint: This should only be used by editor factories that want to specify a codepage on loading from the openwith dialog.
             /// This data is only for a set purpose.  You cannot get the value of this back.
             /// </summary>
             public static readonly Guid VsBufferEncodingPromptOnLoad_guid = new Guid(VsBufferEncodingPromptOnLoad_string);
@@ -1492,44 +1498,44 @@ namespace Ankh.VS.TextEditor
             /// </summary>
             public static readonly Guid VsBufferDetectCharSet_guid = new Guid(VsBufferDetectCharSet_string);
 
-            /// <summary>bool: (default = true) If true then a change to the buffer's moniker will cause the buffer to change the language service 
+            /// <summary>bool: (default = true) If true then a change to the buffer's moniker will cause the buffer to change the language service
             /// based on the file extension of the moniker.
             /// </summary>
             public const string VsBufferDetectLangSID_string = "{17F375AC-C814-11D1-88AD-0000F87579D2}";
-            /// <summary>bool: (default = true) If true then a change to the buffer's moniker will cause the buffer to change the language service 
+            /// <summary>bool: (default = true) If true then a change to the buffer's moniker will cause the buffer to change the language service
             /// based on the file extension of the moniker.
             /// </summary>
             public static readonly Guid VsBufferDetectLangSID_guid = new Guid(VsBufferDetectLangSID_string);
 
-            /// <summary>string: This property will be used to set the SEID_PropertyBrowserSID element of the selection for text views.  
-            /// This is only used if you have a custom property browser. If this property is not set, the standard property browser 
+            /// <summary>string: This property will be used to set the SEID_PropertyBrowserSID element of the selection for text views.
+            /// This is only used if you have a custom property browser. If this property is not set, the standard property browser
             /// will be associated with the view.
             /// </summary>
             public const string PropertyBrowserSID_string = "{CE6DDBBA-8D13-11D1-8889-0000F87579D2}";
-            /// <summary>string: This property will be used to set the SEID_PropertyBrowserSID element of the selection for text views.  
-            /// This is only used if you have a custom property browser. If this property is not set, the standard property browser 
+            /// <summary>string: This property will be used to set the SEID_PropertyBrowserSID element of the selection for text views.
+            /// This is only used if you have a custom property browser. If this property is not set, the standard property browser
             /// will be associated with the view.
             /// </summary>
             public static readonly Guid PropertyBrowserSID_guid = new Guid(PropertyBrowserSID_string);
 
             /// <summary>string: This property provides a specific error message for when the buffer originates the BUFFER_E_READONLY error.
-            /// Set this string to be the (localized) text you want displayed to the user.  Note that the buffer itself does not 
+            /// Set this string to be the (localized) text you want displayed to the user.  Note that the buffer itself does not
             /// put up UI, but only calls IVsUIShell::SetErrorInfo. The caller can decide whether to show the message to the user.
             /// </summary>
             public const string UserReadOnlyErrorString_string = "{A3BCFE56-CF1B-11D1-88B1-0000F87579D2}";
             /// <summary>string: This property provides a specific error message for when the buffer originates the BUFFER_E_READONLY error.
-            /// Set this string to be the (localized) text you want displayed to the user.  Note that the buffer itself does not 
+            /// Set this string to be the (localized) text you want displayed to the user.  Note that the buffer itself does not
             /// put up UI, but only calls IVsUIShell::SetErrorInfo. The caller can decide whether to show the message to the user.
             /// </summary>
             public static readonly Guid UserReadOnlyErrorString_guid = new Guid(UserReadOnlyErrorString_string);
 
             /// <summary>object: This property is used to get access to the buffer's storage object.
-            /// The returned pointer can be QI'd for IVsTextStorage and IVsPersistentTextImage.  
+            /// The returned pointer can be QI'd for IVsTextStorage and IVsPersistentTextImage.
             /// This is a get-only property. To set the storage, use the buffer's InitializeContentEx method.
             /// </summary>
             public const string BufferStorage_string = "{D97F167A-638E-11D2-88F6-0000F87579D2}";
             /// <summary>object: This property is used to get access to the buffer's storage object.
-            /// The returned pointer can be QI'd for IVsTextStorage and IVsPersistentTextImage.  
+            /// The returned pointer can be QI'd for IVsTextStorage and IVsPersistentTextImage.
             /// This is a get-only property. To set the storage, use the buffer's InitializeContentEx method.
             /// </summary>
             public static readonly Guid BufferStorage_guid = new Guid(BufferStorage_string);

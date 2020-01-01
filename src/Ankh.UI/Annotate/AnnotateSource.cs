@@ -21,63 +21,11 @@ using System.ComponentModel;
 using System.Globalization;
 using Ankh.Scc;
 using Ankh.Scc.UI;
+using Ankh.VS.WpfServices;
 using SharpSvn;
 
 namespace Ankh.UI.Annotate
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    class AnnotateRegion
-    {
-        readonly AnnotateSource _source;
-        readonly int _startLine;
-        int _endLine;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AnnotateRegion"/> class.
-        /// </summary>
-        /// <param name="startLine">The start line.</param>
-        /// <param name="endLine">The end line.</param>
-        /// <param name="source">The source.</param>
-        public AnnotateRegion(int line, AnnotateSource source)
-        {
-            if(source == null)
-                throw new ArgumentNullException("source");
-
-            _source = source;
-            _startLine = _endLine = line;
-        }
-
-        /// <summary>
-        /// Gets the source.
-        /// </summary>
-        /// <value>The source.</value>
-        public AnnotateSource Source
-        {
-            get { return _source; }
-        }
-
-        public int StartLine
-        {
-            get { return _startLine; }
-        }
-
-        /// <summary>
-        /// Gets the end line.
-        /// </summary>
-        /// <value>The end line.</value>
-        public int EndLine
-        {
-            get { return _endLine; }
-            internal set { _endLine = value; }
-        }
-
-        #region Internal State
-        internal bool Hovered;
-        #endregion
-    }
-
     class AnnotateSource : AnkhPropertyGridItem, IAnnotateSection, ISvnRepositoryItem, ISvnLogItem
     {
         readonly SvnBlameEventArgs _args;
@@ -140,7 +88,7 @@ namespace Ankh.UI.Annotate
         protected override string ComponentName
         {
             get { return Origin.Target.FileName; }
-        }        
+        }
 
         #region ISvnRepositoryItem Members
 

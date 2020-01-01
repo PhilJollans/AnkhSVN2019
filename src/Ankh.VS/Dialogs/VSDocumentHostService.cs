@@ -15,6 +15,7 @@
 //  limitations under the License.
 
 using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.Text;
 using Ankh.UI;
@@ -30,10 +31,19 @@ namespace Ankh.VS.Dialogs
             : base(context)
         {
         }
+
         public void ProvideEditor(VSEditorControl form, Guid factoryId, out object doc, out object pane)
         {
             VSDocumentInstance dc = new VSDocumentInstance(Context, factoryId);
             pane = new VSDocumentFormPane(Context, dc, form);
+
+            doc = dc;
+        }
+
+        public void ProvideEditor(FrameworkElement host, Guid factoryId, out object doc, out object pane)
+        {
+            VSDocumentInstance dc = new VSDocumentInstance(Context, factoryId);
+            pane = new VSDocumentFormPane(Context, dc, host);
 
             doc = dc;
         }

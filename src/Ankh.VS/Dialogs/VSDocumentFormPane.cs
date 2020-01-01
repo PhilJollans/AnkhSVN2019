@@ -15,6 +15,7 @@
 //  limitations under the License.
 
 using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -154,7 +155,7 @@ namespace Ankh.VS.Dialogs
 
 
     [ComVisible(true)]
-    sealed class VSDocumentFormPane : WindowPane, IOleCommandTarget
+    public sealed class VSDocumentFormPane : WindowPane, IOleCommandTarget
     {
         readonly List<IOleCommandTarget> _targets = new List<IOleCommandTarget>();
         readonly VSEditorControl _form;
@@ -178,6 +179,23 @@ namespace Ankh.VS.Dialogs
             _host = new VSDocumentHost(this);
         }
 
+        public VSDocumentFormPane(IAnkhServiceProvider context, VSDocumentInstance instance, FrameworkElement host)
+            : base(context)
+        {
+            if (context == null)
+                throw new ArgumentNullException("context");
+            else if (instance == null)
+                throw new ArgumentNullException("instance");
+            else if (host == null)
+                throw new ArgumentNullException("host");
+
+            _context  = context;
+            _instance = instance;
+            _form     = null;
+            Content   = host;
+            _host     = new VSDocumentHost(this);
+        }
+
         public IAnkhEditorPane Host
         {
             get { return _host; }
@@ -193,25 +211,33 @@ namespace Ankh.VS.Dialogs
         {
             get
             {
-                if (!_created)
+                if ( _form == null )
+                    return base.Window ;
+                else
                 {
-                    _created = true;
-                    if (!_form.IsHandleCreated)
+                    if (!_created)
                     {
-                        _form.Visible = true; // If .Visible = false no window is created!
-                        _form.CreateControl();
-                        _form.Visible = false; // And hide the window now or we hijack the focus. See issue #507
+                        _created = true;
+                        if (!_form.IsHandleCreated)
+                        {
+                            _form.Visible = true; // If .Visible = false no window is created!
+                            _form.CreateControl();
+                            _form.Visible = false; // And hide the window now or we hijack the focus. See issue #507
+                        }
                     }
+                    return _form;
                 }
-                return _form;
             }
         }
 
         protected override void OnCreate()
         {
-            //_host.Load();
-            _form.Site = _host;
-            _form.Context = _host;
+            if ( _form != null )
+            {
+                //_host.Load();
+                _form.Site = _host;
+                _form.Context = _host;
+            }
             base.OnCreate();
         }
 

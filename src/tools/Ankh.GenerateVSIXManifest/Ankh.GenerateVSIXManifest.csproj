@@ -31,7 +31,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
     <AutoGenerateBindingRedirects Condition="'$(UseVsSdkVersion)' &gt;= '14.0'">true</AutoGenerateBindingRedirects>
-    <LangVersion>5</LangVersion>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\Release\</OutputPath>
@@ -43,7 +43,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
     <AutoGenerateBindingRedirects Condition="'$(UseVsSdkVersion)' &gt;= '14.0'">true</AutoGenerateBindingRedirects>
-    <LangVersion>5</LangVersion>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SharpSvn, Version=1.6012.1573.9568, Culture=neutral, PublicKeyToken=d729672594885a28, processorArchitecture=x86">

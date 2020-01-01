@@ -34,7 +34,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
     <AutoGenerateBindingRedirects Condition="'$(UseVsSdkVersion)' &gt;= '14.0'">true</AutoGenerateBindingRedirects>
-    <LangVersion>5</LangVersion>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\Release\</OutputPath>
@@ -46,7 +46,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
     <AutoGenerateBindingRedirects Condition="'$(UseVsSdkVersion)' &gt;= '14.0'">true</AutoGenerateBindingRedirects>
-    <LangVersion>5</LangVersion>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <AnkhPkgDefContextFile Condition="'$(UseVsSdkVersion)' == '8.0'">PkgDefContext.VS2005.cs</AnkhPkgDefContextFile>

@@ -76,7 +76,7 @@ namespace Ankh.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
-#if true
+#if false
             MessageBox.Show ( "Unfortunately the Annotate function does not work in Visual Studio 2019. We are working to fix this problem." ) ;
             return ;
 #else
@@ -190,7 +190,7 @@ namespace Ankh.Commands
             GC.KeepAlive(ex);
         }*/
 
-        static void DoBlame(CommandEventArgs e, SvnOrigin item, SvnRevision revisionStart, SvnRevision revisionEnd, bool ignoreEols, SvnIgnoreSpacing ignoreSpacing, bool retrieveMergeInfo)
+        static void DoBlame(CommandEventArgs e, SvnOrigin origin, SvnRevision revisionStart, SvnRevision revisionEnd, bool ignoreEols, SvnIgnoreSpacing ignoreSpacing, bool retrieveMergeInfo)
         {
             SvnWriteArgs wa = new SvnWriteArgs();
             wa.Revision = revisionEnd;
@@ -202,7 +202,7 @@ namespace Ankh.Commands
             ba.IgnoreSpacing = ignoreSpacing;
             ba.RetrieveMergedRevisions = retrieveMergeInfo;
 
-            SvnTarget target = item.Target;
+            SvnTarget target = origin.Target;
 
             IAnkhTempFileManager tempMgr = e.GetService<IAnkhTempFileManager>();
             string tempFile = tempMgr.GetTempFileNamed(target.FileName);
@@ -252,10 +252,17 @@ namespace Ankh.Commands
             if (!r.Succeeded)
                 return;
 
-            AnnotateEditorControl annEditor = new AnnotateEditorControl();
+            var annotateFactory = e.GetService<IAnnotateFactory>();
+            annotateFactory.Create ( origin, blameResult, tempFile ) ;
+
+#if false
+            AnnotedEditorView     annView   = new AnnotedEditorView() ;
+            AnnotateEditorControl annEditor = annView.annEditor ;
+
+          //AnnotateEditorControl annEditor = new AnnotateEditorControl();
             IAnkhEditorResolver er = e.GetService<IAnkhEditorResolver>();
 
-            annEditor.Create(e.Context, tempFile);
+            annEditor.Create(e.Context, tempFile, annView);
             annEditor.LoadFile(tempFile);
             annEditor.AddLines(item, blameResult);
 
@@ -280,6 +287,7 @@ namespace Ankh.Commands
                     }
                 }
             }
+#endif
         }
     }
 }
