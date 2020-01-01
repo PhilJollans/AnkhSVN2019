@@ -31,9 +31,13 @@ namespace Ankh.UI.Annotate
         internal bool Hovered   { get => _hovered ; set => SetProperty ( ref _hovered, value ) ; }
 
         // Added for WPF version
-        public bool IsVisible   { get => _isVisible ; set => SetProperty ( ref _isVisible, value ) ; }
-        public double Height    { get => _height ; set => SetProperty ( ref _height, value ) ; }
-        public double Top       { get => _top ;    set => SetProperty ( ref _top, value ) ; }
+        public bool           IsVisible { get => _isVisible ; set => SetProperty ( ref _isVisible, value ) ; }
+        public double         Height    { get => _height ; set => SetProperty ( ref _height, value ) ; }
+        public double         Top       { get => _top ;    set => SetProperty ( ref _top, value ) ; }
+        public AnnotateSource Source    { get => _source; }
+        public string         ShortDate { get => _source.Time.ToShortDateString() ; }
+        public int            StartLine { get => _startLine; }
+        public int            EndLine   { get => _endLine; internal set => SetProperty ( ref _endLine, value ) ; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AnnotateRegion"/> class.
@@ -50,29 +54,6 @@ namespace Ankh.UI.Annotate
             _startLine = _endLine = line;
         }
 
-        /// <summary>
-        /// Gets the source.
-        /// </summary>
-        /// <value>The source.</value>
-        public AnnotateSource Source
-        {
-            get { return _source; }
-        }
-
-        public int StartLine
-        {
-            get { return _startLine; }
-        }
-
-        /// <summary>
-        /// Gets the end line.
-        /// </summary>
-        /// <value>The end line.</value>
-        public int EndLine
-        {
-            get { return _endLine; }
-            internal set { _endLine = value; }
-        }
 
     }
 

@@ -24,7 +24,9 @@
 
     <ItemsControl HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"
-                  ItemsSource="{Binding Regions}">
+                  ItemsSource="{Binding Regions}"
+                  x:Name="itemsCtrl"
+                  Grid.IsSharedSizeScope="True">
 
       <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
@@ -35,6 +37,8 @@
       <ItemsControl.ItemContainerStyle>
         <Style TargetType="ContentPresenter">
           <Setter Property="VerticalAlignment" Value="Top" />
+          <!-- Can't get horizontal alignment = stretch to work! -->
+          <Setter Property="Width" Value="{Binding ActualWidth, ElementName=itemsCtrl}"/>
           <Setter Property="Canvas.Top" Value="{Binding Top}" />
           <Setter Property="Height" Value="{Binding Height}" />
         </Style>
@@ -42,9 +46,32 @@
 
       <ItemsControl.ItemTemplate>
         <DataTemplate>
-          <Grid Visibility="{Binding IsVisible, Converter={StaticResource BoolToVis}}">
-            <TextBlock Text="{Binding Source.Revision}"/>
-          </Grid>
+          <Border Visibility="{Binding IsVisible, Converter={StaticResource BoolToVis}}"
+                  BorderThickness="1"
+                  BorderBrush="DarkGray"
+                  HorizontalAlignment="Stretch">
+
+            <Border.Background>
+              <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5" >
+                <GradientStop Color="WhiteSmoke" Offset="0.0"/>
+                <GradientStop Color="LightGray"  Offset="1.0"/>
+              </LinearGradientBrush>
+            </Border.Background>
+
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="A"/>
+              </Grid.ColumnDefinitions>
+
+              <!-- Probably move the date to a tooltip. -->
+              <TextBlock Grid.Column="0" Text="{Binding Source.Revision}"/>
+              <TextBlock Grid.Column="1" Text="{Binding Source.Author}"/>
+              <TextBlock Grid.Column="2" Text="{Binding ShortDate}"/>
+            </Grid>
+
+          </Border>
         </DataTemplate>
       </ItemsControl.ItemTemplate>
 
