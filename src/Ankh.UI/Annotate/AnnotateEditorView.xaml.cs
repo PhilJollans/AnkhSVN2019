@@ -115,8 +115,10 @@ namespace Ankh.UI.Annotate
 
                     //textViewHost.TextView.Options.SetOptionValue(GitTextViewOptions.DiffMarginId, false);
                     wpfTextView.Options.SetOptionValue ( DefaultTextViewHostOptions.ChangeTrackingId, false );
+                    // This is not effective. The Glyph Margin still appears (even with no glyphs).
+                    // Maybe some other package is forcing it to be shown?
                     wpfTextView.Options.SetOptionValue ( DefaultTextViewHostOptions.GlyphMarginId, false );
-                    wpfTextView.Options.SetOptionValue ( DefaultTextViewHostOptions.LineNumberMarginId, false );
+                    wpfTextView.Options.SetOptionValue ( DefaultTextViewHostOptions.LineNumberMarginId, true );
                     wpfTextView.Options.SetOptionValue ( DefaultTextViewHostOptions.OutliningMarginId, false );
 
                     wpfTextView.Options.SetOptionValue ( DefaultTextViewOptions.ViewProhibitUserInputId, true );

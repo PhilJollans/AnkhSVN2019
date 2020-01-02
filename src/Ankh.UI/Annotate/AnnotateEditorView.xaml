@@ -8,12 +8,18 @@
              d:DesignHeight="300" d:DesignWidth="500">
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="120"/>
+      <ColumnDefinition Width="160"/>
+      <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
     <local:AnnotateMarginView Grid.Column="0"/>
-    <ContentControl Grid.Column="1" x:Name="AnnotateEditor"/>
+
+    <GridSplitter Grid.Column="1" Width="5"
+                    HorizontalAlignment="Stretch"
+                    ShowsPreview="True"/>
+
+    <ContentControl Grid.Column="2" x:Name="AnnotateEditor"/>
 
   </Grid>
 </UserControl>

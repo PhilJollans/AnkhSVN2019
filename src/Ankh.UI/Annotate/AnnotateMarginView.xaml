@@ -98,8 +98,8 @@
 
               <Grid>
                 <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="*"/>
-                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="*" MinWidth="50"/>
+                  <ColumnDefinition Width="*" MinWidth="50"/>
                   <ColumnDefinition Width="Auto" SharedSizeGroup="A"/>
                 </Grid.ColumnDefinitions>
 
