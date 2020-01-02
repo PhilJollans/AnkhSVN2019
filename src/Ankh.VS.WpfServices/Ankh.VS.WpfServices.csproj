@@ -63,6 +63,8 @@
   <ItemGroup>
     <Compile Include="BindableBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RelayCommand.cs" />
+    <Compile Include="RelayCommandBase.cs" />
     <Compile Include="UI\VSWpfDialog.cs" />
     <Compile Include="UI\VSWpfDialogBase.cs" />
     <Compile Include="VSColorProxy.cs" />

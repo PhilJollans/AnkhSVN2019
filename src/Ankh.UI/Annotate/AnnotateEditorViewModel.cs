@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ankh.Scc;
 using Ankh.VS.WpfServices;
 using Microsoft.VisualStudio.Shell;
@@ -19,9 +20,18 @@ namespace Ankh.UI.Annotate
     /// </summary>
     class AnnotateEditorViewModel : BindableBase
     {
-        private List<AnnotateRegion> _regions = new List<AnnotateRegion>();
+        private List<AnnotateRegion>             _regions = new List<AnnotateRegion>();
+        private SortedList<long, AnnotateSource> _sources = new SortedList<long, AnnotateSource>() ;
 
         public List<AnnotateRegion> Regions { get => _regions ; }
+
+        public ICommand             SaveRegionCommand { get; private set; }
+
+        public AnnotateEditorViewModel ( )
+        {
+            // Create command objects
+            SaveRegionCommand = new RelayCommand<AnnotateRegion> ( Execute_SaveRegionCommand );
+        }
 
         public void Initialize ( ServiceProvider serviceProvider, SvnOrigin origin, Collection<SvnBlameEventArgs> blameResult, string tempFile )
         {
@@ -34,27 +44,27 @@ namespace Ankh.UI.Annotate
         {
             //_origin = origin;
 
-            SortedList<long, AnnotateSource> sources = new SortedList<long, AnnotateSource>();
+            AnnotateRegion region = null;
 
-            AnnotateRegion section = null;
             _regions.Clear();
+            _sources.Clear();
 
             foreach (SvnBlameEventArgs e in blameResult)
             {
                 AnnotateSource src;
-                if (!sources.TryGetValue(e.Revision, out src))
-                    sources.Add(e.Revision, src = new AnnotateSource(e, origin));
+                if (!_sources.TryGetValue(e.Revision, out src))
+                    _sources.Add(e.Revision, src = new AnnotateSource(e, origin));
 
                 int line = (int)e.LineNumber;
 
-                if (section == null || section.Source != src)
+                if (region == null || region.Source != src)
                 {
-                    section = new AnnotateRegion(line, src);
-                    _regions.Add(section);
+                    region = new AnnotateRegion(line, src);
+                    _regions.Add(region);
                 }
                 else
                 {
-                    section.EndLine = line;
+                    region.EndLine = line;
                 }
             }
         }
@@ -157,6 +167,15 @@ namespace Ankh.UI.Annotate
                 region.IsVisible = true ;
             }
         }
+
+        public void Execute_SaveRegionCommand ( AnnotateRegion r )
+        {
+            foreach ( var source in _sources.Values )
+            {
+                source.IsSelected = ( r.Source == source ) ;
+            }
+        }
+
 
     }
 }

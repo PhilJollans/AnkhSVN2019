@@ -9,3 +9,8 @@ indent_size = 4
 [*.xaml]
 indent_style = space
 indent_size = 2
+
+[*.cs]
+
+# CS3008: Identifier is not CLS-compliant
+dotnet_diagnostic.CS3008.severity = none

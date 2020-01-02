@@ -23,21 +23,21 @@ namespace Ankh.UI.Annotate
         readonly int _startLine;
         int _endLine;
 
-        private bool   _hovered   = false ;
-        private bool   _isVisible = false ;
-        private double _height    = 30.0 ;
-        private double _top       = 10.0 ;
+        private bool   _hovered    = false ;
+        private bool   _isVisible  = false ;
+        private double _height     = 30.0 ;
+        private double _top        = 10.0 ;
 
         internal bool Hovered   { get => _hovered ; set => SetProperty ( ref _hovered, value ) ; }
 
-        // Added for WPF version
-        public bool           IsVisible { get => _isVisible ; set => SetProperty ( ref _isVisible, value ) ; }
-        public double         Height    { get => _height ; set => SetProperty ( ref _height, value ) ; }
-        public double         Top       { get => _top ;    set => SetProperty ( ref _top, value ) ; }
-        public AnnotateSource Source    { get => _source; }
-        public string         ShortDate { get => _source.Time.ToShortDateString() ; }
-        public int            StartLine { get => _startLine; }
-        public int            EndLine   { get => _endLine; internal set => SetProperty ( ref _endLine, value ) ; }
+        public bool           IsVisible  { get => _isVisible ; set => SetProperty ( ref _isVisible, value ) ; }
+        public double         Height     { get => _height ; set => SetProperty ( ref _height, value ) ; }
+        public double         Top        { get => _top ;    set => SetProperty ( ref _top, value ) ; }
+        public AnnotateSource Source     { get => _source; }
+        public string         ShortDate  { get => _source.Time.ToShortDateString() ; }
+        public string         LocalTime  { get => _source.Time.ToLocalTime().ToString() ; }
+        public int            StartLine  { get => _startLine; }
+        public int            EndLine    { get => _endLine; internal set => SetProperty ( ref _endLine, value ) ; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AnnotateRegion"/> class.

@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using Ankh.Scc;
 using Ankh.Scc.UI;
 using Ankh.VS.WpfServices;
@@ -26,11 +27,14 @@ using SharpSvn;
 
 namespace Ankh.UI.Annotate
 {
-    class AnnotateSource : AnkhPropertyGridItem, IAnnotateSection, ISvnRepositoryItem, ISvnLogItem
+    class AnnotateSource : AnkhPropertyGridItem, IAnnotateSection, ISvnRepositoryItem, ISvnLogItem, INotifyPropertyChanged
     {
         readonly SvnBlameEventArgs _args;
         readonly SvnOrigin _origin;
-        string _logMessage;
+        private string _logMessage;
+        private bool   _isSelected = false ;
+
+        public bool           IsSelected { get => _isSelected ; set => SetProperty ( ref _isSelected, value ) ; }
 
         public AnnotateSource(SvnBlameEventArgs blameArgs, SvnOrigin origin)
         {
@@ -135,5 +139,46 @@ namespace Ankh.UI.Annotate
             get { return Origin.RepositoryRoot; }
         }
         #endregion Members
+
+        #region BindableBase
+
+        // This class already has a base class, so I have copied the implementation of BindableBase.
+        // Later, I hope to remove the Winforms implementation of the annotate function and remove
+        // the current base class.
+
+        /// <summary>
+        /// Event generated when a property is changed.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Sets the property and raise OnPropertyChanged
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="storage">The storage.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns></returns>
+        protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+        {
+          if (object.Equals(storage, value))
+            return false;
+
+          storage = value;
+          this.OnPropertyChanged(propertyName);
+
+          return true;
+        }
+
+        /// <summary>
+        /// Called when property changed.
+        /// </summary>
+        /// <param name="propertyName">Name of the property (Auto detected by [CallerMemberName]).</param>
+        protected virtual void OnPropertyChanged([CallerMemberName]string propertyName = null)
+        {
+          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
     }
 }
