@@ -1335,6 +1335,9 @@
     </EmbeddedResource>
     <None Include="Controls\Status.Suggestion.png" />
     <Content Include="Controls\Status.Exclamation.png" />
+    <Resource Include="Images\TfsCompare.png" />
+    <Resource Include="Images\Properties.png" />
+    <Resource Include="Images\TfsHistory.png" />
     <Content Include="MergeWizard\images\Error.png" />
     <Content Include="MergeWizard\images\ManuallyRecord.png" />
     <None Include="MergeWizard\images\MergeWizardHeader.png" />

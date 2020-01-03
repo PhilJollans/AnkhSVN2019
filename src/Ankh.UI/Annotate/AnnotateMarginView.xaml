@@ -21,6 +21,10 @@
       <GradientStop Color="LightGray"  Offset="1.0"/>
     </LinearGradientBrush>
 
+    <BitmapImage x:Key="tfscompare"        UriSource="../Images/TfsCompare.png" />
+    <BitmapImage x:Key="tfshistory"        UriSource="../Images/TfsHistory.png" />
+    <BitmapImage x:Key="properties"        UriSource="../Images/Properties.png" />
+
   </UserControl.Resources>
 
   <Grid>
@@ -50,11 +54,40 @@
       <ItemsControl.ItemTemplate>
         <DataTemplate>
           <Button Template="{StaticResource RegionTemplate}"
+                  Visibility="{Binding IsVisible, Converter={StaticResource BoolToVis}}"
                   Command="{Binding Path=DataContext.SaveRegionCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                   CommandParameter="{Binding}" >
 
-            <Border Visibility="{Binding IsVisible, Converter={StaticResource BoolToVis}}"
-                    BorderThickness="1"
+            <Button.ContextMenu>
+              <ContextMenu>
+                <MenuItem Header="Compare with working copy" Command="{Binding CompareWorkingCopyCommand}">
+                  <MenuItem.Icon>
+                    <Image Source="{StaticResource tfscompare}"/>
+                  </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Show Changes" Command="{Binding ShowChangesCommand}">
+                  <MenuItem.Icon>
+                    <Image Source="{StaticResource tfscompare}"/>
+                  </MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="View History" Command="{Binding ViewHistoryCommand}" IsEnabled="False">
+                  <MenuItem.Icon>
+                    <Image Source="{StaticResource tfshistory}"/>
+                  </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Copy to Working copy ..." Command="{Binding CopyToWorkingCopyCommand}" IsEnabled="False"/>
+                <MenuItem Header="Copy Revision" Command="{Binding CopyRevisionCommand}" IsEnabled="False"/>
+                <Separator/>
+                <MenuItem Header="Properties" Command="{Binding PropertiesCommand}" IsEnabled="False">
+                  <MenuItem.Icon>
+                    <Image Source="{StaticResource properties}"/>
+                  </MenuItem.Icon>
+                </MenuItem>
+              </ContextMenu>
+            </Button.ContextMenu>
+
+            <Border BorderThickness="1"
                     Padding="1"
                     BorderBrush="DarkGray"
                     HorizontalAlignment="Stretch">

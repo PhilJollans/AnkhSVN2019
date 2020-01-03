@@ -103,7 +103,7 @@ namespace Ankh.UI.Annotate
             {
                 AnnotateSource src;
                 if (!sources.TryGetValue(e.Revision, out src))
-                    sources.Add(e.Revision, src = new AnnotateSource(e, origin));
+                    sources.Add(e.Revision, src = new AnnotateSource ( e, origin, Context ) ) ;
 
                 int line = (int)e.LineNumber;
 

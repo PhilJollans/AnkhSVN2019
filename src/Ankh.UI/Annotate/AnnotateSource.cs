@@ -29,17 +29,21 @@ namespace Ankh.UI.Annotate
 {
     class AnnotateSource : AnkhPropertyGridItem, IAnnotateSection, ISvnRepositoryItem, ISvnLogItem, INotifyPropertyChanged
     {
-        readonly SvnBlameEventArgs _args;
-        readonly SvnOrigin _origin;
+        private readonly SvnBlameEventArgs      _args ;
+        private readonly SvnOrigin              _origin ;
+        private readonly IAnkhServiceProvider   _context ;
+
         private string _logMessage;
         private bool   _isSelected = false ;
 
-        public bool           IsSelected { get => _isSelected ; set => SetProperty ( ref _isSelected, value ) ; }
+        public bool                     IsSelected { get => _isSelected ; set => SetProperty ( ref _isSelected, value ) ; }
+        public IAnkhServiceProvider     Context    { get => _context ; }
 
-        public AnnotateSource(SvnBlameEventArgs blameArgs, SvnOrigin origin)
+        public AnnotateSource ( SvnBlameEventArgs blameArgs, SvnOrigin origin, IAnkhServiceProvider Context )
         {
-            _args = blameArgs;
-            _origin = origin;
+            _args    = blameArgs ;
+            _origin  = origin ;
+            _context = Context ;
         }
 
         [Category("Subversion")]

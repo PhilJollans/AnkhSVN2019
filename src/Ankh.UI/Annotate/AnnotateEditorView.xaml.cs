@@ -46,10 +46,10 @@ namespace Ankh.UI.Annotate
         private IWpfTextViewHost            textViewHost ;
         private IWpfTextView                wpfTextView ;
 
-        public AnnotateEditorView ( )
+        public AnnotateEditorView ( IAnkhServiceProvider context )
         {
             InitializeComponent ();
-            _vm = new AnnotateEditorViewModel() ;
+            _vm = new AnnotateEditorViewModel ( context ) ;
             DataContext = _vm ;
         }
 

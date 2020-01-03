@@ -67,7 +67,7 @@ namespace Ankh.UI.Annotate
 
             var param = _parameters.Pop() ;
 
-            var annView   = new AnnotateEditorView() ;
+            var annView   = new AnnotateEditorView ( Context ) ;
 
             var doc  = new VSDocumentInstance ( Context, new Guid(AnkhId.AnnotateEditorId) ) ;
             var pane = new AnnotatePane ( param.Item2, param.Item3 ) ;

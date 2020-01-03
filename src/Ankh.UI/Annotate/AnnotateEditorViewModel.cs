@@ -20,6 +20,7 @@ namespace Ankh.UI.Annotate
     /// </summary>
     class AnnotateEditorViewModel : BindableBase
     {
+        private IAnkhServiceProvider             _context ;
         private List<AnnotateRegion>             _regions = new List<AnnotateRegion>();
         private SortedList<long, AnnotateSource> _sources = new SortedList<long, AnnotateSource>() ;
 
@@ -27,8 +28,10 @@ namespace Ankh.UI.Annotate
 
         public ICommand             SaveRegionCommand { get; private set; }
 
-        public AnnotateEditorViewModel ( )
+        public AnnotateEditorViewModel ( IAnkhServiceProvider Context )
         {
+            _context = Context ;
+
             // Create command objects
             SaveRegionCommand = new RelayCommand<AnnotateRegion> ( Execute_SaveRegionCommand );
         }
@@ -53,7 +56,7 @@ namespace Ankh.UI.Annotate
             {
                 AnnotateSource src;
                 if (!_sources.TryGetValue(e.Revision, out src))
-                    _sources.Add(e.Revision, src = new AnnotateSource(e, origin));
+                    _sources.Add ( e.Revision, src = new AnnotateSource ( e, origin, _context ) ) ;
 
                 int line = (int)e.LineNumber;
 
@@ -175,7 +178,5 @@ namespace Ankh.UI.Annotate
                 source.IsSelected = ( r.Source == source ) ;
             }
         }
-
-
     }
 }
