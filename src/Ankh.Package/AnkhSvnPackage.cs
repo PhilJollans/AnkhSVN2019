@@ -43,8 +43,8 @@ namespace Ankh.VSPackage
     /// The minimum requirement for a class to be considered a valid package for Visual Studio
     /// is to implement the IVsPackage interface and register itself with the shell.
     /// This package uses the helper classes defined inside the Managed Package Framework (MPF)
-    /// to do it: it derives from the Package class that provides the implementation of the 
-    /// IVsPackage interface and uses the registration attributes defined in the framework to 
+    /// to do it: it derives from the Package class that provides the implementation of the
+    /// IVsPackage interface and uses the registration attributes defined in the framework to
     /// register itself and its components with the shell.
     /// </summary>
     // This attribute tells the registration utility (regpkg.exe) that this class needs
@@ -57,9 +57,9 @@ namespace Ankh.VSPackage
     // the /root switch.
     [DefaultRegistryRoot("Software\\Microsoft\\VisualStudio\\9.0")]
 
-    // In order be loaded inside Visual Studio in a machine that has not the VS SDK installed, 
-    // package needs to have a valid load key (it can be requested at 
-    // http://msdn.microsoft.com/vstudio/extend/). This attributes tells the shell that this 
+    // In order be loaded inside Visual Studio in a machine that has not the VS SDK installed,
+    // package needs to have a valid load key (it can be requested at
+    // http://msdn.microsoft.com/vstudio/extend/). This attributes tells the shell that this
     // package has a load key embedded in its resources.
     [ProvideLoadKey("Standard", AnkhId.PlkVersion, AnkhId.PlkProduct, AnkhId.PlkCompany, 1)]
     [Guid(AnkhId.PackageId)]
@@ -77,7 +77,7 @@ namespace Ankh.VSPackage
     [ProvideAnkhExtensionRedirect()]
     [ProvideAnkhVersionThunkRedirect()]
 
-    [CLSCompliant(false)]    
+    [CLSCompliant(false)]
     [ProvideOutputWindow(AnkhId.AnkhOutputPaneId, "#111", InitiallyInvisible = false, Name = AnkhId.PlkProduct, ClearWithSolution = false)]
     sealed partial class AnkhSvnPackage : AsyncPackage, IAnkhPackage, IAnkhQueryService
     {
@@ -85,18 +85,27 @@ namespace Ankh.VSPackage
 
         /// <summary>
         /// Default constructor of the package.
-        /// Inside this method you can place any initialization code that does not require 
-        /// any Visual Studio service because at this point the package object is created but 
-        /// not sited yet inside Visual Studio environment. The place to do all the other 
+        /// Inside this method you can place any initialization code that does not require
+        /// any Visual Studio service because at this point the package object is created but
+        /// not sited yet inside Visual Studio environment. The place to do all the other
         /// initialization is the Initialize method.
         /// </summary>
         public AnkhSvnPackage()
         {
-            
+
+        }
+
+        protected override void Dispose (bool disposing)
+        {
+            // Remove temporary directories
+            var tdm = GetService<IAnkhTempDirManager>() ;
+            tdm.RemoveTempDirectories() ;
+
+            base.Dispose ( disposing );
         }
 
         /////////////////////////////////////////////////////////////////////////////
-        // Overriden Package Implementation        
+        // Overriden Package Implementation
 
         /// <summary>
         /// Initialization of the package; this method is called right after the package is sited, so this is the place
@@ -108,7 +117,7 @@ namespace Ankh.VSPackage
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
             _runtime = new AnkhRuntime(this);
-                       
+
             // The VS2005 SDK code changes the global VS UI culture, but that
             // is not the way we should behave: We should keep the global
             // state how VS initialized it.
@@ -122,12 +131,12 @@ namespace Ankh.VSPackage
                 if (Thread.CurrentThread.CurrentUICulture != uiCulture)
                     Thread.CurrentThread.CurrentUICulture = uiCulture;
             }
-            
+
 
 
             InitializeRuntime(); // Moved to function of their own to speed up devenv /setup
             RegisterAsOleComponent();
-            
+
         }
 
         void InitializeRuntime()
@@ -158,7 +167,7 @@ namespace Ankh.VSPackage
         {
             // We set the user context AnkhLoadCompleted active when we are loaded
             // This event can be used to trigger loading other packages that depend on AnkhSVN
-            // 
+            //
             // When the use:
             // [ProvideAutoLoad(AnkhId.AnkhLoadCompleted)]
             // On their package, they load automatically when we are completely loaded

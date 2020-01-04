@@ -28,5 +28,12 @@ namespace Ankh.VS
         /// <returns></returns>
         /// <remarks>The directory is created.</remarks>
         string GetTempDir();
+
+        /// <summary>
+        /// Call this method explicitly when the pacakage is disposed in Visual Studio 2019,
+        /// because the finalizer in TempDirCollection is no longer called and I can't get
+        /// the OnBeginShutdown event to fire.
+        /// </summary>
+        void RemoveTempDirectories() ;
     }
 }

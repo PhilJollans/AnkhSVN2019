@@ -48,6 +48,11 @@ namespace Ankh.Services
             return name;
         }
 
+        public void RemoveTempDirectories()
+        {
+            _tempDirs.Delete() ;
+        }
+
         class TempDirCollection : IDisposable
         {
             readonly Dictionary<string, bool> _directories = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
@@ -78,13 +83,14 @@ namespace Ankh.Services
                 Delete();
             }
 
-            void Delete()
+            internal void Delete()
             {
                 foreach (KeyValuePair<string, bool> kv in _directories)
                 {
                     if (!kv.Value)
                         SvnItem.DeleteNode(kv.Key);
                 }
+                _directories.Clear() ;
             }
 
             public void AddDirectory(string name, bool keepDir)
