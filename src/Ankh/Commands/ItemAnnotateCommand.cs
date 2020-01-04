@@ -254,40 +254,6 @@ namespace Ankh.Commands
 
             var annotateFactory = e.GetService<IAnnotateFactory>();
             annotateFactory.Create ( origin, blameResult, tempFile ) ;
-
-#if false
-            AnnotedEditorView     annView   = new AnnotedEditorView() ;
-            AnnotateEditorControl annEditor = annView.annEditor ;
-
-          //AnnotateEditorControl annEditor = new AnnotateEditorControl();
-            IAnkhEditorResolver er = e.GetService<IAnkhEditorResolver>();
-
-            annEditor.Create(e.Context, tempFile, annView);
-            annEditor.LoadFile(tempFile);
-            annEditor.AddLines(item, blameResult);
-
-            // Detect and set the language service
-            Guid language;
-            if (er.TryGetLanguageService(Path.GetExtension(target.FileName), out language))
-            {
-                // Extension is mapped -> user
-                annEditor.SetLanguageService(language);
-            }
-            else if (blameResult != null && blameResult.Count > 0 && blameResult[0].Line != null)
-            {
-                // Extension is not mapped -> Check if this is xml (like project files)
-                string line = blameResult[0].Line.Trim();
-
-                if (line.StartsWith("<?xml")
-                    || (line.StartsWith("<") && line.Contains("xmlns=\"http://schemas.microsoft.com/developer/msbuild/")))
-                {
-                    if (er.TryGetLanguageService(".xml", out language))
-                    {
-                        annEditor.SetLanguageService(language);
-                    }
-                }
-            }
-#endif
         }
     }
 }

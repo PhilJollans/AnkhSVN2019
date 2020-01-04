@@ -99,9 +99,6 @@
   <ItemGroup>
     <Compile Include="Annotate\AnnotateEditorViewModel.cs" />
     <Compile Include="Annotate\AnnotateFactory.cs" />
-    <Compile Include="Annotate\AnnotateMarginControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Annotate\AnnotateMarginView.xaml.cs">
       <DependentUpon>AnnotateMarginView.xaml</DependentUpon>
     </Compile>
@@ -113,12 +110,6 @@
       <DependentUpon>AnnotateResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Annotate\AnnotateSource.cs" />
-    <Compile Include="Annotate\AnnotateEditorControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Annotate\AnnotateEditorControl.Designer.cs">
-      <DependentUpon>AnnotateEditorControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Annotate\AnnotateEditorView.xaml.cs">
       <DependentUpon>AnnotateEditorView.xaml</DependentUpon>
     </Compile>
@@ -975,10 +966,6 @@
     <None Include="Ankh.UI.snk" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Annotate\AnnotateEditorControl.resx">
-      <DependentUpon>AnnotateEditorControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\StatusPanelTestForm.resx">
       <DependentUpon>StatusPanelTestForm.cs</DependentUpon>
       <SubType>Designer</SubType>
