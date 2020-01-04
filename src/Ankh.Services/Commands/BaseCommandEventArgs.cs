@@ -52,7 +52,7 @@ namespace Ankh.Commands
         /// <summary>
         /// Gets the Visual Studio selection
         /// </summary>
-        /// <value>The selection.</value>        
+        /// <value>The selection.</value>
         public ISelectionContext Selection
         {
             [DebuggerStepThrough]

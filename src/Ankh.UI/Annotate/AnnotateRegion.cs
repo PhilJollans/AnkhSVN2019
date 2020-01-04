@@ -4,10 +4,17 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
+using System.Windows;
 using System.Windows.Input;
+using Ankh.Commands;
 using Ankh.Scc;
 using Ankh.Scc.UI;
+using Ankh.Selection;
+using Ankh.UI.SvnLog;
 using Ankh.VS.WpfServices;
+using EnvDTE;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using SharpSvn;
 
 namespace Ankh.UI.Annotate
@@ -146,6 +153,24 @@ namespace Ankh.UI.Annotate
         {
             try
             {
+                //
+                // This duplicates the original functionality in \Ankh\Commands\LogCommand.cs, which is
+                // to show the log window with the selected item and older items only. It does not
+                // automatically select the first item, so the lower two panes are not initialised.
+                //
+                // In my opinion it would make more sense to show the whole history and to select the
+                // specified revision in the list.
+                //
+                var package = _source.Context.GetService<IAnkhPackage>() ;
+                package.ShowToolWindow ( AnkhToolWindow.Log ) ;
+
+                var logToolControl = _source.Context.GetService<ISelectionContext>().ActiveFrameControl as LogToolWindowControl;
+                if ( logToolControl != null )
+                {
+                    logToolControl.StartLog ( new SvnOrigin[] { _source.Origin },
+                                              new SvnRevision ( _source.Revision ),
+                                              null ) ;
+                }
             }
             catch (Exception ex)
             {
@@ -163,6 +188,23 @@ namespace Ankh.UI.Annotate
         {
             try
             {
+                //
+                // In this case, there is too much code in
+                //   \Ankh\Commands\RepositoryExplorer\CopyToWorkingCopy.cs
+                // to simply duplicate it and there isn't a simple back door.
+                //
+                // The code relies on the selection manager to get the selected revision.
+                // I am having difficulty understanding the selection manager, so I have
+                // decided to hack it, by adding a new method FakeSingleSelection().
+                //
+                var sc = _source.Context.GetService<ISelectionContext>() ;
+                sc.FakeSingleSelection ( _source as ISvnRepositoryItem ) ;
+
+                // It took some time to work this out, but it seems we can open a back door into the command handling.
+                var cm = _source.Context.GetService<CommandMapper>() ;
+                var cx = _source.Context.GetService<AnkhContext>() ;
+                CommandEventArgs args = new CommandEventArgs ( AnkhCommand.CopyToWorkingCopy, cx ) ;
+                cm.Execute ( AnkhCommand.CopyToWorkingCopy, args ) ;
             }
             catch (Exception ex)
             {
@@ -180,6 +222,7 @@ namespace Ankh.UI.Annotate
         {
             try
             {
+                Clipboard.SetText ( _source.Revision.ToString(), TextDataFormat.Text ) ;
             }
             catch (Exception ex)
             {
@@ -197,6 +240,13 @@ namespace Ankh.UI.Annotate
         {
             try
             {
+                // Leave for now.
+                // I don't yet know how to make this work.
+
+                //const int IDG_VS_CTXT_ITEM_PROPERTIES = 0x020E ;
+
+                //var dte = _source.Context.GetService<DTE> ( typeof(SDTE) ) ;
+                //dte.Commands.Raise ( VsMenus.guidSHLMainMenu.ToString(), IDG_VS_CTXT_ITEM_PROPERTIES, null, null ) ;
             }
             catch (Exception ex)
             {

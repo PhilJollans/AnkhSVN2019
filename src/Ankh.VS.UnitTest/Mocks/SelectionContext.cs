@@ -80,6 +80,10 @@ namespace AnkhSvn_UnitTestProject.Mocks
                 yield break;
             }
 
+            public void FakeSingleSelection<T> ( T o )
+            {
+            }
+
             #region ISelectionContext Members
 
 
@@ -178,7 +182,7 @@ namespace AnkhSvn_UnitTestProject.Mocks
 
             public void MaybeInstallDelayHandler()
             {
-                
+
             }
 
             public Microsoft.VisualStudio.TextManager.Interop.IVsTextView ActiveFrameTextView

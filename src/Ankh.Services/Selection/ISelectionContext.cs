@@ -26,13 +26,13 @@ using Microsoft.VisualStudio.TextManager.Interop;
 namespace Ankh.Selection
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <remarks>
     /// <para>All members are based on IEnumerable to be able to delayload all cases required by commands. They return lists when completed
     /// but might return just an IEnumerable creating a list while not complete (e.g. we might traverse all files for a complete result,
     /// while we need only 1 un-added one)</para>
-    /// 
+    ///
     /// <para>A simple test implementation could just return arrays</para>
     /// </remarks>
     public interface ISelectionContext
@@ -159,6 +159,8 @@ namespace Ankh.Selection
         /// <returns></returns>
         TControl GetActiveControl<TControl>()
             where TControl : class;
+
+        void FakeSingleSelection<T> ( T o ) ;
     }
 
     /// <summary>

@@ -71,13 +71,13 @@
                   </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="View History" Command="{Binding ViewHistoryCommand}" IsEnabled="False">
+                <MenuItem Header="View History" Command="{Binding ViewHistoryCommand}">
                   <MenuItem.Icon>
                     <Image Source="{StaticResource tfshistory}"/>
                   </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="Copy to Working copy ..." Command="{Binding CopyToWorkingCopyCommand}" IsEnabled="False"/>
-                <MenuItem Header="Copy Revision" Command="{Binding CopyRevisionCommand}" IsEnabled="False"/>
+                <MenuItem Header="Copy to Working copy ..." Command="{Binding CopyToWorkingCopyCommand}" />
+                <MenuItem Header="Copy Revision" Command="{Binding CopyRevisionCommand}" />
                 <Separator/>
                 <MenuItem Header="Properties" Command="{Binding PropertiesCommand}" IsEnabled="False">
                   <MenuItem.Icon>

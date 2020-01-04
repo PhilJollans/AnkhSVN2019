@@ -34,7 +34,7 @@ using Ankh.VS.SolutionExplorer;
 namespace Ankh.VS.Selection
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     [GlobalService(typeof(ISelectionContext))]
     [GlobalService(typeof(ISccProjectWalker))]
@@ -891,6 +891,15 @@ namespace Ankh.VS.Selection
                 }
             }
         }
+
+        public void FakeSingleSelection<T> ( T o )
+        {
+            ClearCache() ;
+            IEnumerable<T> v = new T[] { o } ;
+            _selectedItemsMap = new Dictionary<Type, IEnumerable>() ;
+            _selectedItemsMap.Add ( typeof(T), v ) ;
+        }
+
         #endregion
 
 
