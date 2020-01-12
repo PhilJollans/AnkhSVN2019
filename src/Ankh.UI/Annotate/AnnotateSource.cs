@@ -27,7 +27,7 @@ using SharpSvn;
 
 namespace Ankh.UI.Annotate
 {
-    class AnnotateSource : BindableBase, IAnnotateSection, ISvnRepositoryItem, ISvnLogItem, INotifyPropertyChanged
+    public class AnnotateSource : BindableBase, IAnnotateSection, ISvnRepositoryItem, ISvnLogItem, INotifyPropertyChanged
     {
         private readonly SvnBlameEventArgs      _args ;
         private readonly SvnOrigin              _origin ;

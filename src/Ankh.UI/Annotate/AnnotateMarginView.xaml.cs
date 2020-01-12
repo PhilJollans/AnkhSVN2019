@@ -27,5 +27,11 @@ namespace Ankh.UI.Annotate
         {
             InitializeComponent ();
         }
+
+        public AnnotateMarginView ( AnnotateEditorViewModel vm )
+        {
+            InitializeComponent ();
+            DataContext = vm ;
+        }
     }
 }

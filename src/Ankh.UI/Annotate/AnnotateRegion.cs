@@ -26,7 +26,7 @@ namespace Ankh.UI.Annotate
     /// Multiple AnnotateRegion object may refer to the same SVN revision.
     /// The SVN revision is represented by the AnnotateSource object.
     /// </summary>
-    class AnnotateRegion : BindableBase
+    public class AnnotateRegion : BindableBase
     {
         readonly AnnotateSource _source;
         readonly int            _startLine;

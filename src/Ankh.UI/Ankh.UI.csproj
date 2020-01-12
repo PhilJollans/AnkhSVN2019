@@ -109,10 +109,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AnnotateResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Annotate\AnnotateService.cs" />
     <Compile Include="Annotate\AnnotateSource.cs" />
     <Compile Include="Annotate\AnnotateEditorView.xaml.cs">
       <DependentUpon>AnnotateEditorView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Annotate\AnnotationMargin.cs" />
+    <Compile Include="Annotate\AnnotationMarginFactory.cs" />
     <Compile Include="Commands\AnnotateDialog.cs">
       <SubType>Form</SubType>
     </Compile>

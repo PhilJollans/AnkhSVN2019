@@ -18,7 +18,7 @@ namespace Ankh.UI.Annotate
     /// <summary>
     /// ViewModel for the WPF AnnotateEditorView
     /// </summary>
-    class AnnotateEditorViewModel : BindableBase
+    public class AnnotateEditorViewModel : BindableBase
     {
         private IAnkhServiceProvider             _context ;
         private List<AnnotateRegion>             _regions = new List<AnnotateRegion>();

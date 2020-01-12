@@ -276,8 +276,8 @@ Global
 		{6A9DFA7F-17D4-4A0F-8926-1B0492B520D9} = {E7D88D59-A87F-4939-AB58-315F8C41E20B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		DPBuild = 5
 		SolutionGuid = {67C64C91-AABE-4E7B-A782-CFD993BF32A2}
+		DPBuild = 5
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = AnkhSvn.2010.vsmdi

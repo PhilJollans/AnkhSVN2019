@@ -14,9 +14,13 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Ankh.Scc;
@@ -25,8 +29,10 @@ using Ankh.UI;
 using Ankh.UI.Annotate;
 using Ankh.VS;
 using SharpSvn;
-using System.Collections.Generic;
 using Ankh.UI.Commands;
+using EnvDTE;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.Commands
 {
@@ -39,6 +45,20 @@ namespace Ankh.Commands
     [SvnCommand(AnkhCommand.DocumentAnnotate)]
     class ItemAnnotateCommand : CommandBase
     {
+        // AnnotateService is defined as an MEF service.
+        [Import]
+        public IAnnotateService            AnnotateService { get; set; }
+
+        public ItemAnnotateCommand ()
+        {
+            string assemblyFolder = Path.GetDirectoryName ( Assembly.GetExecutingAssembly().Location ) ;
+            using ( var catalog = new DirectoryCatalog ( assemblyFolder, "*.dll" ) )
+            {
+                var container = new CompositionContainer(catalog);
+                container.SatisfyImportsOnce(this);
+            }
+        }
+
         public override void OnUpdate(CommandUpdateEventArgs e)
         {
             switch (e.Command)
@@ -76,10 +96,6 @@ namespace Ankh.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
-#if false
-            MessageBox.Show ( "Unfortunately the Annotate function does not work in Visual Studio 2019. We are working to fix this problem." ) ;
-            return ;
-#else
             List<SvnOrigin> targets = new List<SvnOrigin>();
             SvnRevision startRev = SvnRevision.Zero;
             SvnRevision endRev = null;
@@ -156,8 +172,8 @@ namespace Ankh.Commands
                     tracker.SaveDocument(((SvnPathTarget)target.Target).FullPath);
             }
 
-            DoBlame(e, target, startRev, endRev, ignoreEols, ignoreSpacing, retrieveMergeInfo);
-#endif
+            AnnotateService.DoBlame ( e, target, startRev, endRev, ignoreEols, ignoreSpacing, retrieveMergeInfo ) ;
+            //DoBlame ( e, target, startRev, endRev, ignoreEols, ignoreSpacing, retrieveMergeInfo ) ;
         }
 
         /*private void TryObtainBlock(CommandEventArgs e)
@@ -192,9 +208,15 @@ namespace Ankh.Commands
 
         static void DoBlame(CommandEventArgs e, SvnOrigin origin, SvnRevision revisionStart, SvnRevision revisionEnd, bool ignoreEols, SvnIgnoreSpacing ignoreSpacing, bool retrieveMergeInfo)
         {
+            // There are two SVN related operations:
+            // [1] Getting the file at revisionEnd, which will be displayed in the editor
+            // [2] Getting the blame information, which will be displayed in the margin
+
+            // This is the parameter structure for [1] getting the file
             SvnWriteArgs wa = new SvnWriteArgs();
             wa.Revision = revisionEnd;
 
+            // This is the parameter structure for [2] getting the blame information
             SvnBlameArgs ba = new SvnBlameArgs();
             ba.Start = revisionStart;
             ba.End = revisionEnd;
@@ -212,11 +234,13 @@ namespace Ankh.Commands
             bool retry = false;
             ProgressRunnerResult r = e.GetService<IProgressRunner>().RunModal(CommandStrings.Annotating, delegate(object sender, ProgressWorkerArgs ee)
             {
+                // Here we [1] get the file at revisionEnd
                 using (FileStream fs = File.Create(tempFile))
                 {
                     ee.Client.Write(target, fs, wa);
                 }
 
+                // Here we [2] get the blame information
                 ba.SvnError +=
                     delegate(object errorSender, SvnErrorEventArgs errorEventArgs)
                     {
@@ -255,5 +279,6 @@ namespace Ankh.Commands
             var annotateFactory = e.GetService<IAnnotateFactory>();
             annotateFactory.Create ( origin, blameResult, tempFile ) ;
         }
+
     }
 }
