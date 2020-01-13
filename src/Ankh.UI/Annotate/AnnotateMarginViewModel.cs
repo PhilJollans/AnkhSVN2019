@@ -16,9 +16,10 @@ using SharpSvn;
 namespace Ankh.UI.Annotate
 {
     /// <summary>
-    /// ViewModel for the WPF AnnotateEditorView
+    /// ViewModel for the WPF AnnotationMargin
     /// </summary>
-    public class AnnotateEditorViewModel : BindableBase
+    [CLSCompliant(false)]
+    public class AnnotateMarginViewModel : BindableBase
     {
         private IAnkhServiceProvider             _context ;
         private List<AnnotateRegion>             _regions = new List<AnnotateRegion>();
@@ -28,7 +29,7 @@ namespace Ankh.UI.Annotate
 
         public ICommand             SaveRegionCommand { get; private set; }
 
-        public AnnotateEditorViewModel ( IAnkhServiceProvider Context )
+        public AnnotateMarginViewModel ( IAnkhServiceProvider Context )
         {
             _context = Context ;
 

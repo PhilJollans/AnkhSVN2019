@@ -21,6 +21,7 @@ namespace Ankh.UI.Annotate
     /// Initially, this will be hosted in the AnnotateEditoView, but I am considering it in a
     /// custom margin in the Visual Studio editor.
     /// </summary>
+    [CLSCompliant(false)]
     public partial class AnnotateMarginView : UserControl
     {
         public AnnotateMarginView ( )
@@ -28,7 +29,7 @@ namespace Ankh.UI.Annotate
             InitializeComponent ();
         }
 
-        public AnnotateMarginView ( AnnotateEditorViewModel vm )
+        public AnnotateMarginView ( AnnotateMarginViewModel vm )
         {
             InitializeComponent ();
             DataContext = vm ;

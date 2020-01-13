@@ -18,21 +18,14 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-using Microsoft.VisualStudio.TextManager.Interop;
 using Ankh.Scc;
 using Ankh.Scc.UI;
-using Ankh.UI;
 using Ankh.UI.Annotate;
-using Ankh.VS;
 using SharpSvn;
 using Ankh.UI.Commands;
-using EnvDTE;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.Commands
 {
@@ -173,111 +166,6 @@ namespace Ankh.Commands
             }
 
             AnnotateService.DoBlame ( e, target, startRev, endRev, ignoreEols, ignoreSpacing, retrieveMergeInfo ) ;
-            //DoBlame ( e, target, startRev, endRev, ignoreEols, ignoreSpacing, retrieveMergeInfo ) ;
-        }
-
-        /*private void TryObtainBlock(CommandEventArgs e)
-        {
-            ISelectionContextEx ex = e.GetService<ISelectionContextEx>(typeof(ISelectionContext));
-
-            if (ex == null)
-                return;
-
-            IVsTextView view = ex.ActiveDocumentFrameTextView;
-            IVsTextLines lines;
-            Guid languageService;
-            IVsLanguageInfo info;
-
-            if (view != null
-                && VSErr.Succeeded(view.GetBuffer(out lines))
-                && VSErr.Succeeded(lines.GetLanguageServiceID(out languageService))
-                && null != (info = e.QueryService<IVsLanguageInfo>(languageService)))
-            {
-                GC.KeepAlive(info);
-                IVsLanguageBlock b = info as IVsLanguageBlock;
-                if (b != null)
-                {
-                    GC.KeepAlive(b);
-                }
-            }
-            //IVsLanguageBlock
-
-
-            GC.KeepAlive(ex);
-        }*/
-
-        static void DoBlame(CommandEventArgs e, SvnOrigin origin, SvnRevision revisionStart, SvnRevision revisionEnd, bool ignoreEols, SvnIgnoreSpacing ignoreSpacing, bool retrieveMergeInfo)
-        {
-            // There are two SVN related operations:
-            // [1] Getting the file at revisionEnd, which will be displayed in the editor
-            // [2] Getting the blame information, which will be displayed in the margin
-
-            // This is the parameter structure for [1] getting the file
-            SvnWriteArgs wa = new SvnWriteArgs();
-            wa.Revision = revisionEnd;
-
-            // This is the parameter structure for [2] getting the blame information
-            SvnBlameArgs ba = new SvnBlameArgs();
-            ba.Start = revisionStart;
-            ba.End = revisionEnd;
-            ba.IgnoreLineEndings = ignoreEols;
-            ba.IgnoreSpacing = ignoreSpacing;
-            ba.RetrieveMergedRevisions = retrieveMergeInfo;
-
-            SvnTarget target = origin.Target;
-
-            IAnkhTempFileManager tempMgr = e.GetService<IAnkhTempFileManager>();
-            string tempFile = tempMgr.GetTempFileNamed(target.FileName);
-
-            Collection<SvnBlameEventArgs> blameResult = null;
-
-            bool retry = false;
-            ProgressRunnerResult r = e.GetService<IProgressRunner>().RunModal(CommandStrings.Annotating, delegate(object sender, ProgressWorkerArgs ee)
-            {
-                // Here we [1] get the file at revisionEnd
-                using (FileStream fs = File.Create(tempFile))
-                {
-                    ee.Client.Write(target, fs, wa);
-                }
-
-                // Here we [2] get the blame information
-                ba.SvnError +=
-                    delegate(object errorSender, SvnErrorEventArgs errorEventArgs)
-                    {
-                        if (errorEventArgs.Exception is SvnClientBinaryFileException)
-                        {
-                            retry = true;
-                            errorEventArgs.Cancel = true;
-                        }
-                    };
-                ee.Client.GetBlame(target, ba, out blameResult);
-            });
-
-            if (retry)
-            {
-                using (AnkhMessageBox mb = new AnkhMessageBox(e.Context))
-                {
-                    if (DialogResult.Yes != mb.Show(
-                                                CommandStrings.AnnotateBinaryFileContinueAnywayText,
-                                                CommandStrings.AnnotateBinaryFileContinueAnywayTitle,
-                                                MessageBoxButtons.YesNo, MessageBoxIcon.Information))
-                        return;
-
-                    r = e.GetService<IProgressRunner>()
-                            .RunModal(CommandStrings.Annotating,
-                                      delegate(object sender, ProgressWorkerArgs ee)
-                                      {
-                                          ba.IgnoreMimeType = true;
-                                          ee.Client.GetBlame(target, ba, out blameResult);
-                                      });
-                }
-            }
-
-            if (!r.Succeeded)
-                return;
-
-            var annotateFactory = e.GetService<IAnnotateFactory>();
-            annotateFactory.Create ( origin, blameResult, tempFile ) ;
         }
 
     }

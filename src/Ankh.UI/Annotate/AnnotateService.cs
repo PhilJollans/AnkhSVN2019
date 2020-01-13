@@ -17,6 +17,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.UI.Annotate
 {
+    [CLSCompliant(false)]
     public interface IAnnotateService
     {
         // Based on the original DoBlame method in class ItemAnnotateCommand
@@ -28,10 +29,11 @@ namespace Ankh.UI.Annotate
                        SvnIgnoreSpacing ignoreSpacing,
                        bool             retrieveMergeInfo ) ;
 
-        AnnotateEditorViewModel     GetModel ( string tempFile ) ;
+        AnnotateMarginViewModel     GetModel ( string tempFile ) ;
     }
 
     [Export ( typeof ( IAnnotateService ) )]
+    [CLSCompliant(false)]
     public class AnnotateService : IAnnotateService
     {
         //
@@ -39,11 +41,11 @@ namespace Ankh.UI.Annotate
         // key:     full path to temporary file for the annotated view
         // value:   view model class for the margin (MVVM implementation)
         //
-        private static Dictionary<string,AnnotateEditorViewModel>      _ViewModelMap = null ;
+        private static Dictionary<string,AnnotateMarginViewModel>      _ViewModelMap = null ;
 
         static AnnotateService ()
         {
-            _ViewModelMap = new Dictionary<string, AnnotateEditorViewModel>() ;
+            _ViewModelMap = new Dictionary<string, AnnotateMarginViewModel>() ;
         }
 
         public void DoBlame ( CommandEventArgs e,
@@ -124,17 +126,17 @@ namespace Ankh.UI.Annotate
                 return;
 
             // Create a view model and add it to our internal map
-            var annView = new AnnotateEditorViewModel ( e.Context ) ;
+            var annView = new AnnotateMarginViewModel ( e.Context ) ;
             _ViewModelMap.Add ( tempFile, annView ) ;
             annView.Initialize ( null, origin, blameResult, tempFile ) ;
 
             // Open the editor.
             // ToDo: Open files like resx as code.
             var dte = e.GetService<DTE> ( typeof(SDTE) ) ;
-            dte.ItemOperations.OpenFile ( tempFile ) ;
+            dte.ItemOperations.OpenFile ( tempFile, EnvDTE.Constants.vsViewKindTextView ) ;
         }
 
-        public AnnotateEditorViewModel GetModel ( string tempFile )
+        public AnnotateMarginViewModel GetModel ( string tempFile )
         {
             if ( _ViewModelMap.ContainsKey ( tempFile ) )
                 return _ViewModelMap [ tempFile ] ;

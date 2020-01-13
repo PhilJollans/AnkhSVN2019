@@ -50,6 +50,9 @@ namespace Ankh.UI.Annotate
       }
       else
       {
+          wpfTextViewHost.TextView.Options.SetOptionValue ( DefaultTextViewOptions.ViewProhibitUserInputId, true ) ;
+
+
           return new AnnotationMargin ( wpfTextViewHost.TextView, vm ) ;
       }
 

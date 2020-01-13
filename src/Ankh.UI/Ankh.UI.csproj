@@ -97,12 +97,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Annotate\AnnotateEditorViewModel.cs" />
-    <Compile Include="Annotate\AnnotateFactory.cs" />
+    <Compile Include="Annotate\AnnotateMarginViewModel.cs" />
     <Compile Include="Annotate\AnnotateMarginView.xaml.cs">
       <DependentUpon>AnnotateMarginView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Annotate\AnnotatePane.cs" />
     <Compile Include="Annotate\AnnotateRegion.cs" />
     <Compile Include="Annotate\AnnotateResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -111,9 +109,6 @@
     </Compile>
     <Compile Include="Annotate\AnnotateService.cs" />
     <Compile Include="Annotate\AnnotateSource.cs" />
-    <Compile Include="Annotate\AnnotateEditorView.xaml.cs">
-      <DependentUpon>AnnotateEditorView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Annotate\AnnotationMargin.cs" />
     <Compile Include="Annotate\AnnotationMarginFactory.cs" />
     <Compile Include="Commands\AnnotateDialog.cs">
@@ -1378,10 +1373,6 @@
     <Page Include="Annotate\AnnotateMarginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Annotate\AnnotateEditorView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

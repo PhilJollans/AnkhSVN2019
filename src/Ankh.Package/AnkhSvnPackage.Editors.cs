@@ -22,12 +22,10 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 using System.ComponentModel.Design;
 using Ankh.UI;
-using Ankh.UI.Annotate;
 
 namespace Ankh.VSPackage
 {
     [ProvideEditorFactoryAttribute(typeof(AnkhDynamicEditorFactory), 303)]
-    [ProvideEditorFactoryAttribute(typeof(AnnotateFactory), 303)]
     partial class AnkhSvnPackage
     {
         void RegisterEditors()
@@ -36,10 +34,6 @@ namespace Ankh.VSPackage
 
             RegisterEditorFactory(def);
             _runtime.GetService<IServiceContainer>().AddService(typeof(IAnkhDynamicEditorFactory), def);
-
-            AnnotateFactory annotateFactory = new AnnotateFactory(this);
-            RegisterEditorFactory(annotateFactory);
-            _runtime.GetService<IServiceContainer>().AddService(typeof(IAnnotateFactory), annotateFactory);
         }
     }
 }

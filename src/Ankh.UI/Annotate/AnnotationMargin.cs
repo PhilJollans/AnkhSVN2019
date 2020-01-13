@@ -17,7 +17,7 @@ namespace Ankh.UI.Annotate
     public const string MarginName = "AnnotationMargin";
 
     private IWpfTextView                _wpfTextView ;
-    private AnnotateEditorViewModel     _vm ;
+    private AnnotateMarginViewModel     _vm ;
     private AnnotateMarginView          _view ;
 
     /// <summary>
@@ -29,7 +29,7 @@ namespace Ankh.UI.Annotate
     /// Initializes a new instance of the <see cref="AnnotationMargin"/> class for a given <paramref name="textView"/>.
     /// </summary>
     /// <param name="textView">The <see cref="IWpfTextView"/> to attach the margin to.</param>
-    public AnnotationMargin ( IWpfTextView textView, AnnotateEditorViewModel vm )
+    public AnnotationMargin ( IWpfTextView textView, AnnotateMarginViewModel vm )
     {
         // Store the parameters
         _wpfTextView = textView ;
