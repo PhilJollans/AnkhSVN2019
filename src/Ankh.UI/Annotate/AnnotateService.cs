@@ -41,11 +41,11 @@ namespace Ankh.UI.Annotate
         // key:     full path to temporary file for the annotated view
         // value:   view model class for the margin (MVVM implementation)
         //
-        private static Dictionary<string,AnnotateMarginViewModel>      _ViewModelMap = null ;
+        private static Dictionary<string,AnnotateMarginParameters>      _ViewModelMap = null ;
 
         static AnnotateService ()
         {
-            _ViewModelMap = new Dictionary<string, AnnotateMarginViewModel>() ;
+            _ViewModelMap = new Dictionary<string, AnnotateMarginParameters>() ;
         }
 
         public void DoBlame ( CommandEventArgs e,
@@ -125,10 +125,10 @@ namespace Ankh.UI.Annotate
             if (!r.Succeeded)
                 return;
 
-            // Create a view model and add it to our internal map
-            var annView = new AnnotateMarginViewModel ( e.Context ) ;
-            _ViewModelMap.Add ( tempFile, annView ) ;
-            annView.Initialize ( null, origin, blameResult, tempFile ) ;
+            // Create a parameter struture and add it to our internal map.
+            // Creating the actual view model class is now deferred to the GetModel method.
+            var annParam = new AnnotateMarginParameters { Context = e.Context, Origin = origin, BlameResult = blameResult } ;
+            _ViewModelMap.Add ( tempFile, annParam ) ;
 
             // Open the editor.
             // ToDo: Open files like resx as code.
@@ -139,10 +139,25 @@ namespace Ankh.UI.Annotate
         public AnnotateMarginViewModel GetModel ( string tempFile )
         {
             if ( _ViewModelMap.ContainsKey ( tempFile ) )
-                return _ViewModelMap [ tempFile ] ;
+            {
+                // If the editor pane is split into two independent parts, a second margin will be
+                // generated. To handle this we need a separate ViewModel for each part of the split
+                // window.
+                var annParam = _ViewModelMap [ tempFile ] ;
+                var annView  = new AnnotateMarginViewModel ( annParam.Context ) ;
+                annView.Initialize ( annParam.Origin, annParam.BlameResult, tempFile ) ;
+                return annView ;
+            }
             else
                 return null ;
         }
 
+    }
+
+    internal class AnnotateMarginParameters
+    {
+        public IAnkhServiceProvider             Context         { get; set; }
+        public SvnOrigin                        Origin          { get; set; }
+        public Collection<SvnBlameEventArgs>    BlameResult     { get; set; }
     }
 }

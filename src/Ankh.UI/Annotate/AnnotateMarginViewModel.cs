@@ -37,7 +37,7 @@ namespace Ankh.UI.Annotate
             SaveRegionCommand = new RelayCommand<AnnotateRegion> ( Execute_SaveRegionCommand );
         }
 
-        public void Initialize ( ServiceProvider serviceProvider, SvnOrigin origin, Collection<SvnBlameEventArgs> blameResult, string tempFile )
+        public void Initialize ( SvnOrigin origin, Collection<SvnBlameEventArgs> blameResult, string tempFile )
         {
             // Process the blame results
             AddLines ( origin, blameResult ) ;
