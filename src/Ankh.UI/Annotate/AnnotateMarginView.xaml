@@ -132,7 +132,7 @@
               <Grid>
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition Width="*" MinWidth="50"/>
-                  <ColumnDefinition Width="*" MinWidth="50"/>
+                  <ColumnDefinition Width="*" />
                   <ColumnDefinition Width="Auto" SharedSizeGroup="A"/>
                 </Grid.ColumnDefinitions>
 
