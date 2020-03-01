@@ -176,7 +176,6 @@ PatchAssemblyFileVersion "src\Ankh.VS\Properties\AssemblyInfo.cs", Assembly_Vers
 PatchAssemblyFileVersion "src\Ankh.WpfUI\Properties\AssemblyInfo.cs", Assembly_Version
 PatchAssemblyFileVersion "src\Ankh\Properties\AssemblyInfo.cs", Assembly_Version
 PatchAssemblyFileVersion "src\TestUtils\Properties\AssemblyInfo.cs", Assembly_Version
-PatchAssemblyFileVersion "src\tools\Ankh.BitmapExtractor\Properties\AssemblyInfo.cs", Assembly_Version
 PatchAssemblyFileVersion "src\tools\Ankh.Chocolatey\Properties\AssemblyInfo.cs", Assembly_Version
 PatchAssemblyFileVersion "src\tools\Ankh.DotNet2Test\Properties\AssemblyInfo.cs", Assembly_Version
 PatchAssemblyFileVersion "src\tools\Ankh.GenerateVSIXManifest\Properties\AssemblyInfo.cs", Assembly_Version
