@@ -22,4 +22,5 @@ AnkhSVN2019 is targeted only at Visual Studio 2019.
 | 1.00.0004     | 22-December-2019  | Catch an EntryPointNotFoundException on calling SetThreadDpiAwarenessContext. See Issue 3.  
 | 1.00.0005     | 05-January-2020   | New implementation of the GUI for the Annotate function.
 | 1.00.0007     | 13-January-2020   | Restructured implementation the Annotate function using a custom margin on an editor window.
+| 1.00.0008     | 01-March-2020     | Add an exception handler to AnnotationMarginFactory.CreateMargin. See Issue 9.
 
