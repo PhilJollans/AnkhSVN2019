@@ -39,6 +39,7 @@ namespace Ankh.VS.SolutionExplorer
             : base(context)
         {
             _imageList = new ImageList();
+            _imageList = new ImageList();
             _imageList.ImageSize = new Size(16, 16);
             _imageList.ColorDepth = ColorDepth.Depth32Bit;
             _iconMap = new Dictionary<ProjectIconReference, int>();

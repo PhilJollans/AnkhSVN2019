@@ -134,6 +134,10 @@ namespace Ankh.UI.Annotate
             // ToDo: Open files like resx as code.
             var dte = e.GetService<DTE> ( typeof(SDTE) ) ;
             dte.ItemOperations.OpenFile ( tempFile, EnvDTE.Constants.vsViewKindTextView ) ;
+
+            // Suggestion from https://stackoverflow.com/questions/59741278/how-can-i-set-the-caption-on-an-editor-window-in-visual-studio
+            // Unfortunately it doesn't work.
+            //dte.ActiveWindow.Caption = $"{dte.ActiveWindow.Caption} - Annotated" ;
         }
 
         public AnnotateMarginViewModel GetModel ( string tempFile )

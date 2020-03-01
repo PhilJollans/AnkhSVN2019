@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Utilities;
@@ -35,27 +36,37 @@ namespace Ankh.UI.Annotate
     /// </returns>
     public IWpfTextViewMargin CreateMargin (IWpfTextViewHost wpfTextViewHost, IWpfTextViewMargin marginContainer)
     {
-      // From https://github.com/madskristensen/MarkdownEditor/blob/master/src/Margin/BrowserMarginProvider.cs
-      ITextDocument document;
-      bool          isok = TextDocumentFactoryService.TryGetTextDocument(wpfTextViewHost.TextView.TextDataModel.DocumentBuffer, out document ) ;
+        IWpfTextViewMargin    result = null ;
 
-      // Get the filename
-      var fn = document.FilePath ;
+        // Github issue 9
+        // https://github.com/PhilJollans/AnkhSVN2019/issues/9
+        // Make sure that this method returns null if any error occurs.
+        // This probably means that we will never find the error.
+        // Note: I intend to add a log file to AnkhSvn, in which case we could at least log the error.
+        try
+        {
+            // From https://github.com/madskristensen/MarkdownEditor/blob/master/src/Margin/BrowserMarginProvider.cs
+            ITextDocument document;
+            bool          isok = TextDocumentFactoryService.TryGetTextDocument(wpfTextViewHost.TextView.TextDataModel.DocumentBuffer, out document ) ;
 
-      // Is there an annotation view model?
-      var vm = AnnotateService.GetModel ( fn ) ;
-      if ( vm == null )
-      {
-          return null ;
-      }
-      else
-      {
-          wpfTextViewHost.TextView.Options.SetOptionValue ( DefaultTextViewOptions.ViewProhibitUserInputId, true ) ;
+            // Get the filename
+            var fn = document.FilePath ;
 
-
-          return new AnnotationMargin ( wpfTextViewHost.TextView, vm ) ;
-      }
-
+            // Is there an annotation view model?
+            var vm = AnnotateService.GetModel ( fn ) ;
+            if ( vm != null )
+            {
+                wpfTextViewHost.TextView.Options.SetOptionValue ( DefaultTextViewOptions.ViewProhibitUserInputId, true ) ;
+                result = new AnnotationMargin ( wpfTextViewHost.TextView, vm ) ;
+            }
+        }
+        catch ( Exception )
+        {
+            // Set result to null as a matter of form.
+            // To do, log the error in a log file.
+            result = null ;
+        }
+        return result ;
     }
   }
 }
