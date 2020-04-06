@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 using Ankh.Configuration;
 using Ankh.ExtensionPoints.RepositoryProvider;
@@ -11,6 +15,9 @@ namespace Ankh.UI.RepositoryExplorer.RepositoryWizard
     public partial class RepositoryProviderPage : WizardFramework.WizardPage
     {
         public static readonly string EXTENSIONS_WIKI_URL = @"http://ankhsvn.open.collab.net/ankhsvn/extensions";
+
+        [Import]
+        IAnkhRepositoryProviderService _repoProviderSvc ;
 
         public RepositoryProviderPage()
         {
@@ -94,9 +101,9 @@ namespace Ankh.UI.RepositoryExplorer.RepositoryWizard
         private void InitializeProviders(ICollection<ScmRepositoryProvider> providers)
         {
             Debug.Assert(!InvokeRequired);
-            this.providerRadioButton.Enabled 
-                = this.providerRadioButton.Visible 
-                = this.providerListView.Enabled 
+            this.providerRadioButton.Enabled
+                = this.providerRadioButton.Visible
+                = this.providerListView.Enabled
                 = this.providerListView.Visible
                 = providers != null && providers.Count > 0;
             // show link to the WIKI that lists the available third party repository providers
@@ -130,10 +137,21 @@ namespace Ankh.UI.RepositoryExplorer.RepositoryWizard
         {
             if (Wizard != null && Wizard.Context != null)
             {
-                IAnkhRepositoryProviderService repoProviderSvc = Wizard.Context.GetService<IAnkhRepositoryProviderService>();
-                if (repoProviderSvc != null)
+                // Now that we have the Wizard.Context, we can create the _repoProviderSvc via MEF.
+                // This is surely temporary.
+
+#if false
+                IAnkhPackage ankhPackage = Wizard.Context.GetService<IAnkhPackage>();
+                var container = ankhPackage.ComponentModel ;
+                _repoProviderSvc = container.GetService<IAnkhRepositoryProviderService>() ;
+#else
+                IAnkhPackage ankhPackage = Wizard.Context.GetService<IAnkhPackage>();
+                var container = ankhPackage.MefContainer ;
+                container.SatisfyImportsOnce(this);
+#endif
+                if ( _repoProviderSvc != null )
                 {
-                    return repoProviderSvc.GetRepositoryProviders(RepositoryType.Subversion);
+                    return _repoProviderSvc.GetRepositoryProviders(RepositoryType.Subversion);
                 }
             }
             return new ScmRepositoryProvider[] { };

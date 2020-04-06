@@ -16,9 +16,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
 using System.Text;
 using System.Windows.Forms;
 using Ankh.VS;
+using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.Win32;
 
 namespace Ankh.UI
@@ -32,6 +34,7 @@ namespace Ankh.UI
     /// <summary>
     /// Public api of the ankh package as used by other components
     /// </summary>
+    [CLSCompliant(false)]
     public interface IAnkhPackage : IAnkhServiceProvider, System.ComponentModel.Design.IServiceContainer, IAnkhQueryService
     {
         /// <summary>
@@ -64,10 +67,17 @@ namespace Ankh.UI
         RegistryKey ApplicationRegistryRoot { get; }
 
 		/// <summary>
-		/// Gets a registry key that can be used to store user data. 
+		/// Gets a registry key that can be used to store user data.
 		/// </summary>
 		RegistryKey UserRegistryRoot { get; }
 
         bool ForceLoadUserSettings(string streamName);
+
+        // Migration to MEF (This property is initially not used)
+        [CLSCompliant(false)]
+        IComponentModel         ComponentModel { get; }
+
+        // Migration to MEF
+        CompositionContainer    MefContainer { get; }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
 using System.Text;
 using Ankh;
 using Ankh.UI;
+using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace AnkhSvn_UnitTestProject.Mocks
@@ -73,6 +75,19 @@ namespace AnkhSvn_UnitTestProject.Mocks
             {
                 get { throw new NotImplementedException(); }
             }
+
+            // Migration to MEF
+            public IComponentModel ComponentModel
+            {
+              get => throw new NotImplementedException() ;
+            }
+
+            // Migration to MEF
+            public CompositionContainer MefContainer
+            {
+              get => throw new NotImplementedException();
+            }
+
 
             #endregion
 
