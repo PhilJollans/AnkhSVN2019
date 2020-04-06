@@ -16,6 +16,7 @@
 
 using System;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -28,6 +29,8 @@ using Ankh.VS.OutputPane;
 
 namespace Ankh
 {
+    [Export(typeof(IProgressRunner))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IProgressRunner))]
     sealed class ProgressRunnerService : AnkhService, IProgressRunner
     {
@@ -77,7 +80,7 @@ namespace Ankh
         }
 
         /// <summary>
-        /// Used to run lengthy operations in a separate thread while 
+        /// Used to run lengthy operations in a separate thread while
         /// displaying a modal progress dialog in the main thread.
         /// </summary>
         sealed class ProgressRunner : AnkhService
@@ -223,7 +226,7 @@ namespace Ankh
             {
                 get { return _dialogOwner ?? (_dialogOwner = GetService<IAnkhDialogOwner>()); }
             }
-            
+
 
             IAnkhConfigurationService _configService;
             IAnkhConfigurationService ConfigService
@@ -243,7 +246,7 @@ namespace Ankh
                         si.BeginInvoke(eh, new object[] { sender, e });
                     }
                     catch(Exception ex)
-                    { 
+                    {
                         /* Not Catching this exception kills VS */
                         GC.KeepAlive(ex);
                     }
@@ -271,7 +274,7 @@ namespace Ankh
                 }
             }
         }
-        
+
         sealed class OutputPaneReporter : AnkhService
         {
             readonly IOutputPaneManager _mgr;
@@ -308,7 +311,7 @@ namespace Ankh
     }
 
 
-    
+
     static class NativeMethods
     {
         [Flags]

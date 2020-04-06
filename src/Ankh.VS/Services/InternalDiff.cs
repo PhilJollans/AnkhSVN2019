@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -10,6 +11,8 @@ using SharpSvn;
 
 namespace Ankh.VS.Services
 {
+    [Export(typeof(IAnkhInternalDiff))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhInternalDiff), AllowPreRegistered = true, MinVersion = VSInstance.VS2012)]
     sealed class InternalDiff : AnkhService, IAnkhInternalDiff
     {

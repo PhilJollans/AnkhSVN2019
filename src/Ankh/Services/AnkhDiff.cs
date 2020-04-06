@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -32,6 +33,8 @@ using Ankh.Commands;
 
 namespace Ankh.Services
 {
+    [Export(typeof(IAnkhDiffHandler))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhDiffHandler))]
     partial class AnkhDiff : AnkhService, IAnkhDiffHandler
     {
@@ -499,7 +502,7 @@ namespace Ankh.Services
             else if (args == null)
                 throw new ArgumentNullException("args");
 
-            // Ok: We received a string with a program and arguments and windows 
+            // Ok: We received a string with a program and arguments and windows
             // wants a program and arguments separated. Let's find the program before substituting
 
             reference = reference.TrimStart();
@@ -617,7 +620,7 @@ namespace Ankh.Services
                         isTrue = !string.IsNullOrEmpty(value);
 
                     value = match.Groups[isTrue ? "ifbody" : "elsebody"].Value ?? "";
-                    
+
                     value = value.Replace("''", "'").Replace("\"\"", "\"");
 
                     return _diff.SubstituteArguments(value, _diffArgs, _toolMode);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 using System.Text;
 using Ankh.Commands;
@@ -10,6 +11,10 @@ using System.Drawing;
 
 namespace Ankh.GitScc
 {
+    [Export(typeof(GitSccProvider))]
+    [Export(typeof(IAnkhGitSccService))]
+    [Export(typeof(ITheAnkhGitSccProvider))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(GitSccProvider))]
     [GlobalService(typeof(IAnkhGitSccService))]
     [GlobalService(typeof(ITheAnkhGitSccProvider), true)]
@@ -44,7 +49,7 @@ namespace Ankh.GitScc
                     // Set us active; this makes VS initialize the provider
                     RegisterAsPrimarySccProvider();
                 };
-        
+
             }
 
         public override bool AnyItemsUnderSourceControl()

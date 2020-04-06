@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Globalization;
 using System.Windows.Forms;
 using Ankh.ExtensionPoints.RepositoryProvider;
@@ -9,6 +10,8 @@ using Microsoft.Win32;
 
 namespace Ankh.Services.RepositoryProvider
 {
+    [Export(typeof(IAnkhRepositoryProviderService))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhRepositoryProviderService))]
     sealed class AnkhRepositoryProviderService : AnkhService, IAnkhRepositoryProviderService
     {

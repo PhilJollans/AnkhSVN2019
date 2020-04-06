@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Text;
 using System.CodeDom.Compiler;
 using System.IO;
@@ -23,6 +24,8 @@ using Ankh.VS;
 
 namespace Ankh.Services
 {
+    [Export(typeof(IAnkhTempFileManager))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhTempFileManager))]
     sealed class TempFileManager : AnkhService, IAnkhTempFileManager
     {

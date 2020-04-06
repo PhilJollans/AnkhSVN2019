@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.VS.Services
 {
+    [Export(typeof(IAnkhGlobalCommandHook))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhGlobalCommandHook))]
     sealed class GlobalCommandHook : AnkhService, IAnkhGlobalCommandHook, IOleCommandTarget
     {

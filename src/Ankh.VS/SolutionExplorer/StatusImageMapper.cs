@@ -19,6 +19,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Collections;
+using System.ComponentModel.Composition;
 using Ankh.Scc;
 using SharpSvn;
 using System.IO;
@@ -28,6 +29,8 @@ using SharpGit;
 
 namespace Ankh.VS.SolutionExplorer
 {
+    [Export(typeof(IStatusImageMapper))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IStatusImageMapper))]
     sealed class StatusImageMapper : AnkhService, IStatusImageMapper
     {
@@ -92,7 +95,7 @@ namespace Ankh.VS.SolutionExplorer
                 else
                     return AnkhGlyph.None;
             }
-            
+
 			switch (item.Status.CombinedStatus)
             {
                 case SvnStatus.Normal:

@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Windows.Forms;
 using Ankh.Scc;
 using System.Drawing;
@@ -27,6 +28,8 @@ using Ankh.UI;
 
 namespace Ankh.VS.SolutionExplorer
 {
+    [Export(typeof(IFileIconMapper))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IFileIconMapper))]
     sealed class FileIconMapper : AnkhService, IFileIconMapper
     {
@@ -212,7 +215,7 @@ namespace Ankh.VS.SolutionExplorer
                     icon = Icon.FromHandle(iconHandle);
                 }
                 catch (ArgumentException)
-                {   // Win32 handle that was passed to Icon is not valid or is the wrong type. 
+                {   // Win32 handle that was passed to Icon is not valid or is the wrong type.
                     return -1;
                 }
 

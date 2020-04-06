@@ -21,5 +21,12 @@
     <Assets>
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
         <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Ankh.UI" Path="|Ankh.UI|" />
+        <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Ankh" Path="|Ankh|" />
+        <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Ankh.Diff" Path="|Ankh.Diff|" />
+        <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Ankh.GitScc" Path="|Ankh.GitScc|" />
+        <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Ankh.Scc" Path="|Ankh.Scc|" />
+        <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Ankh.Services" Path="|Ankh.Services|" />
+        <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Ankh.VS" Path="|Ankh.VS|" />
+        <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Ankh.WpfUI" Path="|Ankh.WpfUI|" />
     </Assets>
 </PackageManifest>

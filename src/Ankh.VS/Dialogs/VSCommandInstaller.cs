@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 
@@ -30,6 +31,8 @@ using OLEConstants = Microsoft.VisualStudio.OLE.Interop.Constants;
 
 namespace Ankh.VS.Dialogs
 {
+    [Export(typeof(IAnkhCommandHandlerInstallerService))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhCommandHandlerInstallerService))]
     class VSCommandInstaller : AnkhService, IAnkhCommandHandlerInstallerService
     {

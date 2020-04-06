@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using Ankh.Scc.UI;
@@ -8,6 +9,9 @@ using Ankh.VS;
 
 namespace Ankh.Diff
 {
+    [Export(typeof(IAnkhInternalDiff))]
+    [Export(typeof(AnkhInternalDiff))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhInternalDiff), AllowPreRegistered=true)]
     [GlobalService(typeof(AnkhInternalDiff))]
     sealed class AnkhInternalDiff : AnkhService, IAnkhInternalDiff

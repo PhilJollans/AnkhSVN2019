@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Text;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.OLE.Interop;
@@ -25,6 +26,8 @@ namespace Ankh.Scc
 {
 #if DEBUG
     // Currently unused in production code
+    [Export(typeof(IAnkhTextEditingTracker))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhTextEditingTracker))]
 #endif
     class TextEditingTracker : AnkhService, IAnkhTextEditingTracker, IVsTextManagerEvents2

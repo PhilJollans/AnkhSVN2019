@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -31,6 +32,8 @@ namespace Ankh.Configuration
     /// <summary>
     /// Contains functions used to load and save configuration data.
     /// </summary>
+    [Export(typeof(IAnkhConfigurationService))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhConfigurationService))]
     sealed class ConfigService : AnkhService, IAnkhConfigurationService
     {
@@ -132,7 +135,7 @@ namespace Ankh.Configuration
                 foreach (PropertyDescriptor pd in TypeDescriptor.GetProperties(config))
                 {
                     string value = reg.GetValue(pd.Name, null) as string;
-                    
+
                     if (pd.Name == "DiffExePaths")
                     {
                         RegistryKey diffRegKey = OpenHKCUKey("Configuration");
@@ -235,7 +238,7 @@ namespace Ankh.Configuration
                                 reg.CreateSubKey(pd.Name);
                                 RegistryKey extToolReg = OpenHKCUKey("Configuration");
                                 extToolReg = extToolReg.OpenSubKey(pd.Name, true);
-                                
+
                                 if (extToolReg != null)
                                 {
                                     foreach (string extToolDef in extToolReg.GetValueNames())

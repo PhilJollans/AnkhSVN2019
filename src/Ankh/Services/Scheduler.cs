@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Text;
 using System.Timers;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -23,6 +24,8 @@ using Ankh.Commands;
 
 namespace Ankh.Services
 {
+    [Export(typeof(IAnkhScheduler))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhScheduler))]
     sealed class AnkhScheduler : AnkhService, IAnkhScheduler
     {

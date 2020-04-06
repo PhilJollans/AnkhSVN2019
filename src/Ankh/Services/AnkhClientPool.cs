@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
@@ -32,6 +33,8 @@ using Ankh.Configuration;
 
 namespace Ankh.Services
 {
+    [Export(typeof(ISvnClientPool))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(ISvnClientPool))]
     sealed class AnkhClientPool : AnkhService, ISvnClientPool
     {

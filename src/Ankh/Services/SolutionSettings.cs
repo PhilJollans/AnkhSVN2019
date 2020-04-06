@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -33,6 +34,8 @@ using Ankh.VS;
 
 namespace Ankh.Settings
 {
+    [Export(typeof(IAnkhSolutionSettings))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhSolutionSettings))]
     partial class SolutionSettings : AnkhService, IAnkhSolutionSettings
     {
@@ -230,7 +233,7 @@ namespace Ankh.Settings
 
         private bool LoadSolutionProperties(SettingsCache cache, SvnItem item)
         {
-            // Subversion loads all properties in memory at once; loading them 
+            // Subversion loads all properties in memory at once; loading them
             // all is always faster than loading a few
             // We must change this algorithm if Subversions implementation changes
 
@@ -291,7 +294,7 @@ namespace Ankh.Settings
 
         private void LoadRootProperties(SettingsCache cache, SvnItem item)
         {
-            // Subversion loads all properties in memory at once; loading them 
+            // Subversion loads all properties in memory at once; loading them
             // all at once is always faster than loading a few
             using (SvnClient client = GetService<ISvnClientPool>().GetNoUIClient())
             {
@@ -763,7 +766,7 @@ namespace Ankh.Settings
                         _solutionFilter = "*" + (string)filter;
                     }
                 }
-               
+
                 return _solutionFilter;
             }
         }

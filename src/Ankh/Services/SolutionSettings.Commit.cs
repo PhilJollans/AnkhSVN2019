@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Text;
 using Ankh.VS;
 using SharpSvn;
@@ -24,6 +25,8 @@ using System.Text.RegularExpressions;
 
 namespace Ankh.Settings
 {
+    // PartCreationPolicy attribute already defined on another partial class definition.
+    [Export(typeof(IProjectCommitSettings))]
     [GlobalService(typeof(IProjectCommitSettings))]
     partial class SolutionSettings : IProjectCommitSettings
     {
@@ -166,7 +169,7 @@ namespace Ankh.Settings
 
         public ReadOnlyCollection<string> RawLogIssueRegexes
         {
-            get 
+            get
             {
                 RefreshIfDirty();
 
@@ -224,7 +227,7 @@ namespace Ankh.Settings
             sc.BrokenRegex = true;
             return new TextMarker[0];
         }
-        
+
         const string defaultRevisionRegex = @"\b(r\d+)|(rev(ision)?(s|\(s\))?\s+\d+(\s*(,|and)\s*\d+)*)\b";
         public IEnumerable<TextMarker> GetRevisions(string text)
         {

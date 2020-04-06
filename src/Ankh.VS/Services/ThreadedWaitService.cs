@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Text;
 using Ankh.UI;
 using Microsoft.VisualStudio;
@@ -58,7 +59,7 @@ namespace Ankh.VS.Services
 
             public void Dispose()
             {
-                
+
                 if (_dlg != null)
                     try
                     {

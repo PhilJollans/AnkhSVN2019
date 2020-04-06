@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Text;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
@@ -29,6 +30,8 @@ using Ankh.UI;
 
 namespace Ankh.VS.Selection
 {
+    [Export(typeof(IAnkhCommandStates))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhCommandStates))]
     sealed class CommandState : AnkhService, IAnkhCommandStates, IVsShellPropertyEvents
     {

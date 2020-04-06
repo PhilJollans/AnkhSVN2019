@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
@@ -12,6 +13,8 @@ using Ankh.UI;
 
 namespace Ankh.WpfUI.Controls
 {
+    [Export(typeof(IPendingChangeControlFactory))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IPendingChangeControlFactory))]
     class WpfUiFactory : AnkhService, IPendingChangeControlFactory
     {

@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
@@ -29,8 +30,10 @@ using Ankh.Configuration;
 namespace Ankh.Services.PendingChanges
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
+    [Export(typeof(IPendingChangeHandler))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IPendingChangeHandler))]
     partial class PendingChangeHandler : AnkhService, IPendingChangeHandler
     {
@@ -231,7 +234,7 @@ namespace Ankh.Services.PendingChanges
                         return false;
 
                     // Verify this before verifying log message
-                    // so that issue tracker integration has precedence 
+                    // so that issue tracker integration has precedence
                     if (!PreCommit_VerifyIssueTracker(state))
                         return false;
 
@@ -363,7 +366,7 @@ namespace Ankh.Services.PendingChanges
                     return false;
 
                 state.LogMessage = args.CommitMessage;
-                // BA: It is IssueRepository's responsibility to reset IssueText value to 
+                // BA: It is IssueRepository's responsibility to reset IssueText value to
                 // 1) null : if IssueRepository populated log message with the issue numbers,
                 // 2) other: if the default AnkhSVN handling is desired (i.e. BugTraq settings).
                 // if the value is set to null, it is probably good idea to set SkipIssueVerify to true

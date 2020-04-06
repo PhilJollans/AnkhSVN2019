@@ -21,6 +21,7 @@ using Ankh.VS;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Windows.Forms;
@@ -31,6 +32,8 @@ using Ankh.Collections;
 
 namespace Ankh.Services.IssueTracker
 {
+    [Export(typeof(IAnkhIssueService))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhIssueService))]
     sealed class AnkhIssueService : AnkhService, IAnkhIssueService
     {
@@ -137,7 +140,7 @@ namespace Ankh.Services.IssueTracker
                 return false;
             }
 
-            // potentially triggers 
+            // potentially triggers
             // Issue Tracker Connector Package initialization
             IssueRepository repository = CurrentIssueRepository;
             Regex issueIdRegex = repository == null ? null : repository.IssueIdRegex;
