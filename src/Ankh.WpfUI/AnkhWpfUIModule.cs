@@ -26,14 +26,15 @@ namespace Ankh.WpfUI
             : base(runtime)
         {
             Ankh.VS.WpfServices.VSColorProxy.Ensure();
+
+            // Formerly in OnPreInitialize()
+            Assembly thisAssembly = typeof(AnkhWpfUIModule).Assembly;
+            Runtime.CommandMapper.LoadFrom(thisAssembly);
+            Runtime.LoadServices(Container, thisAssembly);
         }
 
         public override void OnPreInitialize()
         {
-            Assembly thisAssembly = typeof(AnkhWpfUIModule).Assembly;
-            
-            Runtime.CommandMapper.LoadFrom(thisAssembly);
-            Runtime.LoadServices(Container, thisAssembly);
         }
 
         public override void OnInitialize()

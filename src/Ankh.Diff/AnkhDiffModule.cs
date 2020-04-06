@@ -30,6 +30,10 @@ namespace Ankh.Diff
         public AnkhDiffModule(AnkhRuntime runtime)
             : base(runtime)
         {
+            // Formerly in OnPreInitialize()
+            Assembly thisAssembly = typeof(AnkhDiffModule).Assembly;
+            Runtime.CommandMapper.LoadFrom(thisAssembly);
+            Runtime.LoadServices(Container, thisAssembly, Context);
         }
 
         /// <summary>
@@ -37,11 +41,6 @@ namespace Ankh.Diff
         /// </summary>
         public override void OnPreInitialize()
         {
-            Assembly thisAssembly = typeof(AnkhDiffModule).Assembly;
-
-            Runtime.CommandMapper.LoadFrom(thisAssembly);
-
-            Runtime.LoadServices(Container, thisAssembly, Context);
         }
 
         /// <summary>
@@ -49,7 +48,7 @@ namespace Ankh.Diff
         /// </summary>
         public override void OnInitialize()
         {
-            
+
         }
     }
 }

@@ -24,7 +24,7 @@ using Ankh.Scc;
 namespace Ankh.VS
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class AnkhVSModule : Module
     {
@@ -35,6 +35,10 @@ namespace Ankh.VS
         public AnkhVSModule(AnkhRuntime runtime)
             : base(runtime)
         {
+            // Formerly in OnPreInitialize()
+            Assembly thisAssembly = typeof(AnkhVSModule).Assembly;
+            Runtime.CommandMapper.LoadFrom(thisAssembly);
+            Runtime.LoadServices(Container, thisAssembly, Context);
         }
 
         /// <summary>
@@ -42,12 +46,6 @@ namespace Ankh.VS
         /// </summary>
         public override void OnPreInitialize()
         {
-            Assembly thisAssembly = typeof(AnkhVSModule).Assembly;
-
-            Runtime.CommandMapper.LoadFrom(thisAssembly);
-
-            Runtime.LoadServices(Container, thisAssembly, Context);
-
         }
 
         /// <summary>

@@ -46,6 +46,10 @@ namespace Ankh.Services.IssueTracker
         public AnkhIssueService(IAnkhServiceProvider context)
             : base(context)
         {
+            // Formerly in OnPreInitialize()
+            base.OnPreInitialize();
+            _repository = null;
+            ReadConnectorRegistry();
         }
 
         IProjectCommitSettings CommitSettings
@@ -372,9 +376,6 @@ namespace Ankh.Services.IssueTracker
 
         protected override void OnPreInitialize()
         {
-            base.OnPreInitialize();
-            _repository = null;
-            ReadConnectorRegistry();
         }
 
         protected override void OnInitialize()

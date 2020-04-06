@@ -31,7 +31,10 @@ namespace Ankh.GitScc
         public AnkhGitSccModule(AnkhRuntime runtime)
             : base(runtime)
         {
-
+            // Formerly in OnPreInitialize()
+            Assembly thisAssembly = typeof(AnkhGitSccModule).Assembly;
+            Runtime.CommandMapper.LoadFrom(thisAssembly);
+            Runtime.LoadServices(Container, thisAssembly, Context);
         }
 
         /// <summary>
@@ -39,11 +42,6 @@ namespace Ankh.GitScc
         /// </summary>
         public override void OnPreInitialize()
         {
-            Assembly thisAssembly = typeof(AnkhGitSccModule).Assembly;
-
-            Runtime.CommandMapper.LoadFrom(thisAssembly);
-
-            Runtime.LoadServices(Container, thisAssembly, Context);
         }
 
         /// <summary>

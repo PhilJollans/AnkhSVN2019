@@ -27,15 +27,14 @@ namespace Ankh
         public AnkhModule(AnkhRuntime runtime)
             : base(runtime)
         {
+            // Formerly in OnPreInitialize()
+            Assembly thisAssembly = typeof(AnkhModule).Assembly;
+            Runtime.CommandMapper.LoadFrom(thisAssembly);
+            Runtime.LoadServices(Container, thisAssembly, Context);
         }
 
         public override void OnPreInitialize()
         {
-            Assembly thisAssembly = typeof(AnkhModule).Assembly;
-
-            Runtime.CommandMapper.LoadFrom(thisAssembly);
-
-            Runtime.LoadServices(Container, thisAssembly, Context);
         }
 
         public override void OnInitialize()
