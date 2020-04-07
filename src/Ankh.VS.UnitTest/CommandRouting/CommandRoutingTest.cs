@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
 using System.Text;
 using Ankh.VSPackage;
 using AnkhSvn_UnitTestProject.Helpers;
@@ -51,7 +52,11 @@ namespace AnkhSvn_UnitTestProject.CommandRouting
                 runtime.AddModule(new AnkhModule(runtime));
                 runtime.Start();
 
-                return runtime.CommandMapper.Execute(commandEnum, new CommandEventArgs(commandEnum, runtime.Context));
+                // Not good enough.
+                // Possibly the MefContainer should be created in AnkhRuntime
+                CompositionContainer mc = null ;
+
+                return runtime.CommandMapper.Execute(commandEnum, new CommandEventArgs(commandEnum, runtime.Context, mc));
             }
 
             public static bool TestExecution(AnkhCommand commandEnum, object argument)
@@ -60,7 +65,11 @@ namespace AnkhSvn_UnitTestProject.CommandRouting
                 runtime.AddModule(new AnkhModule(runtime));
                 runtime.Start();
 
-                return runtime.CommandMapper.Execute(commandEnum, new CommandEventArgs(commandEnum, runtime.Context, argument, false, false));
+                // Not good enough.
+                // Possibly the MefContainer should be created in AnkhRuntime
+                CompositionContainer mc = null ;
+
+                return runtime.CommandMapper.Execute(commandEnum, new CommandEventArgs(commandEnum, runtime.Context, mc, argument, false, false));
             }
         }
 
