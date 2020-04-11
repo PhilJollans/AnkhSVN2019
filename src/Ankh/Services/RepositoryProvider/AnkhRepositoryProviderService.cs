@@ -10,33 +10,17 @@ using Microsoft.Win32;
 
 namespace Ankh.Services.RepositoryProvider
 {
-    //
-    // This class formerly derived from AnkhService and had the GlobalService attribute.
-    // I have removed the base class and converted it into an MEF component.
-    //
-    // Although I have CreationPolicy.Shared, the object is not created permanently.
-    // In this case that is OK.
-    //
-    // This is in fact the first service which I have converted to an MEF component, so
-    // it is still quite experimental. This specific classs doesn't really need to be a
-    // service at all.
-    //
     [Export(typeof(IAnkhRepositoryProviderService))]
     [PartCreationPolicy(CreationPolicy.Shared)]
-    sealed class AnkhRepositoryProviderService : IAnkhRepositoryProviderService
+    [GlobalService(typeof(IAnkhRepositoryProviderService))]
+    sealed class AnkhRepositoryProviderService : AnkhService, IAnkhRepositoryProviderService
     {
-        readonly IAnkhServiceProvider                      _context ;
         readonly Dictionary<string, ScmRepositoryProvider> _nameProviderMap;
 
-        [ImportingConstructor]
-        public AnkhRepositoryProviderService([Import("AnkhContextParameter")]IAnkhServiceProvider context)
-            /* : base(context) */
+        public AnkhRepositoryProviderService(IAnkhServiceProvider context)
+            : base(context)
         {
-            _context         = context ;
             _nameProviderMap = new Dictionary<string, ScmRepositoryProvider>();
-
-            // Moved from OnInitialize for MEF construction
-            ReadProviderRegistry();
         }
 
         #region IAnkhRepositoryProviderService Members
@@ -96,12 +80,18 @@ namespace Ankh.Services.RepositoryProvider
 
         #endregion
 
+        protected override void OnInitialize()
+        {
+            base.OnInitialize();
+            ReadProviderRegistry();
+        }
+
         /// <summary>
         /// Reads the SCM repository provider information from the registry
         /// </summary>
         private void ReadProviderRegistry()
         {
-            IAnkhPackage ankhPackage = _context.GetService<IAnkhPackage>();
+            IAnkhPackage ankhPackage = GetService<IAnkhPackage>();
             if (ankhPackage != null)
             {
                 using (RegistryKey key = ankhPackage.ApplicationRegistryRoot)
@@ -118,7 +108,7 @@ namespace Ankh.Services.RepositoryProvider
                             {
                                 string serviceName = (string)provider.GetValue("");
                                 RepositoryType rt = GetRepositoryType(provider.GetValue("ScmType") as string);
-                                ScmRepositoryProvider descriptor = new ScmRepositoryProviderProxy(_context, providerKey, serviceName, rt);
+                                ScmRepositoryProvider descriptor = new ScmRepositoryProviderProxy(this, providerKey, serviceName, rt);
                                 if (!_nameProviderMap.ContainsKey(providerKey))
                                 {
                                     _nameProviderMap.Add(providerKey, descriptor);

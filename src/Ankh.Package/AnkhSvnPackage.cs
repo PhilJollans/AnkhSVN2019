@@ -19,7 +19,6 @@ using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,10 +34,6 @@ using Ankh.UI;
 using Ankh.VSPackage.Attributes;
 using Ankh.Diff;
 using Ankh.GitScc;
-using Microsoft.VisualStudio.ComponentModelHost;
-using System.ComponentModel.Composition.Hosting;
-using System.Reflection;
-using System.ComponentModel.Composition;
 
 namespace Ankh.VSPackage
 {
@@ -86,8 +81,7 @@ namespace Ankh.VSPackage
     [ProvideOutputWindow(AnkhId.AnkhOutputPaneId, "#111", InitiallyInvisible = false, Name = AnkhId.PlkProduct, ClearWithSolution = false)]
     sealed partial class AnkhSvnPackage : AsyncPackage, IAnkhPackage, IAnkhQueryService
     {
-        private AnkhRuntime             _runtime ;
-        private CompositionContainer    _MefContainer = null ;
+        private AnkhRuntime _runtime;
 
         /// <summary>
         /// Default constructor of the package.
@@ -153,12 +147,6 @@ namespace Ankh.VSPackage
             container.AddService(typeof(IAnkhPackage), this, true);
             container.AddService(typeof(IAnkhQueryService), this, true);
 
-            // I would prefer to use the visual studio built in MEF container, but I haven't managed it yet.
-            string assemblyFolder = Path.GetDirectoryName ( Assembly.GetExecutingAssembly().Location ) ;
-            var catalog   = new DirectoryCatalog ( assemblyFolder, "*.dll" ) ;
-            _MefContainer = new CompositionContainer(catalog);
-            _MefContainer.ComposeExportedValue ( "AnkhContextParameter", this as IAnkhServiceProvider ) ;
-
             _runtime.AddModule(new AnkhModule(_runtime));
             _runtime.AddModule(new AnkhSccModule(_runtime));
             _runtime.AddModule(new AnkhGitSccModule(_runtime));
@@ -205,18 +193,6 @@ namespace Ankh.VSPackage
         public AnkhContext Context
         {
             get { return _runtime.Context; }
-        }
-
-        // Migration to MEF
-        public IComponentModel ComponentModel
-        {
-          get => (IComponentModel)this.GetService(typeof(SComponentModel) ) ;
-        }
-
-        // Migration to MEF
-        public CompositionContainer MefContainer
-        {
-          get => _MefContainer ;
         }
 
         bool? _inCommandLineMode;
