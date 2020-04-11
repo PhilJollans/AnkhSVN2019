@@ -15,15 +15,12 @@
 //  limitations under the License.
 
 using System;
-using System.ComponentModel.Composition;
 using System.Diagnostics;
 using Ankh.Configuration;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.VS.WebBrowser
 {
-    [Export(typeof(IAnkhWebBrowser))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhWebBrowser))]
     sealed class AnkhWebBrowser : AnkhService, IAnkhWebBrowser
     {
@@ -100,7 +97,7 @@ namespace Ankh.VS.WebBrowser
                 _browser = browser;
                 _frame = frame;
             }
-
+            
             public override IVsWebBrowser WebBrowser
             {
                 get { return _browser; }

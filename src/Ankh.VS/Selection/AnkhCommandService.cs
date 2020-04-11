@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -32,8 +31,6 @@ using Ankh.VS;
 
 namespace Ankh.Services
 {
-    [Export(typeof(IAnkhCommandService))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhCommandService))]
     sealed class AnkhCommandService : AnkhService, IAnkhCommandService, IAnkhIdleProcessor
     {
@@ -467,7 +464,7 @@ namespace Ankh.Services
                 }
 
             if (e.NonPeriodic)
-            {
+            {                
                 AnkhAction action;
 
                 while (null != (action = GetIdleAction()))
@@ -501,7 +498,7 @@ namespace Ankh.Services
 
                 return null;
             }
-        }
+        }                
 
         public void PostIdleCommand(AnkhCommand command)
         {

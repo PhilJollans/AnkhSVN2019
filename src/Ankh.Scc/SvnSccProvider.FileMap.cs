@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using Ankh.Scc.ProjectMap;
 using Ankh.Selection;
 using Ankh.VS;
@@ -8,10 +7,8 @@ using Ankh.VS;
 namespace Ankh.Scc
 {
     /// <summary>
-    ///
+    /// 
     /// </summary>
-    // PartCreationPolicy attribute already defined on another partial class definition.
-    [Export(typeof(ISvnSolutionLayout))]
     [GlobalService(typeof(ISvnSolutionLayout))]
     partial class SvnSccProvider : ISvnSolutionLayout
     {
@@ -103,7 +100,7 @@ namespace Ankh.Scc
         protected override void OnProjectFileRenamed(SccProjectData data, string oldName, string newName)
         {
             base.OnProjectFileRenamed(data, oldName, newName);
-
+            
         }
 
         protected override void OnSolutionRenamedFile(string oldName, string newName)

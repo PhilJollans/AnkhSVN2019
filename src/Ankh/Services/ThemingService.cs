@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
@@ -17,8 +16,6 @@ using Ankh.ExtensionPoints.UI;
 
 namespace Ankh.Services
 {
-    [Export(typeof(IWinFormsThemingService))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IWinFormsThemingService))]
     sealed partial class ThemingService : AnkhService, IWinFormsThemingService
     {

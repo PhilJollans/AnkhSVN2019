@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Text;
 using Ankh.UI;
 using System.Globalization;
@@ -26,8 +25,6 @@ using System.Windows.Forms;
 
 namespace Ankh.Services
 {
-    [Export(typeof(IAnkhHelpService))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhHelpService))]
     class AnkhHelpService : AnkhService, IAnkhHelpService
     {

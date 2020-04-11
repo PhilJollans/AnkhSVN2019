@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Text;
 using Ankh.Scc;
 using SharpSvn;
@@ -25,8 +24,6 @@ using Ankh.Configuration;
 
 namespace Ankh.UI.MergeWizard
 {
-    [Export(typeof(IConflictHandler))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IConflictHandler))]
     class InteractiveConflictService : AnkhService, IConflictHandler
     {

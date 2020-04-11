@@ -15,7 +15,6 @@
 //  limitations under the License.
 
 using System;
-using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -36,9 +35,6 @@ namespace Ankh.Services
     /// <summary>
     /// Encapsulates error handling functionality.
     /// </summary>
-    // I haven't figured out the significance of AllowPreRegistered yet.
-    [Export(typeof(IAnkhErrorHandler))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhErrorHandler), AllowPreRegistered = true)]
     class AnkhErrorHandler : AnkhService, IAnkhErrorHandler
     {

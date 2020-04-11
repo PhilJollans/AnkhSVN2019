@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
@@ -32,8 +31,6 @@ using Ankh.Scc.Engine;
 
 namespace Ankh.Scc
 {
-    [Export(typeof(IFileStatusMonitor))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IFileStatusMonitor))]
     sealed class ProjectNotifier : AnkhService, IFileStatusMonitor, IVsBroadcastMessageEvents
     {

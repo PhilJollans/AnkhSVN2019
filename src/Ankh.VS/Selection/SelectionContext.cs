@@ -17,7 +17,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
@@ -37,9 +36,6 @@ namespace Ankh.VS.Selection
     /// <summary>
     ///
     /// </summary>
-    [Export(typeof(ISelectionContext))]
-    [Export(typeof(ISccProjectWalker))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(ISelectionContext))]
     [GlobalService(typeof(ISccProjectWalker))]
     partial class SelectionContext : AnkhService, IVsSelectionEvents, ISelectionContext, ISelectionContextEx, ISccProjectWalker

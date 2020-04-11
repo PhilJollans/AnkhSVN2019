@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Text;
 using Ankh.Commands;
 using Ankh.Selection;
@@ -24,10 +23,8 @@ using Ankh.Selection;
 namespace Ankh.Scc
 {
     /// <summary>
-    ///
+    /// 
     /// </summary>
-    [Export(typeof(IPendingChangesManager))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IPendingChangesManager))]
     partial class PendingChangeManager : AnkhService, IPendingChangesManager
     {

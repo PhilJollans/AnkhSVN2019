@@ -15,7 +15,6 @@
 //  limitations under the License.
 
 using System;
-using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 using System.Runtime.InteropServices;
@@ -27,17 +26,17 @@ namespace Ankh.VS.SolutionExplorer
 {
     interface IAnkhSolutionExplorerWindow { }
     /// <summary>
-    ///
+    /// 
     /// </summary>
     [GlobalService(typeof(IAnkhSolutionExplorerWindow), MaxVersion=VSInstance.VS2010)]
     sealed class SolutionExplorerWindow : AnkhService, IVsWindowFrameNotify, IVsWindowFrameNotify2, IAnkhSolutionExplorerWindow
     {
         readonly SolutionTreeViewManager _manager;
-
+        
         IVsWindowFrame _solutionExplorer;
         IVsWindowFrame2 _solutionExplorer2;
         IVsUIHierarchyWindow _tree;
-
+        
         uint _cookie;
         bool _hookImageList;
 
@@ -158,7 +157,7 @@ namespace Ankh.VS.SolutionExplorer
                 return _solutionExplorer;
             }
         }
-
+    
 
         public IVsUIHierarchyWindow HierarchyWindow
         {

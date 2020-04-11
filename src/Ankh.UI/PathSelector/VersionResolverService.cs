@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Text;
 using Ankh.Scc.UI;
 using System.Collections;
@@ -25,8 +24,6 @@ using Ankh.Scc;
 
 namespace Ankh.UI.PathSelector
 {
-    [Export(typeof(IAnkhRevisionResolver))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhRevisionResolver))]
     sealed class VersionResolverService : AnkhService, IAnkhRevisionResolver
     {

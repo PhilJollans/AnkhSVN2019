@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Text;
 using Ankh.IssueTracker;
 using Ankh.ExtensionPoints.IssueTracker;
@@ -24,8 +23,6 @@ using Ankh.Services.IssueTracker;
 
 namespace Ankh.Settings
 {
-    // PartCreationPolicy attribute already defined on another partial class definition.
-    [Export(typeof(IIssueTrackerSettings))]
     [GlobalService(typeof(IIssueTrackerSettings))]
     partial class SolutionSettings : IIssueTrackerSettings
     {

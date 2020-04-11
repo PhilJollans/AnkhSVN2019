@@ -17,7 +17,6 @@
 using System;
 using System.Windows;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Text;
 using Ankh.UI;
 using Microsoft.VisualStudio;
@@ -25,8 +24,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.VS.Dialogs
 {
-    [Export(typeof(IAnkhDocumentHostService))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhDocumentHostService))]
     class VSDocumentHostService : AnkhService, IAnkhDocumentHostService
     {

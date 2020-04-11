@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -31,10 +30,6 @@ using System.Drawing;
 
 namespace Ankh.Scc
 {
-    [Export(typeof(SvnSccProvider))]
-    [Export(typeof(IAnkhSccService))]
-    [Export(typeof(ITheAnkhSvnSccProvider))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(SvnSccProvider))]
     [GlobalService(typeof(IAnkhSccService))]
     [GlobalService(typeof(ITheAnkhSvnSccProvider), true)]
@@ -107,7 +102,7 @@ namespace Ankh.Scc
             // Return false when the solution can change to an other scc provider
             if (IsSolutionManaged)
                 return true;
-
+            
             foreach (SccProjectData data in ProjectMap.AllSccProjects)
             {
                 if (data.IsManaged)
@@ -155,7 +150,7 @@ namespace Ankh.Scc
         }
 
         /// <summary>
-        /// This method is called by projects that are under source control
+        /// This method is called by projects that are under source control 
         /// when they are first opened to register project settings.
         /// </summary>
 
@@ -181,6 +176,6 @@ namespace Ankh.Scc
             //throw new NotImplementedException();
         }
 
-
+        
     }
 }

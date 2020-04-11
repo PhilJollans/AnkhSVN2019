@@ -16,15 +16,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO;
 using SharpSvn;
 using Ankh.VS;
 
 namespace Ankh.Services
 {
-    [Export(typeof(IAnkhTempDirManager))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhTempDirManager))]
     sealed class TempDirManager : AnkhService, IAnkhTempDirManager
     {

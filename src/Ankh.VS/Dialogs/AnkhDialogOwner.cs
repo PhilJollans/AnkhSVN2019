@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
@@ -29,8 +28,6 @@ using Ankh.UI;
 
 namespace Ankh.VS.Dialogs
 {
-    [Export(typeof(IAnkhDialogOwner))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhDialogOwner))]
     sealed class AnkhDialogOwner : AnkhService, IAnkhDialogOwner
     {

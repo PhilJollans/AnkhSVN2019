@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Text;
 using Ankh;
 using Ankh.VS;
@@ -11,9 +10,7 @@ using Ankh.UI;
 
 namespace Ankh.Services
 {
-	[Export(typeof(IAnkhMigrationService))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
-    [GlobalService(typeof(IAnkhMigrationService))]
+	[GlobalService(typeof(IAnkhMigrationService))]
 	class MigrationService : AnkhService, IAnkhMigrationService
 	{
 		public MigrationService(IAnkhServiceProvider context)

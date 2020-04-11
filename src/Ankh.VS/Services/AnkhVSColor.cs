@@ -15,14 +15,11 @@
 //  limitations under the License.
 
 using System;
-using System.ComponentModel.Composition;
 using System.Drawing;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.VS.Services
 {
-    [Export(typeof(IAnkhVSColor))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhVSColor))]
     sealed class AnkhVSColor : AnkhService, IAnkhVSColor
     {

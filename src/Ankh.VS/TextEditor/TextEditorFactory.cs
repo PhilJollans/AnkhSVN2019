@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Text;
 using Ankh.UI;
 
 namespace Ankh.VS.TextEditor
 {
-    [Export(typeof(IVSTextEditorFactory))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IVSTextEditorFactory))]
     class TextEditorFactory : AnkhService, IVSTextEditorFactory
     {

@@ -17,7 +17,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
 using Ankh.Commands;
@@ -33,9 +32,6 @@ namespace Ankh.GitScc.StatusCache
     /// <summary>
     /// Maintains path->GitItem mappings.
     /// </summary>
-    [Export(typeof(IGitStatusCache))]
-    [Export(typeof(IGitItemChange))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IGitStatusCache), AllowPreRegistered = true)]
     [GlobalService(typeof(IGitItemChange), AllowPreRegistered = true)]
     sealed partial class GitStatusCache : AnkhService, Ankh.Scc.IGitStatusCache, IGitItemChange
@@ -152,7 +148,7 @@ namespace Ankh.GitScc.StatusCache
                 oi = GitItem;
 
                 if (GitItem.FullPath == root)
-                    oi.SetState(GitItemState.IsWCRoot, GitItemState.None);
+                    oi.SetState(GitItemState.IsWCRoot, GitItemState.None); 
                 else
                     oi.SetState(GitItemState.None, GitItemState.IsWCRoot);
             }
@@ -252,8 +248,8 @@ namespace Ankh.GitScc.StatusCache
         /// <param name="depth"></param>
         /// <remarks>
         /// If the path is a file and depth is greater that <see cref="GitDepth.Empty"/> the parent folder is walked instead.
-        ///
-        /// <para>This method guarantees that after calling it at least one up-to-date item exists
+        /// 
+        /// <para>This method guarantees that after calling it at least one up-to-date item exists 
         /// in the statusmap for <paramref name="path"/>. If we can not find information we create
         /// an unspecified item
         /// </para>
@@ -323,7 +319,7 @@ namespace Ankh.GitScc.StatusCache
                 bool noWcAtAll = false;
                 string[] root;
 
-                // Don't retry file open/read operations on failure. These would only delay the result
+                // Don't retry file open/read operations on failure. These would only delay the result 
                 // (default number of delays = 100)
                 //using (new SharpGit.Implementation.GitFsOperationRetryOverride(0))
                 try
@@ -461,7 +457,7 @@ namespace Ankh.GitScc.StatusCache
                 if (!_map.TryGetValue(walkPath, out item))
                 {
                     StoreItem(CreateItem(walkPath, NoSccStatus.NotVersioned, SvnNodeKind.Directory));
-                    // Mark it as existing if we are sure
+                    // Mark it as existing if we are sure 
                 }
                 else
                 {

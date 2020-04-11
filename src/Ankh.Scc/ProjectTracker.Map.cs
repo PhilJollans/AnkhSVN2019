@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using Ankh.Selection;
 
 namespace Ankh.Scc
 {
-    // PartCreationPolicy attribute already defined on another partial class definition.
-    [Export(typeof(IProjectFileMapper))]
     [GlobalService(typeof(IProjectFileMapper))]
     partial class ProjectTracker : IProjectFileMapper
     {

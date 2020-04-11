@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
@@ -32,8 +31,6 @@ using Ankh.Scc.ProjectMap;
 namespace Ankh.Scc
 {
     //[CLSCompliant(false)]
-    [Export(typeof(ProjectTracker))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(ProjectTracker))]
     partial class ProjectTracker : AnkhService, IVsTrackProjectDocumentsEvents2, IVsTrackProjectDocumentsEvents3
     {

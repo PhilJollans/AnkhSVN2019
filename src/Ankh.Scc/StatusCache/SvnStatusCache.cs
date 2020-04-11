@@ -17,7 +17,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
 using Ankh.Commands;
@@ -30,9 +29,6 @@ namespace Ankh.Scc.StatusCache
     /// <summary>
     /// Maintains path->SvnItem mappings.
     /// </summary>
-    [Export(typeof(ISvnStatusCache))]
-    [Export(typeof(ISvnItemChange))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(ISvnStatusCache), AllowPreRegistered = true)]
     [GlobalService(typeof(ISvnItemChange), AllowPreRegistered = true)]
     sealed partial class SvnStatusCache : AnkhService, Ankh.Scc.ISvnStatusCache, ISvnItemChange
@@ -149,7 +145,7 @@ namespace Ankh.Scc.StatusCache
                 oi = svnItem;
 
                 if (svnItem.FullPath == root)
-                    oi.SetState(SvnItemState.IsWCRoot, SvnItemState.None);
+                    oi.SetState(SvnItemState.IsWCRoot, SvnItemState.None); 
                 else
                     oi.SetState(SvnItemState.None, SvnItemState.IsWCRoot);
             }
@@ -249,8 +245,8 @@ namespace Ankh.Scc.StatusCache
         /// <param name="depth"></param>
         /// <remarks>
         /// If the path is a file and depth is greater that <see cref="SvnDepth.Empty"/> the parent folder is walked instead.
-        ///
-        /// <para>This method guarantees that after calling it at least one up-to-date item exists
+        /// 
+        /// <para>This method guarantees that after calling it at least one up-to-date item exists 
         /// in the statusmap for <paramref name="path"/>. If we can not find information we create
         /// an unspecified item
         /// </para>
@@ -317,7 +313,7 @@ namespace Ankh.Scc.StatusCache
                 bool statSelf = false;
                 bool noWcAtAll = false;
 
-                // Don't retry file open/read operations on failure. These would only delay the result
+                // Don't retry file open/read operations on failure. These would only delay the result 
                 // (default number of delays = 100)
                 using (new SharpSvn.Implementation.SvnFsOperationRetryOverride(0))
                 {
@@ -478,7 +474,7 @@ namespace Ankh.Scc.StatusCache
                 if (!_map.TryGetValue(walkPath, out item))
                 {
                     StoreItem(CreateItem(walkPath, NoSccStatus.NotVersioned, SvnNodeKind.Directory));
-                    // Mark it as existing if we are sure
+                    // Mark it as existing if we are sure 
                 }
                 else
                 {

@@ -16,14 +16,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Text;
 using Ankh.VS.LanguageServices.Core;
 
 namespace Ankh.VS.LanguageServices
 {
-    [Export(typeof(IAnkhEditorResolver))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     [GlobalService(typeof(IAnkhEditorResolver))]
     class AnkhEditorResolver : AnkhService, IAnkhEditorResolver
     {
