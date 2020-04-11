@@ -146,19 +146,15 @@ namespace Ankh.VS.Dialogs
             if (!_data.TryGetValue(cd, out items))
                 return VSErr.OLECMDERR_E_NOTSUPPORTED;
 
-            var cx = GetService<AnkhContext>() ;
-            var pk = GetService<IAnkhPackage>() ;
-            var mc = pk.MefContainer ;
-
             foreach (CommandData d in items)
             {
                 if (!d.Control.ContainsFocus)
                     continue;
 
-                CommandEventArgs ce = new CommandEventArgs ( (AnkhCommand)cd.ID, cx, mc ) ;
+                CommandEventArgs ce = new CommandEventArgs((AnkhCommand)cd.ID, GetService<AnkhContext>());
                 if (d.UpdateHandler != null)
                 {
-                    CommandUpdateEventArgs ud = new CommandUpdateEventArgs(ce.Command, ce.Context, ce.MefContainer ) ;
+                    CommandUpdateEventArgs ud = new CommandUpdateEventArgs(ce.Command, ce.Context);
 
                     d.UpdateHandler(d.Control, ud);
 
@@ -188,16 +184,12 @@ namespace Ankh.VS.Dialogs
             if (!_data.TryGetValue(cd, out items))
                 return VSErr.OLECMDERR_E_NOTSUPPORTED;
 
-            var cx = GetService<AnkhContext>() ;
-            var pk = GetService<IAnkhPackage>() ;
-            var mc = pk.MefContainer ;
-
             foreach (CommandData d in items)
             {
                 if (!d.Control.ContainsFocus)
                     continue;
 
-                CommandUpdateEventArgs ee = new CommandUpdateEventArgs ( (AnkhCommand)cd.ID, cx, mc ) ;
+                CommandUpdateEventArgs ee = new CommandUpdateEventArgs((AnkhCommand)cd.ID, GetService<AnkhContext>());
 
                 if (d.UpdateHandler != null)
                     d.UpdateHandler(d.Control, ee);

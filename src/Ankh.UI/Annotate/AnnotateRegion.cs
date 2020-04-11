@@ -203,8 +203,7 @@ namespace Ankh.UI.Annotate
                 // It took some time to work this out, but it seems we can open a back door into the command handling.
                 var cm = _source.Context.GetService<CommandMapper>() ;
                 var cx = _source.Context.GetService<AnkhContext>() ;
-                var pk = _source.Context.GetService<IAnkhPackage>();
-                CommandEventArgs args = new CommandEventArgs ( AnkhCommand.CopyToWorkingCopy, cx, pk.MefContainer ) ;
+                CommandEventArgs args = new CommandEventArgs ( AnkhCommand.CopyToWorkingCopy, cx ) ;
                 cm.Execute ( AnkhCommand.CopyToWorkingCopy, args ) ;
             }
             catch (Exception ex)

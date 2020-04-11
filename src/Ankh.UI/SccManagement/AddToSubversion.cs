@@ -133,11 +133,8 @@ namespace Ankh.UI.SccManagement
 
         private void selectRepositoryButton_Click(object sender, EventArgs e)
         {
-            var pk = GetService<IAnkhPackage>() ;
-            var mc = pk.MefContainer ;
-
             Uri dirUri;
-            using (RepositorySelectionWizard dialog = new RepositorySelectionWizard(Context, mc))
+            using (RepositorySelectionWizard dialog = new RepositorySelectionWizard(Context))
             {
                 DialogResult result = dialog.ShowDialog(Context);
                 if (result != DialogResult.OK)

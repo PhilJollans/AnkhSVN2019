@@ -15,7 +15,6 @@
 //  limitations under the License.
 
 using System;
-using System.ComponentModel.Composition.Hosting;
 
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
@@ -64,7 +63,7 @@ namespace AnkhSvn_UnitTestProject.CommandRouting
             sp.AddService(typeof(ISelectionContext), selection.Object);
 
 
-
+            
 
 
             var pcMgr = new Mock<IPendingChangesManager>();
@@ -126,21 +125,16 @@ namespace AnkhSvn_UnitTestProject.CommandRouting
         {
             AnkhContext context = AnkhContext.Create(sp);
 
-            // Not good enough.
-            // Possibly the MefContainer should be created in AnkhRuntime
-            CompositionContainer mc = null ;
-
-
             foreach (AnkhCommand command in Enum.GetValues(typeof(AnkhCommand)))
             {
-                var e = new CommandUpdateEventArgs ( command, context, mc ) ;
+                var e = new CommandUpdateEventArgs(command, context);
 
                 cm.PerformUpdate(command, e);
             }
 
             foreach (AnkhCommandMenu m in Enum.GetValues(typeof(AnkhCommandMenu)))
             {
-                var e = new CommandUpdateEventArgs ( (AnkhCommand)m, context, mc ) ;
+                var e = new CommandUpdateEventArgs((AnkhCommand)m, context);
 
                 cm.PerformUpdate((AnkhCommand)m, e);
             }

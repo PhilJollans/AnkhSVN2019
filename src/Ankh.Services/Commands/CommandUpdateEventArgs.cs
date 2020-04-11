@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition.Hosting;
 using System.Text;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -41,14 +40,14 @@ namespace Ankh.Commands
         bool _hideOnContextMenu;
         string _text;
 
-        public CommandUpdateEventArgs(AnkhCommand command, AnkhContext context, CompositionContainer mefContainer, TextQueryType textQuery)
-            : this ( command, context, mefContainer )
+        public CommandUpdateEventArgs(AnkhCommand command, AnkhContext context, TextQueryType textQuery)
+            : this(command, context)
         {
             _queryType = textQuery;
         }
 
-        public CommandUpdateEventArgs ( AnkhCommand command, AnkhContext context, CompositionContainer mefContainer )
-            : base ( command, context, mefContainer)
+        public CommandUpdateEventArgs(AnkhCommand command, AnkhContext context)
+            : base(command, context)
         {
         }
 
