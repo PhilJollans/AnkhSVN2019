@@ -30,14 +30,15 @@ namespace Ankh.UI
         public AnkhUIModule(AnkhRuntime runtime)
             : base(runtime)
         {
-            // Formerly in OnPreInitialize()
-            Assembly thisAssembly = typeof(AnkhUIModule).Assembly;
-            Runtime.CommandMapper.LoadFrom(thisAssembly);
-            Runtime.LoadServices(Container, thisAssembly);
+
         }
 
         public override void OnPreInitialize()
         {
+            Assembly thisAssembly = typeof(AnkhUIModule).Assembly;
+
+            Runtime.CommandMapper.LoadFrom(thisAssembly);
+            Runtime.LoadServices(Container, thisAssembly);
         }
 
         public override void OnInitialize()

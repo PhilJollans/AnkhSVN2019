@@ -31,10 +31,7 @@ namespace Ankh.Scc
         public AnkhSccModule(AnkhRuntime runtime)
             : base(runtime)
         {
-            // Formerly in OnPreInitialize()
-            Assembly thisAssembly = typeof(AnkhSccModule).Assembly;
-            Runtime.CommandMapper.LoadFrom(thisAssembly);
-            Runtime.LoadServices(Container, thisAssembly, Context);
+
         }
 
         /// <summary>
@@ -42,6 +39,11 @@ namespace Ankh.Scc
         /// </summary>
         public override void OnPreInitialize()
         {
+            Assembly thisAssembly = typeof(AnkhSccModule).Assembly;
+
+            Runtime.CommandMapper.LoadFrom(thisAssembly);
+
+            Runtime.LoadServices(Container, thisAssembly, Context);
         }
 
         /// <summary>
