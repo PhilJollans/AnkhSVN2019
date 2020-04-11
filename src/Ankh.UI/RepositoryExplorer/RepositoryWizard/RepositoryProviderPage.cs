@@ -19,7 +19,7 @@ namespace Ankh.UI.RepositoryExplorer.RepositoryWizard
         [Import]
         IAnkhRepositoryProviderService _repoProviderSvc ;
 
-        public RepositoryProviderPage()
+        public RepositoryProviderPage ( CompositionContainer MefContainer )
         {
             Text = RepositoryWizardResources.RepoProviderPageHeaderTitle;
             Description = RepositoryWizardResources.RepoProviderPageHeaderMessage;
@@ -31,6 +31,9 @@ namespace Ankh.UI.RepositoryExplorer.RepositoryWizard
                 {
                     providerName
                 });
+
+            // Generate MEF components
+            MefContainer.SatisfyImportsOnce(this);
         }
 
         /// <summary>
@@ -137,18 +140,7 @@ namespace Ankh.UI.RepositoryExplorer.RepositoryWizard
         {
             if (Wizard != null && Wizard.Context != null)
             {
-                // Now that we have the Wizard.Context, we can create the _repoProviderSvc via MEF.
-                // This is surely temporary.
-
-#if false
-                IAnkhPackage ankhPackage = Wizard.Context.GetService<IAnkhPackage>();
-                var container = ankhPackage.ComponentModel ;
-                _repoProviderSvc = container.GetService<IAnkhRepositoryProviderService>() ;
-#else
-                IAnkhPackage ankhPackage = Wizard.Context.GetService<IAnkhPackage>();
-                var container = ankhPackage.MefContainer ;
-                container.SatisfyImportsOnce(this);
-#endif
+                // _repoProviderSvc is now created as an MEF component
                 if ( _repoProviderSvc != null )
                 {
                     return _repoProviderSvc.GetRepositoryProviders(RepositoryType.Subversion);

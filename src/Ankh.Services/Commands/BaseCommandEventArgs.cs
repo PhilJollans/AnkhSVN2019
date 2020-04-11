@@ -15,6 +15,7 @@
 //  limitations under the License.
 
 using System;
+using System.ComponentModel.Composition.Hosting;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -25,27 +26,22 @@ namespace Ankh.Commands
 {
     public class BaseCommandEventArgs : EventArgs
     {
-        readonly AnkhCommand _command;
-        readonly AnkhContext _context;
+        readonly AnkhCommand            _command;
+        readonly AnkhContext            _context;
+        readonly CompositionContainer   _mefContainer ;
+
         CommandMapItem _mapItem;
 
-        public BaseCommandEventArgs(AnkhCommand command, AnkhContext context)
+        public BaseCommandEventArgs ( AnkhCommand command, AnkhContext context, CompositionContainer mefContainer )
         {
-            _command = command;
-            _context = context;
+            _command      = command;
+            _context      = context;
+            _mefContainer = mefContainer ;
         }
 
-        public AnkhCommand Command
-        {
-            [DebuggerStepThrough]
-            get { return _command; }
-        }
-
-        public AnkhContext Context
-        {
-            [DebuggerStepThrough]
-            get { return _context; }
-        }
+        public AnkhCommand          Command      { get => _command ; }
+        public AnkhContext          Context      { get => _context ; }
+        public CompositionContainer MefContainer { get => _mefContainer ; }
 
         ISelectionContext _selection;
         IAnkhCommandStates _state;

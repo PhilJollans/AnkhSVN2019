@@ -60,7 +60,7 @@ namespace Ankh.UI.RepositoryExplorer.Commands
             else if (e.Argument is Uri)
                 info = (Uri)e.Argument;
             else
-                using (RepositorySelectionWizard wizard = new RepositorySelectionWizard(e.Context))
+                using ( RepositorySelectionWizard wizard = new RepositorySelectionWizard ( e.Context, e.MefContainer ) )
                 {
                     if (wizard.ShowDialog(e.Context) != DialogResult.OK)
                     {
