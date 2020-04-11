@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition.Hosting;
 using Ankh.ExtensionPoints.RepositoryProvider;
 using Ankh.UI.WizardFramework;
 using SharpSvn;
@@ -18,7 +17,7 @@ namespace Ankh.UI.RepositoryExplorer.RepositoryWizard
         /// Constructor.
         /// </summary>
         /// <param name="utils"></param>
-        public RepositorySelectionWizard ( IAnkhServiceProvider context, CompositionContainer MefContainer )
+        public RepositorySelectionWizard(IAnkhServiceProvider context)
             : base()
         {
             InitializeComponent();
@@ -26,7 +25,7 @@ namespace Ankh.UI.RepositoryExplorer.RepositoryWizard
             DefaultPageImage = RepositoryWizardResources.RepositoryWizardHeaderImage;
             Text = RepositoryWizardResources.Title;
 
-            this.providerSelectionPage = new RepositoryProviderPage ( MefContainer );
+            this.providerSelectionPage = new RepositoryProviderPage();
         }
 
         private Uri resultUri = null;
@@ -156,7 +155,7 @@ namespace Ankh.UI.RepositoryExplorer.RepositoryWizard
                     }
                     catch (Exception runnere)
                     {
-                        cancel = true;
+                        cancel = true; 
                         exc = runnere.InnerException == null ? runnere : runnere.InnerException;
                     }
                     */

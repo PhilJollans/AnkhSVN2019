@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition.Hosting;
 using System.Text;
 using System.Diagnostics;
 using System.Reflection;
@@ -116,7 +115,7 @@ namespace Ankh.Commands
                 {
                     e.Prepare(item);
 
-                    CommandUpdateEventArgs u = new CommandUpdateEventArgs(command, e.Context, e.MefContainer);
+                    CommandUpdateEventArgs u = new CommandUpdateEventArgs(command, e.Context);
                     item.OnUpdate(u);
                     if (u.Enabled)
                     {
@@ -321,7 +320,7 @@ namespace Ankh.Commands
         }
 
         [CLSCompliant(false)]
-        public int QueryStatus ( AnkhContext context, CompositionContainer mefContainer, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText )
+        public int QueryStatus(AnkhContext context, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
         {
             if (context == null)
                 throw new ArgumentNullException("context");
@@ -346,7 +345,7 @@ namespace Ankh.Commands
                 }
             }
 
-            CommandUpdateEventArgs updateArgs = new CommandUpdateEventArgs((AnkhCommand)prgCmds[0].cmdID, context, mefContainer, textQuery);
+            CommandUpdateEventArgs updateArgs = new CommandUpdateEventArgs((AnkhCommand)prgCmds[0].cmdID, context, textQuery);
 
             OLECMDF cmdf = OLECMDF.OLECMDF_SUPPORTED;
 

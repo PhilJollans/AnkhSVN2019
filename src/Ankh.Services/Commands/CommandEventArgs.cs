@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition.Hosting;
 using System.Text;
 using Ankh.Selection;
 
@@ -29,13 +28,13 @@ namespace Ankh.Commands
         bool _promptUser;
         bool _dontPromptUser;
 
-        public CommandEventArgs ( AnkhCommand command, AnkhContext context, CompositionContainer mefContainer )
-            : base ( command, context, mefContainer )
+        public CommandEventArgs(AnkhCommand command, AnkhContext context)
+            : base(command, context)
         {
         }
 
-        public CommandEventArgs(AnkhCommand command, AnkhContext context, CompositionContainer mefContainer, object argument, bool promptUser, bool dontPromptUser)
-            : this ( command, context, mefContainer )
+        public CommandEventArgs(AnkhCommand command, AnkhContext context, object argument, bool promptUser, bool dontPromptUser)
+            : this(command, context)
         {
             _argument = argument;
             _promptUser = promptUser;

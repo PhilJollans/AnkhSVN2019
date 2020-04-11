@@ -401,10 +401,7 @@ namespace Ankh.Services
             if (mapper == null)
                 return new CommandResult(false, null);
 
-            var pk = GetService<IAnkhPackage>() ;
-            var mc = pk.MefContainer ;
-
-            CommandEventArgs e = new CommandEventArgs(command, AnkhContext, mc, args, prompt == CommandPrompt.Always, prompt == CommandPrompt.Never);
+            CommandEventArgs e = new CommandEventArgs(command, AnkhContext, args, prompt == CommandPrompt.Always, prompt == CommandPrompt.Never);
             bool ok = mapper.Execute(command, e);
 
             return new CommandResult(ok, e.Result);

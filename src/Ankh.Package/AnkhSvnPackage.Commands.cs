@@ -77,7 +77,7 @@ namespace Ankh.VSPackage
                 return VSErr.OLECMDERR_E_UNKNOWNGROUP;
             }
 
-            int hr = CommandMapper.QueryStatus ( Context, _MefContainer, cCmds, prgCmds, pCmdText);
+            int hr = CommandMapper.QueryStatus(Context, cCmds, prgCmds, pCmdText);
 
             return hr;
         }
@@ -101,7 +101,7 @@ namespace Ankh.VSPackage
                     break;
                 case OLECMDEXECOPT.OLECMDEXECOPT_SHOWHELP:
                 default:
-                    // VS Doesn't use OLECMDEXECOPT.OLECMDEXECOPT_SHOWHELP
+                    // VS Doesn't use OLECMDEXECOPT.OLECMDEXECOPT_SHOWHELP                    
                     return VSErr.E_NOTIMPL;
                 case (OLECMDEXECOPT)0x00010000 | OLECMDEXECOPT.OLECMDEXECOPT_SHOWHELP:
                     // Retrieve parameter information of command for immediate window
@@ -129,7 +129,6 @@ namespace Ankh.VSPackage
             CommandEventArgs args = new CommandEventArgs(
                 (AnkhCommand)nCmdID,
                 Context,
-                _MefContainer,
                 argIn,
                 (OLECMDEXECOPT)nCmdexecopt == OLECMDEXECOPT.OLECMDEXECOPT_PROMPTUSER,
                 (OLECMDEXECOPT)nCmdexecopt == OLECMDEXECOPT.OLECMDEXECOPT_DONTPROMPTUSER);

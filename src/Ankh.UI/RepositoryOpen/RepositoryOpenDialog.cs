@@ -487,9 +487,6 @@ namespace Ankh.UI.RepositoryOpen
 
         void ShowAddUriDialog()
         {
-            var pk = GetService<IAnkhPackage>() ;
-            var mc = pk.MefContainer ;
-
             Uri dirUri;
             /*
             using (AddRepositoryRootDialog dlg = new AddRepositoryRootDialog())
@@ -500,7 +497,7 @@ namespace Ankh.UI.RepositoryOpen
                 dirUri = dlg.Uri;
             }
             */
-            using (RepositorySelectionWizard dialog = new RepositorySelectionWizard(Context, mc))
+            using (RepositorySelectionWizard dialog = new RepositorySelectionWizard(Context))
             {
                 DialogResult result = dialog.ShowDialog(Context);
                 if (result != DialogResult.OK)
