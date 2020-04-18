@@ -52,11 +52,13 @@ namespace Ankh.Services
 
         public bool IsEnabled(Exception ex)
         {
-#if DEBUG
-            return false;
-#else
             return true;
-#endif
+// Phil: I have no idea what this was for.
+//#if DEBUG
+//            return false;
+//#else
+//            return true;
+//#endif
         }
 
         /// <summary>

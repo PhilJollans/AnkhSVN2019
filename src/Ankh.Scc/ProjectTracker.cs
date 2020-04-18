@@ -118,7 +118,15 @@ namespace Ankh.Scc
 
         SccProjectMap ProjectMap
         {
-            get { return _sccProvider.ProjectMap; }
+            get
+            {
+                // Github Issue #7
+                // Additional error checking, might help to localize the error.
+                if ( _sccProvider == null )
+                  throw new Exception ( "Internal error: _sccProvider == null" ) ;
+
+                return _sccProvider.ProjectMap;
+            }
         }
 
         private void LoadInitial()

@@ -57,11 +57,19 @@ namespace Ankh.Scc
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
-            if (ProjectMap.ContainsFile(path))
-                return true;
+            // GitHub Issue #7
+            // It appears that a NullReferenceException has occurred in this function.
+            // So far as I can tell, it can only occur if ProjectMap is null, which doesn't seem possible.
+            // Nevertheless catch and ignore any exception.
+            try
+            {
+                if (ProjectMap.ContainsFile(path))
+                    return true;
 
-            if (string.Equals(path, ProjectMap.SolutionFilename, StringComparison.OrdinalIgnoreCase))
-                return true;
+                if (string.Equals(path, ProjectMap.SolutionFilename, StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+            catch ( Exception ){}
 
             return false;
         }

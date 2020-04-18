@@ -66,8 +66,15 @@ namespace Ankh.Scc
         [CLSCompliant(false)]
         public SccProjectMap ProjectMap
         {
-            [DebuggerStepThrough]
-            get { return _projectMap; }
+            get
+            {
+                // Github Issue #7
+                // Additional error checking, might help to localize the error.
+                if ( _projectMap == null )
+                  throw new Exception ( "Internal error: _projectMap == null" ) ;
+
+                return _projectMap;
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -244,7 +251,7 @@ namespace Ankh.Scc
 
         protected virtual void OnProjectDirectoryAdded(SccProjectData data, string directory, string origin)
         {
-            
+
         }
 
         void IAnkhSccProviderEvents.OnProjectBeforeUnload(IVsSccProject2 project, IVsHierarchy stub)
@@ -260,7 +267,7 @@ namespace Ankh.Scc
 
         protected virtual void OnProjectBeforeUnload(SccProjectData data)
         {
-            
+
         }
 
         void IAnkhSccProviderEvents.OnProjectRenamed(IVsSccProject2 project)
@@ -343,7 +350,7 @@ namespace Ankh.Scc
 
         protected virtual void OnSolutionRefreshCommand(EventArgs e)
         {
-            
+
         }
 
         public abstract IEnumerable<string> GetAllDocumentFiles(string documentName);

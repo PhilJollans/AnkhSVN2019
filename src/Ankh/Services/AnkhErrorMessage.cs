@@ -38,6 +38,12 @@ namespace Ankh.Services
         /// <returns></returns>
         public static string GetMessage(Exception ex)
         {
+#if true
+            // According to https://stackoverflow.com/questions/2176707/exception-message-vs-exception-tostring
+            // the Exception.ToString provides all this and more. In particular, it includes the parameter text
+            // provided to the exception. For example for ArgumentNullException it includes the name of the paramter.
+            return ex.ToString() ;
+#else
             StringBuilder sb = new StringBuilder();
             while (ex != null)
             {
@@ -49,6 +55,7 @@ namespace Ankh.Services
             }
 
             return sb.ToString();
+#endif
         }
 
         /// <summary>
