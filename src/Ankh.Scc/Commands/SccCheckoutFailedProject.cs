@@ -34,12 +34,12 @@ namespace Ankh.Scc.Commands
                 map = scc.GetProjectsThatNeedEnlisting();
                 e.Selection.Cache[_failedProjectsKey] = map ?? _failedProjectsKey;
             }
-            
+
             if (map != null)
             {
                 SccHierarchy hier = EnumTools.GetSingle(e.Selection.GetSelectedHierarchies());
 
-                if (hier != null && map.ContainsKey(hier.Name))
+                if ( hier != null && !String.IsNullOrEmpty(hier.Name) && map.ContainsKey(hier.Name) )
                     return;
             }
 
