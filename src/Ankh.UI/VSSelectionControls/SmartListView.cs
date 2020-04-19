@@ -269,7 +269,7 @@ namespace Ankh.UI.VSSelectionControls
             public const Int32 HDS_NOSIZING = 0x0800;
             public const Int32 HDS_OVERFLOW = 0x1000;
 
-            
+
             public const Int32 LVM_GETHEADER = 0x1000 + 31;     // LVM_FIRST + 31
             public const Int32 LVM_SETITEMSTATE = 0x1000 + 43;  // LVM_FIRST + 43
             public const Int32 HDM_GETITEM = 0x1200 + 11;  // HDM_FIRST + 11
@@ -910,7 +910,7 @@ namespace Ankh.UI.VSSelectionControls
 
                 if (_nInUpdates == 0)
                 {
-                    OnEndUpdate(EventArgs.Empty);                    
+                    OnEndUpdate(EventArgs.Empty);
                 }
             }
             finally
@@ -944,8 +944,14 @@ namespace Ankh.UI.VSSelectionControls
             }
         }
 
+        //
+        // GitHub Issue #13
+        // The error report indicates a null reference in this method. It seems very unlikely, but
+        // I am adding more checking to prevent it.
+        //
         protected override void OnItemChecked(ItemCheckedEventArgs e)
         {
+            // I think it is more or less out of the question that e == null
             base.OnItemChecked(e);
 
             if (_nInUpdates > 0)
@@ -956,28 +962,36 @@ namespace Ankh.UI.VSSelectionControls
 
             if (CheckBoxes && ShowSelectAllCheckBox)
             {
-                bool check = e.Item.Checked;
-                if (SelectAllChecked && !check && IsPartOfSelectAll(e.Item))
+                // Check for null (Github Issue #13)
+                if ( e.Item != null )
                 {
-                    SelectAllChecked = false;
-                    UpdateSortGlyphs();
-                }
-                else if (!SelectAllChecked && check)
-                {
-                    bool allChecked = true;
-                    foreach (ListViewItem i in Items)
+                    bool check = e.Item.Checked;
+                    if (SelectAllChecked && !check && IsPartOfSelectAll(e.Item))
                     {
-                        if (!i.Checked && IsPartOfSelectAll(i))
-                        {
-                            allChecked = false;
-                            break;
-                        }
-                    }
-
-                    if (allChecked)
-                    {
-                        SelectAllChecked = true;
+                        SelectAllChecked = false;
                         UpdateSortGlyphs();
+                    }
+                    else if (!SelectAllChecked && check)
+                    {
+                        bool allChecked = true;
+                        foreach (ListViewItem i in Items)
+                        {
+                            // Check for null (Github Issue #13)
+                            if ( i != null )
+                            {
+                                if (!i.Checked && IsPartOfSelectAll(i))
+                                {
+                                    allChecked = false;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (allChecked)
+                        {
+                            SelectAllChecked = true;
+                            UpdateSortGlyphs();
+                        }
                     }
                 }
             }
@@ -999,7 +1013,7 @@ namespace Ankh.UI.VSSelectionControls
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public EventHandler VScroll;
         protected virtual void OnVScroll(EventArgs e)
@@ -1014,7 +1028,7 @@ namespace Ankh.UI.VSSelectionControls
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public EventHandler HScroll;
         protected virtual void OnHScroll(EventArgs e)
