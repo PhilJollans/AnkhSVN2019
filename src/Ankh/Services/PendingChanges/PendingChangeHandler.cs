@@ -29,7 +29,7 @@ using Ankh.Configuration;
 namespace Ankh.Services.PendingChanges
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     [GlobalService(typeof(IPendingChangeHandler))]
     partial class PendingChangeHandler : AnkhService, IPendingChangeHandler
@@ -231,7 +231,7 @@ namespace Ankh.Services.PendingChanges
                         return false;
 
                     // Verify this before verifying log message
-                    // so that issue tracker integration has precedence 
+                    // so that issue tracker integration has precedence
                     if (!PreCommit_VerifyIssueTracker(state))
                         return false;
 
@@ -363,7 +363,7 @@ namespace Ankh.Services.PendingChanges
                     return false;
 
                 state.LogMessage = args.CommitMessage;
-                // BA: It is IssueRepository's responsibility to reset IssueText value to 
+                // BA: It is IssueRepository's responsibility to reset IssueText value to
                 // 1) null : if IssueRepository populated log message with the issue numbers,
                 // 2) other: if the default AnkhSVN handling is desired (i.e. BugTraq settings).
                 // if the value is set to null, it is probably good idea to set SkipIssueVerify to true
@@ -687,6 +687,7 @@ namespace Ankh.Services.PendingChanges
                     ca.AddExpectedError(SvnErrorCode.SVN_ERR_FS_TXN_OUT_OF_DATE);
                     ca.AddExpectedError(SvnErrorCode.SVN_ERR_RA_OUT_OF_DATE);
                     ca.AddExpectedError(SvnErrorCode.SVN_ERR_WC_FOUND_CONFLICT);
+                    ca.AddExpectedError(SvnErrorCode.SVN_ERR_WC_PATH_NOT_FOUND);
                     ca.Notify += delegate(object notifySender, SvnNotifyEventArgs notifyE)
                                 {
                                     switch (notifyE.Action)
