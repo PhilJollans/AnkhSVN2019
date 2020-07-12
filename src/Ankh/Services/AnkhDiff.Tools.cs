@@ -1,4 +1,4 @@
-// $Id$
+ï»¿// $Id$
 //
 // Copyright 2008-2009 The AnkhSVN Project
 //
@@ -90,7 +90,7 @@ namespace Ankh.Services
         {
             List<AnkhDiffTool> tools = new List<AnkhDiffTool>();
 
-            // Note: For TortoiseSVN use the host program files, as $(ProgramFiles) is invalid on X64 
+            // Note: For TortoiseSVN use the host program files, as $(ProgramFiles) is invalid on X64
             //       with TortoiseSVN integrated in explorer
             tools.Add(new DiffTool(this, "TortoiseMerge", "TortoiseSVN TortoiseMerge",
                 RegistrySearch("SOFTWARE\\TortoiseSVN", "TMergePath")
@@ -134,9 +134,9 @@ namespace Ankh.Services
                     ?? "$(ProgramFiles)\\Beyond Compare 3\\BComp.exe",
                 "'$(Base)' '$(Mine)' /fv /title1='$(BaseName)' /title2='$(MineName)' /leftreadonly", true));
 
-            tools.Add(new DiffTool(this, "ECMerge", "Ellié Computing Merge",
-                RegistrySearch("SOFTWARE\\Ellié Computing\\Merge", "Path")
-                    ?? "$(ProgramFiles)\\Ellié Computing\\Merge\\guimerge.exe",
+            tools.Add(new DiffTool(this, "ECMerge", "Ellié ƒomputing Merge",
+                RegistrySearch("SOFTWARE\\ElliÃ©Computing\\Merge", "Path")
+                    ?? "$(ProgramFiles)\\ElliÃ©Computing\\Merge\\guimerge.exe",
                 "'$(Base)' '$(Mine)' --mode=diff2 --title1='$(BaseName)' --title2='$(MineName)'", true));
 
             tools.Add(new DiffTool(this, "ExamDiff", "PrestoSoft ExamDiff",
@@ -249,9 +249,9 @@ namespace Ankh.Services
                 "'$(Mine)' '$(Theirs)' /mergeoutput='$(Merged)' " +
                 "/title1='$(MineName)' /title2='$(TheirsName)' ", true));
 
-            tools.Add(new DiffTool(this, "ECMerge", "Ellié Computing Merge",
-                RegistrySearch("SOFTWARE\\Ellié Computing\\Merge", "Path")
-                    ?? "$(ProgramFiles)\\Ellié Computing\\Merge\\guimerge.exe",
+            tools.Add(new DiffTool(this, "ECMerge", "ElliÃ©Computing Merge",
+                RegistrySearch("SOFTWARE\\ElliÃ©Computing\\Merge", "Path")
+                    ?? "$(ProgramFiles)\\ElliÃ©Computing\\Merge\\guimerge.exe",
                 "'$(Base)' '$(Mine)' '$(Theirs)' --to='$(Merged)' --mode=merge3 " +
                 "--title0='$(BaseName)' --title1='$(MineName)' --title2='$(TheirsName)' " +
                 "--to-title='$(MergedName)'", true));
