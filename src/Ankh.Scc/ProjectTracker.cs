@@ -62,8 +62,10 @@ namespace Ankh.Scc
 
             IAnkhCommandStates states = GetService<IAnkhCommandStates>();
 
-            if (states != null && states.SccProviderActive)
-                OnSvnSccProviderActivated(this, EventArgs.Empty);
+            // Github issue #18.
+            // Initialse SVN support unconditionally.
+            // There is only one SCC provider in this package. The experimental GIT support has been removed.
+            OnSvnSccProviderActivated(this, EventArgs.Empty);
         }
 
         private void OnSccProviderDeactivated(object sender, EventArgs e)
