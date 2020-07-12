@@ -60,8 +60,6 @@ namespace Ankh.Commands
                     skip = false;
                 else if (((item.Availability & CommandAvailability.SvnActive) != 0) && States.SccProviderActive)
                     skip = false;
-                else if (((item.Availability & CommandAvailability.GitActive) != 0) && States.GitSccProviderActive)
-                    skip = false;
                 else
                     skip = true;
 

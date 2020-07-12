@@ -41,7 +41,7 @@ namespace Ankh.Scc
             : base(context, item)
         {
             Refresh(context, item);
-        }  
+        }
 
         [DisplayName("Project"), Category("Visual Studio")]
         public new string Project
@@ -63,7 +63,7 @@ namespace Ankh.Scc
         protected override string ComponentName
         {
             get { return Name; }
-        } 
+        }
 
         /// <summary>
         /// Gets a boolean indicating whether this pending change is clear / is no longer a pending change
@@ -153,7 +153,7 @@ namespace Ankh.Scc
         private string GetFileType(RefreshContext context, SvnItem item)
         {
             return context.IconMapper.GetFileType(item.FullPath);
-        }        
+        }
 
         private string GetRelativePath(RefreshContext context)
         {
@@ -258,25 +258,6 @@ namespace Ankh.Scc
 
             return create;
         }
-
-        public static bool IsPending(GitItem item)
-        {
-            if (item == null)
-                throw new ArgumentNullException("item");
-
-            bool create = false;
-            if (item.IsConflicted)
-                create = true; // Tree conflict (unversioned) or other conflict
-            else if (item.IsModified)
-                create = true; // Must commit
-            else if (item.InSolution && !item.IsVersioned && !item.IsIgnored && item.IsVersionable && !item.IsSccExcluded)
-                create = true; // To be added
-            else if (item.IsVersioned && item.IsDocumentDirty)
-                create = true;
-
-            return create;
-        }
-
 
         /// <summary>
         /// Determines if a change list name is one of the "Ignore On Commit" change lists
@@ -510,7 +491,7 @@ namespace Ankh.Scc
         [Browsable(false)]
         public bool CanApply
         {
-            get 
+            get
             {
                 switch (Kind)
                 {
@@ -527,7 +508,7 @@ namespace Ankh.Scc
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public sealed class PendingChangeCollection : ReadOnlyKeyedNotifyCollection<string, PendingChange>, INotifyItemChanged<PendingChange>
     {

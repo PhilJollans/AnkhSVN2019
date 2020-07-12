@@ -23,7 +23,7 @@ using Ankh.Selection;
 namespace Ankh.Scc
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     [GlobalService(typeof(IPendingChangesManager))]
     partial class PendingChangeManager : AnkhService, IPendingChangesManager
@@ -82,14 +82,6 @@ namespace Ankh.Scc
                             SvnChange.SvnItemsChanged -= OnSvnItemsChanged;
                     }
 
-                    if (GitChange != null)
-                    {
-                        if (value)
-                            GitChange.GitItemsChanged += OnGitItemsChanged;
-                        else
-                            GitChange.GitItemsChanged -= OnGitItemsChanged;
-                    }
-
                     OnIsActiveChanged(EventArgs.Empty);
                 }
             }
@@ -99,12 +91,6 @@ namespace Ankh.Scc
         ISvnItemChange SvnChange
         {
             get { return _svnChange ?? (_svnChange = GetService<ISvnItemChange>()); }
-        }
-
-        IGitItemChange _gitChange;
-        IGitItemChange GitChange
-        {
-            get { return _gitChange ?? (_gitChange = GetService<IGitItemChange>()); }
         }
 
         readonly HybridCollection<string> _toRefresh = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
@@ -181,23 +167,6 @@ namespace Ankh.Scc
                     return;
 
                 foreach (SvnItem item in e.ChangedItems)
-                {
-                    if (!_toRefresh.Contains(item.FullPath))
-                        _toRefresh.Add(item.FullPath);
-                }
-
-                ScheduleRefresh();
-            }
-        }
-
-        void OnGitItemsChanged(object sender, GitItemsEventArgs e)
-        {
-            lock (_toRefresh)
-            {
-                if (_fullRefresh || !_solutionOpen)
-                    return;
-
-                foreach (GitItem item in e.ChangedItems)
                 {
                     if (!_toRefresh.Contains(item.FullPath))
                         _toRefresh.Add(item.FullPath);

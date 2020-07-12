@@ -59,15 +59,11 @@ namespace Ankh.Scc
 
             ev.SccProviderActivated += OnSvnSccProviderActivated;
             ev.SccProviderDeactivated += OnSccProviderDeactivated;
-            ev.GitSccProviderActivated += OnGitSccProviderActivated;
-            ev.GitSccProviderDeactivated += OnSccProviderDeactivated;
 
             IAnkhCommandStates states = GetService<IAnkhCommandStates>();
 
             if (states != null && states.SccProviderActive)
                 OnSvnSccProviderActivated(this, EventArgs.Empty);
-            else if (states != null && states.GitSccProviderActive)
-                OnGitSccProviderActivated(this, EventArgs.Empty);
         }
 
         private void OnSccProviderDeactivated(object sender, EventArgs e)
@@ -78,13 +74,6 @@ namespace Ankh.Scc
         private void OnSvnSccProviderActivated(object sender, EventArgs e)
         {
             _sccProvider = GetService<SvnSccProvider>();
-            Hook(true, true);
-            LoadInitial();
-        }
-
-        private void OnGitSccProviderActivated(object sender, EventArgs e)
-        {
-            _sccProvider = GetService<ITheAnkhGitSccProvider>() as SccProvider;
             Hook(true, true);
             LoadInitial();
         }

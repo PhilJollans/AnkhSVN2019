@@ -76,7 +76,7 @@ namespace Ankh.VS.Selection
                     break;
                 case VSConstants.VSSELELEMID.SEID_UndoManager:
                     IOleUndoManager ud = varValueNew as IOleUndoManager;
-                    break;                
+                    break;
 #endif
             }
 
@@ -193,19 +193,6 @@ namespace Ankh.VS.Selection
 
                 if (p != null)
                     return SvnCache[p];
-                else
-                    return null;
-            }
-        }
-
-        public GitItem ActiveDocumentGitItem
-        {
-            get
-            {
-                string p = ActiveDocumentFilename;
-
-                if (p != null)
-                    return GitCache[p];
                 else
                     return null;
             }
@@ -404,7 +391,7 @@ namespace Ankh.VS.Selection
                 return null;
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         sealed class ModalSelection : IVsTrackSelectionEx
         {

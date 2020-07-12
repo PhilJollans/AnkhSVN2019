@@ -200,12 +200,6 @@ namespace Ankh.VS.Selection
             get { return (_ankhSvnActiveScc ?? (_ankhSvnActiveScc = GetCache(AnkhId.SccProviderGuid))).Active; }
         }
 
-        CmdStateCacheItem _ankhGitActiveScc;
-        public bool GitSccProviderActive
-        {
-            get { return (_ankhGitActiveScc ?? (_ankhGitActiveScc = GetCache(AnkhId.GitSccProviderGuid))).Active; }
-        }
-
         CmdStateCacheItem _sccManagerLoaded;
         public bool SccManagerLoaded
         {
@@ -601,7 +595,7 @@ namespace Ankh.VS.Selection
 
         private bool GetOtherSccProviderActive()
         {
-            if (SccProviderActive || GitSccProviderActive)
+            if (SccProviderActive)
                 return false; // We are active
 
             return GetRawOtherSccProviderActive();

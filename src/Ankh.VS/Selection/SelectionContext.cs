@@ -41,7 +41,6 @@ namespace Ankh.VS.Selection
     partial class SelectionContext : AnkhService, IVsSelectionEvents, ISelectionContext, ISelectionContextEx, ISccProjectWalker
     {
         ISvnStatusCache _svnCache;
-        IGitStatusCache _gitCache;
         bool _disposed;
         uint _cookie;
 
@@ -61,8 +60,6 @@ namespace Ankh.VS.Selection
         CachedEnumerable<string> _filenamesRecursive;
         CachedEnumerable<SvnItem> _svnItems;
         CachedEnumerable<SvnItem> _svnItemsRecursive;
-        CachedEnumerable<GitItem> _gitItems;
-        CachedEnumerable<GitItem> _gitItemsRecursive;
         CachedEnumerable<SccProject> _selectedProjects;
         CachedEnumerable<SccProject> _selectedProjectsRecursive;
         CachedEnumerable<SccHierarchy> _selectedHierarchies;
@@ -96,11 +93,6 @@ namespace Ankh.VS.Selection
         protected ISvnStatusCache SvnCache
         {
             get { return _svnCache ?? (_svnCache = GetService<ISvnStatusCache>()); }
-        }
-
-        protected IGitStatusCache GitCache
-        {
-            get { return _gitCache ?? (_gitCache = GetService<IGitStatusCache>()); }
         }
 
         protected override void Dispose(bool disposing)
@@ -181,8 +173,6 @@ namespace Ankh.VS.Selection
             _filenamesRecursive = null;
             _svnItems = null;
             _svnItemsRecursive = null;
-            _gitItems = null;
-            _gitItemsRecursive = null;
             _selectedProjects = null;
             _selectedProjectsRecursive = null;
             _selectedHierarchies = null;
@@ -695,32 +685,6 @@ namespace Ankh.VS.Selection
             foreach (string file in GetSelectedFiles(recursive))
             {
                 yield return SvnCache[file];
-            }
-        }
-
-        protected IEnumerable<GitItem> GetSelectedGitItems()
-        {
-            return _gitItems ?? (_gitItems = new CachedEnumerable<GitItem>(InternalGetSelectedGitItems(false), Disposer));
-        }
-
-        protected IEnumerable<GitItem> GetSelectedGitItemsRecursive()
-        {
-            return _gitItemsRecursive ?? (_gitItemsRecursive = new CachedEnumerable<GitItem>(InternalGetSelectedGitItems(true), Disposer));
-        }
-
-        public IEnumerable<GitItem> GetSelectedGitItems(bool recursive)
-        {
-            return recursive ? GetSelectedGitItemsRecursive() : GetSelectedGitItems();
-        }
-
-        IEnumerable<GitItem> InternalGetSelectedGitItems(bool recursive)
-        {
-            if (GitCache == null)
-                yield break;
-
-            foreach (string file in GetSelectedFiles(recursive))
-            {
-                yield return GitCache[file];
             }
         }
 

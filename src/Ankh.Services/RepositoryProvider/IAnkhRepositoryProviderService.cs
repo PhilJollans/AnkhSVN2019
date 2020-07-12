@@ -12,7 +12,7 @@ namespace Ankh
         ICollection<ScmRepositoryProvider> RepositoryProviders { get; }
 
         /// <summary>
-        /// Gets all the registered SCM repository providers for the given SCM type(svn, git).
+        /// Gets all the registered SCM repository providers for the given SCM type(svn).
         /// </summary>
         /// <remarks>This call itself DOES NOT trigger provider package initialization.</remarks>
         ICollection<ScmRepositoryProvider> GetRepositoryProviders(RepositoryType type);

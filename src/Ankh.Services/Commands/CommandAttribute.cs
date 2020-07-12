@@ -25,7 +25,6 @@ namespace Ankh.Commands
     {
         None,
         SvnActive       = 0x01,
-        GitActive       = 0x02,
 
         AlwaysFlag      = 0x800,
         Always          = 0xFFFF
@@ -119,7 +118,7 @@ namespace Ankh.Commands
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public CommandAvailability Availability
         {
@@ -141,11 +140,11 @@ namespace Ankh.Commands
         ///     ‘u’ – A URL.
         ///     ‘|’ – Combines two parameter types for the same parameter.
         ///     ‘*’ – Indicates zero or more occurrences of the previous parameter.
-        ///     
+        ///
         /// Some examples:
         ///     "d|p *" filenames or projects
-        ///     
-        /// “p p” – Command accepts two filenames 
+        ///
+        /// “p p” – Command accepts two filenames
         /// “u d” – Command accepts one URL and one filename argument.
         /// “u *” – Command accepts zero or more URL arguments.
         /// </remarks>

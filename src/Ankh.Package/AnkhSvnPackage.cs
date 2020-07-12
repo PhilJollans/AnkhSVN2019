@@ -33,7 +33,6 @@ using Ankh.VS;
 using Ankh.UI;
 using Ankh.VSPackage.Attributes;
 using Ankh.Diff;
-using Ankh.GitScc;
 
 namespace Ankh.VSPackage
 {
@@ -51,7 +50,7 @@ namespace Ankh.VSPackage
     // to be registered as package.
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [Description(AnkhId.PackageDescription)]
-    // A Visual Studio component can be registered under different regitry roots; for instance
+    // A Visual Studio component can be registered under different registry roots; for instance
     // when you debug your package you want to register it in the experimental hive. This
     // attribute specifies the registry root to use if no one is provided to regpkg.exe with
     // the /root switch.
@@ -64,7 +63,6 @@ namespace Ankh.VSPackage
     [ProvideLoadKey("Standard", AnkhId.PlkVersion, AnkhId.PlkProduct, AnkhId.PlkCompany, 1)]
     [Guid(AnkhId.PackageId)]
     [ProvideAutoLoad(AnkhId.SccProviderId, PackageAutoLoadFlags.BackgroundLoad)] // Load on 'Scc active' for Subversion
-    [ProvideAutoLoad(AnkhId.GitSccProviderId, PackageAutoLoadFlags.BackgroundLoad)] // Load on 'Scc active' for Git
 
     // This attribute is needed to let the shell know that this package exposes some menus.
     [ProvideMenuResourceEx("1000.ctmenu", 1, LegacyResourceID="1001.ctmenu")] // The numbers must match the number in the .csproj file for the ctc task
@@ -149,7 +147,6 @@ namespace Ankh.VSPackage
 
             _runtime.AddModule(new AnkhModule(_runtime));
             _runtime.AddModule(new AnkhSccModule(_runtime));
-            _runtime.AddModule(new AnkhGitSccModule(_runtime));
             _runtime.AddModule(new AnkhVSModule(_runtime));
             _runtime.AddModule(new AnkhUIModule(_runtime));
             _runtime.AddModule(new AnkhDiffModule(_runtime));

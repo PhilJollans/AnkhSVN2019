@@ -51,10 +51,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.Shell.16.0" />
-    <Reference Include="SharpGit">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\autolib\SharpGit\SharpGit.dll</HintPath>
-    </Reference>
     <Reference Include="SharpSvn">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\autolib\SharpSvn\SharpSvn.dll</HintPath>

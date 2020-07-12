@@ -19,11 +19,6 @@ namespace Ankh.Scc
     {
     }
 
-    [GuidAttribute(AnkhId.GitSccServiceId), ComVisible(true), CLSCompliant(false)]
-    public interface ITheAnkhGitSccProvider : IVsSccProvider
-    {
-    }
-
     // From Microsoft.VisualStudio.Shell.Interop.11.0
     [CLSCompliant(false)]
     [ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("224209ED-E56C-4C8D-A7FF-31CF4686798D")]

@@ -19,7 +19,7 @@ using System;
 namespace Ankh
 {
     // Disable Missing XML comment warning for this file
-#pragma warning disable 1591 
+#pragma warning disable 1591
 
     public enum AnkhToolWindow
     {
@@ -28,7 +28,6 @@ namespace Ankh
         WorkingCopyExplorer,
         PendingChanges,
         Log,
-        SvnInfo,
-        GitPendingChanges
+        SvnInfo
     }
 }

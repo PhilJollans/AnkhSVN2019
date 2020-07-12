@@ -40,11 +40,9 @@ namespace Ankh
         TickFirst,
         MarkProjectDirty,
         SvnCacheFinishTasks,
-        GitCacheFinishTasks,
         SccFinishTasks,
         TickRefreshPendingTasks,
         TickRefreshSvnItems,
-        TickRefreshGitItems,
         // /Tick Commands
         TickLast,
 
@@ -55,7 +53,7 @@ namespace Ankh
 
         // /Private commands
 
-        // These values live in the same numberspace as the other values within 
+        // These values live in the same numberspace as the other values within
         // the command set. So we start countin at this number to make sure we
         // do not reuse values
         CommandFirst = 0x1FFFFFF,

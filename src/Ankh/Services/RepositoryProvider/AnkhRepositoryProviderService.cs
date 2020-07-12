@@ -40,7 +40,7 @@ namespace Ankh.Services.RepositoryProvider
         }
 
         /// <summary>
-        /// Gets all the registered SCM repository providers for the given SCM type(svn, git).
+        /// Gets all the registered SCM repository providers for the given SCM type(svn).
         /// </summary>
         /// <param name="type">SCM type</param>
         /// <remarks>This call DOES NOT trigger provider package initialization.</remarks>
@@ -121,8 +121,6 @@ namespace Ankh.Services.RepositoryProvider
         {
             if (string.Equals(typeString, "svn", StringComparison.OrdinalIgnoreCase))
                 return RepositoryType.Subversion;
-            if (string.Equals(typeString, "git", StringComparison.OrdinalIgnoreCase))
-                return RepositoryType.Git;
 
             return RepositoryType.Any;
         }

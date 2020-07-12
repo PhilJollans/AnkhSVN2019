@@ -59,10 +59,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\autolib\SharpSvn\SharpSvn.dll</HintPath>
     </Reference>
-    <Reference Include="SharpGit">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\autolib\SharpGit\SharpGit.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -82,7 +78,6 @@
     <Compile Include="Commands\CommandTarget.cs" />
     <Compile Include="Commands\CommandAttribute.cs" />
     <Compile Include="Commands\SccCommandAttribute.cs" />
-    <Compile Include="Commands\GitCommandAttribute.cs" />
     <Compile Include="ContextServices\GuidUtils.cs" />
     <Compile Include="EnumHelpers.cs" />
     <Compile Include="GlobalServiceAttribute.cs" />
@@ -104,15 +99,8 @@
     <Compile Include="Collections\NotifyCollection.cs" />
     <Compile Include="Scc\Engine\ISccStatusCache.cs" />
     <Compile Include="Scc\Engine\SccDirectory.cs" />
-    <Compile Include="Scc\Git\GitDirectory.cs" />
-    <Compile Include="Scc\Git\GitItem.cs" />
-    <Compile Include="Scc\Git\GitItem.State.cs" />
-    <Compile Include="Scc\Git\GitItemState.cs" />
-    <Compile Include="Scc\Git\GitStatusData.cs" />
     <Compile Include="Collections\INotifyCollection.cs" />
-    <Compile Include="Scc\IAnkhGitSccService.cs" />
     <Compile Include="Scc\IAnkhSccProviderEvents.cs" />
-    <Compile Include="Scc\Git\IGitStatusCache.cs" />
     <Compile Include="Scc\ISccHelper.cs" />
     <Compile Include="Collections\KeyedNotifyCollection.cs" />
     <Compile Include="Scc\ProjectMap\SccDocumentData.cs" />
@@ -149,7 +137,6 @@
     <Compile Include="Scc\SccProvider.Service.cs">
       <DependentUpon>SccProvider.cs</DependentUpon>
     </Compile>
-    <Compile Include="Scc\Git\GitItemsEventArgs.cs" />
     <Compile Include="Scc\NoSccStatus.cs" />
     <Compile Include="Collections\IWrapNotifyCollection.cs" />
     <Compile Include="Collections\WrapCollectionWithNotify.cs" />
