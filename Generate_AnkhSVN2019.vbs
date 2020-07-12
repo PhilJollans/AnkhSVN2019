@@ -158,7 +158,6 @@ End If
 'Patch the assembly config files
 PatchAssemblyFileVersion "src\Ankh.Diff\Properties\AssemblyInfo.cs", Assembly_Version
 PatchAssemblyFileVersion "src\Ankh.ExtensionPoints\Properties\AssemblyInfo.cs", Assembly_Version
-PatchAssemblyFileVersion "src\Ankh.GitScc\Properties\AssemblyInfo.cs", Assembly_Version
 PatchAssemblyFileVersion "src\Ankh.Ids\Properties\AssemblyInfo.cs", Assembly_Version
 PatchAssemblyFileVersion "src\Ankh.ImageCatalog\Properties\AssemblyInfo.cs", Assembly_Version
 PatchAssemblyFileVersion "src\Ankh.ImageCatalogTest\Properties\AssemblyInfo.cs", Assembly_Version
