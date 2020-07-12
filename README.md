@@ -24,5 +24,5 @@ AnkhSVN2019 is targeted only at Visual Studio 2019.
 | 1.00.0007     | 13-January-2020   | Restructured implementation the Annotate function using a custom margin on an editor window.
 | 1.00.0008     | 01-March-2020     | Add an exception handler to AnnotationMarginFactory.CreateMargin. See Issue 9.
 | 1.00.0009     | 19-April-2020     | Issues 7, 11, 12 and 13.
-| 1.00.0010     | 12-July-2020      | Issues 18.
+| 1.00.0010     | 12-July-2020      | Issue 18.
 
