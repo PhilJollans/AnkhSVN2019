@@ -25,5 +25,5 @@ AnkhSVN2019 is targeted only at Visual Studio 2019.
 | 1.00.0008     | 01-March-2020     | Add an exception handler to AnnotationMarginFactory.CreateMargin. See Issue 9.
 | 1.00.0009     | 19-April-2020     | Issues 7, 11, 12 and 13.
 | 1.00.0010     | 12-July-2020      | Issue 18.
-| 1.00.0012     | 23-September-2020 | Build with [SharpSvn2019.SharpSvn](https://github.com/PhilJollans/SharpSVN2019) version 1.12.0.1 from [nuget](https://www.nuget.org/packages/SharpSvn2019.SharpSvn/), which is built against SVN version 1.12.<br>This might fix issue 10.
+| 1.00.0012     | 23&#x2011;September&#x2011;2020 | Build with [SharpSvn2019.SharpSvn](https://github.com/PhilJollans/SharpSVN2019) version 1.12.0.1 from [nuget](https://www.nuget.org/packages/SharpSvn2019.SharpSvn/), which is built against SVN version 1.12.<br>This might fix issue 10.
 
