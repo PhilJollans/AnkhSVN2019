@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Ankh.VS;
 
@@ -32,22 +33,27 @@ namespace Ankh.UI
 
         public DialogResult Show(string text)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return Show(text, "", MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, 0);
         }
         public DialogResult Show(string text, string caption)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return Show(text, caption, MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, 0);
         }
         public DialogResult Show(string text, string caption, MessageBoxButtons buttons)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return Show(text, caption, buttons, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, 0);
         }
         public DialogResult Show(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return Show(text, caption, buttons, icon, MessageBoxDefaultButton.Button1, 0);
         }
         public DialogResult Show(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon, MessageBoxDefaultButton defaultButton)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return Show(text, caption, buttons, icon, defaultButton, 0);
         }
         public DialogResult Show(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon, MessageBoxDefaultButton defaultButton, MessageBoxOptions options)
@@ -56,6 +62,9 @@ namespace Ankh.UI
                 throw new ArgumentNullException("text");
             else if (caption == null)
                 throw new ArgumentNullException("caption");
+
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsUIShell shell = GetService<IVsUIShell>(typeof(SVsUIShell));
 
             if (shell == null)

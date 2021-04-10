@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 
@@ -27,6 +28,8 @@ namespace Ankh.Scc.ProjectMap
         uint _hierarchyEventsCookie;
         internal void Hook(bool hook)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             uint cookie;
             if (_hierarchyEventsCookie == 0 && hook)
             {
@@ -52,13 +55,15 @@ namespace Ankh.Scc.ProjectMap
         [CLSCompliant(false)]
         public int OnInvalidateItems(uint itemidParent)
         {
-            // Should be set the project dirty.. 
+            // Should be set the project dirty..
             // But is called in some cases when it really shouldn't
             return VSErr.S_OK;
         }
 
         private void SetDirty()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!_loaded)
                 return; // The project is just loading.. don't set it dirty
             else if (string.IsNullOrEmpty(ProjectFile))
@@ -89,6 +94,8 @@ namespace Ankh.Scc.ProjectMap
         [CLSCompliant(false)]
         public int OnItemAdded(uint itemidParent, uint itemidSiblingPrev, uint itemidAdded)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             string r;
 
             object var;
@@ -123,6 +130,8 @@ namespace Ankh.Scc.ProjectMap
         [CLSCompliant(false)]
         public int OnItemDeleted(uint itemid)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             SetPreCreatedItem(VSItemId.Nil);
 
             object var;
@@ -140,6 +149,8 @@ namespace Ankh.Scc.ProjectMap
         [CLSCompliant(false)]
         public int OnItemsAppended(uint itemidParent)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             SetDirty();
             return VSErr.S_OK;
         }

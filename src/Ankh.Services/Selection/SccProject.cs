@@ -15,6 +15,7 @@
 //  limitations under the License.
 
 using System;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.Selection
@@ -23,7 +24,7 @@ namespace Ankh.Selection
     /// An <see cref="SccProject"/> instance is a black box reference to a project
     /// </summary>
     /// <remarks>
-    /// <para>Normally you only use <see cref="SccProject"/> instances to pass between the <see cref="ISelectionContext"/>, 
+    /// <para>Normally you only use <see cref="SccProject"/> instances to pass between the <see cref="ISelectionContext"/>,
     /// <see cref="ISccHierarchyWalker"/> and <see cref="IProjectFileMapper"/> services</para>
     /// <para>The SvnProject contains a <see cref="path"/> and a <see cref="rawhandle"/> which can both be null but not both at the same time</para>
     /// <para>FullPath = null in case of a solution only-project (E.g. website project)</para>
@@ -145,6 +146,9 @@ namespace Ankh.Selection
         {
             if (IsSolution)
                 throw new InvalidOperationException();
+
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             try
             {
                 RawHandle.SccGlyphChanged(0, null, null, null);

@@ -14,3 +14,4 @@ indent_size = 2
 
 # CS3008: Identifier is not CLS-compliant
 dotnet_diagnostic.CS3008.severity = none
+dotnet_diagnostic.Localize_or_Mark_CS.severity = none

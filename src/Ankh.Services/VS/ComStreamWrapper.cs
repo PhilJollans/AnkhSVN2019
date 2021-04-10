@@ -18,12 +18,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.OLE.Interop;
 
 namespace Ankh.VS
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public sealed class ComStreamWrapper : Stream
     {
@@ -69,11 +70,13 @@ namespace Ankh.VS
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
                 return Seek(0, SeekOrigin.Current);
             }
 
             set
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
                 Seek(value, SeekOrigin.Begin);
             }
         }
@@ -129,10 +132,12 @@ namespace Ankh.VS
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 STATSTG[] sg = new STATSTG[1];
                 _comStream.Stat(sg, (uint)(STATFLAG.STATFLAG_DEFAULT));
 
-                return (long)sg[0].cbSize.QuadPart;                
+                return (long)sg[0].cbSize.QuadPart;
             }
         }
 
@@ -143,6 +148,8 @@ namespace Ankh.VS
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         public override void Flush()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_disposed)
                 throw new ObjectDisposedException("ComStreamWrapper");
 
@@ -163,6 +170,8 @@ namespace Ankh.VS
                 throw new ArgumentNullException("buffer");
             else if (_disposed)
                 throw new ObjectDisposedException("ComStreamWrapper");
+
+            ThreadHelper.ThrowIfNotOnUIThread();
 
             uint bytesRead;
             byte[] b = buffer;
@@ -198,6 +207,8 @@ namespace Ankh.VS
             else if (!CanWrite)
                 throw new InvalidOperationException();
 
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ULARGE_INTEGER ul = new ULARGE_INTEGER();
             ul.QuadPart = (ulong)value;
             _comStream.SetSize(ul);
@@ -218,6 +229,8 @@ namespace Ankh.VS
         {
             if (_disposed)
                 throw new ObjectDisposedException("ComStreamWrapper");
+
+            ThreadHelper.ThrowIfNotOnUIThread();
 
             LARGE_INTEGER l = new LARGE_INTEGER();
             ULARGE_INTEGER[] ul = new ULARGE_INTEGER[1];
@@ -242,6 +255,8 @@ namespace Ankh.VS
                 throw new ObjectDisposedException("ComStreamWrapper");
             else if (!CanWrite)
                 throw new InvalidOperationException();
+
+            ThreadHelper.ThrowIfNotOnUIThread();
 
             uint bytesWritten;
 
@@ -273,6 +288,8 @@ namespace Ankh.VS
         /// </summary>
         public override void Close()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!_disposed)
                 Flush();
 

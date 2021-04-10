@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Collections;
 using System.Diagnostics;
@@ -89,6 +90,8 @@ namespace Ankh.Selection
                 if (item == null)
                     throw new ArgumentNullException("item");
 
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 uint id;
                 if (_items.TryGetValue(item, out id))
                     return id;
@@ -112,6 +115,8 @@ namespace Ankh.Selection
 
             internal override uint GetId(object item)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 return GetId((T)item);
             }
 
@@ -136,6 +141,8 @@ namespace Ankh.Selection
 
             internal override void CleanSelection()
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 foreach (T i in new List<T>(_items.Keys))
                 {
                     if (!_owner.SelectionContains(i))
@@ -318,13 +325,13 @@ namespace Ankh.Selection
         {
             return new MapData<T>(owner);
         }
-        
+
         [DebuggerHidden, DebuggerNonUserCode]
         int IVsMultiItemSelect.GetSelectionInfo(out uint pcItems, out int pfSingleHierarchy)
         {
             pcItems = (uint)_data.Selection.Count;
 
-            pfSingleHierarchy = 1;  // If this line throws a nullreference exception, the bug is in the interop layer or the caller. 
+            pfSingleHierarchy = 1;  // If this line throws a nullreference exception, the bug is in the interop layer or the caller.
             // Nothing we can do to fix it
 
             return VSErr.S_OK;
@@ -338,7 +345,7 @@ namespace Ankh.Selection
 
             if (cItems > selection.Count || cItems > rgItemSel.Length)
                 return VSErr.E_FAIL;
-            
+
             for (int i = 0; i < cItems; i++)
             {
                 rgItemSel[i].pHier = omitHiers ? null : _hierarchy;
@@ -517,6 +524,8 @@ namespace Ankh.Selection
 
         public void NotifySelectionUpdated()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (Tracker == null)
                 return;
 
@@ -563,6 +572,8 @@ namespace Ankh.Selection
 
         public void EnsureSelection()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (Tracker == null)
                 return;
 
@@ -639,6 +650,8 @@ namespace Ankh.Selection
 
             int IVsHierarchy.GetGuidProperty(uint itemid, int propid, out Guid pguid)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 object v;
 
                 if (GetProperty(itemid, propid, out v) == 0 && v is Guid)
@@ -723,5 +736,5 @@ namespace Ankh.Selection
 
         }
     }
-    
+
 }

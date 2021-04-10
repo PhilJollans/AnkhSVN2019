@@ -10,6 +10,7 @@ using Ankh.Configuration;
 using Ankh.Scc.ProjectMap;
 using Ankh.Selection;
 using Ankh.VS;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.Scc
@@ -99,6 +100,8 @@ namespace Ankh.Scc
 
         protected virtual void SetActive(bool active)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             _active = active;
 
             if (!active)
@@ -121,6 +124,8 @@ namespace Ankh.Scc
 
         int IVsSccProvider.SetActive()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             try
             {
                 SetActive(true);
@@ -135,6 +140,8 @@ namespace Ankh.Scc
 
         int IVsSccProvider.SetInactive()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             try
             {
                 SetActive(false);
@@ -151,6 +158,8 @@ namespace Ankh.Scc
 
         public void RegisterAsPrimarySccProvider()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsRegisterScciProvider rscp = GetService<IVsRegisterScciProvider>();
             if (rscp == null)
                 return;
@@ -220,6 +229,8 @@ namespace Ankh.Scc
 
         void IAnkhSccProviderEvents.OnProjectClosed(IVsSccProject2 project, bool removed)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             SccProjectData data;
             ProjectMap.EnsureSccProject(project, out data);
             OnProjectClosed(data, removed);
@@ -227,12 +238,16 @@ namespace Ankh.Scc
 
         protected virtual void OnProjectClosed(SccProjectData data, bool removed)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             data.OnClose();
             ProjectMap.RemoveProject(data.SccProject);
         }
 
         void IAnkhSccProviderEvents.OnProjectDirectoryAdded(IVsSccProject2 project, string directory, string origin)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             SccProjectData data;
             if (!ProjectMap.TryGetSccProject(project, out data))
                 return; // Not managed by us
@@ -267,6 +282,8 @@ namespace Ankh.Scc
 
         void IAnkhSccProviderEvents.OnProjectRenamed(IVsSccProject2 project)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             SccProjectData data;
             ProjectMap.EnsureSccProject(project, out data);
             OnProjectRenamed(data);
@@ -274,11 +291,15 @@ namespace Ankh.Scc
 
         protected virtual void OnProjectRenamed(SccProjectData data)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             data.Reload(); // Reload project name, etc.
         }
 
         void IAnkhSccProviderEvents.OnProjectFileAdded(IVsSccProject2 project, string filename)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             SccProjectData data;
 
             ProjectMap.EnsureSccProject(project, out data);
@@ -287,11 +308,15 @@ namespace Ankh.Scc
 
         protected virtual void OnProjectFileAdded(SccProjectData data, string filename)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             data.AddPath(filename);
         }
 
         void IAnkhSccProviderEvents.OnProjectFileRemoved(IVsSccProject2 project, string oldName)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             SccProjectData data;
 
             ProjectMap.EnsureSccProject(project, out data);
@@ -300,11 +325,15 @@ namespace Ankh.Scc
 
         protected virtual void OnProjectFileRemoved(SccProjectData data, string oldName)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             data.RemovePath(oldName);
         }
 
         protected virtual void OnProjectDirectoryRemoved(SccProjectData data, string directoryname)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             // a directory can be added like a folder but with an ending '\'
             string dir = directoryname.TrimEnd('\\') + '\\';
             data.RemovePath(dir);
@@ -312,6 +341,8 @@ namespace Ankh.Scc
 
         protected virtual void OnProjectFileRenamed(SccProjectData project, string oldName, string newName)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             project.CheckProjectRename(oldName, newName); // Just to be sure (should be handled by other event)
 
             project.RemovePath(oldName);
@@ -578,6 +609,8 @@ namespace Ankh.Scc
 
         void IAnkhSccProviderEvents.OnProjectDirectoryRemoved(IVsSccProject2 sccProject, string dir, VSREMOVEDIRECTORYFLAGS vSREMOVEDIRECTORYFLAGS)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             SccProjectData data;
             ProjectMap.EnsureSccProject(sccProject, out data);
             OnProjectDirectoryRemoved(data, dir);
@@ -585,6 +618,8 @@ namespace Ankh.Scc
 
         void IAnkhSccProviderEvents.OnProjectFileRenamed(IVsSccProject2 sccProject, string oldName, string newName, VSRENAMEFILEFLAGS vSRENAMEFILEFLAGS)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             SccProjectData data;
             ProjectMap.EnsureSccProject(sccProject, out data);
             OnProjectFileRenamed(data, oldName, newName);

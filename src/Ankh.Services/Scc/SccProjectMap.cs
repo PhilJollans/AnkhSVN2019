@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Ankh.Scc.ProjectMap;
 using Ankh.Selection;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using SharpSvn;
 
@@ -97,6 +98,8 @@ namespace Ankh.Scc
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             path = SvnTools.GetNormalizedFullPath(path);
 
             SccProjectFile file;
@@ -116,6 +119,8 @@ namespace Ankh.Scc
         {
             if (paths == null)
                 throw new ArgumentNullException("paths");
+
+            ThreadHelper.ThrowIfNotOnUIThread();
 
             Hashtable projects = new Hashtable();
             foreach (string path in paths)
@@ -147,6 +152,8 @@ namespace Ankh.Scc
 
         public IEnumerable<SccProject> GetAllSccProjects()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             foreach (SccProjectData pd in AllSccProjects)
             {
                 if (!pd.ExcludedFromScc)
@@ -156,6 +163,8 @@ namespace Ankh.Scc
 
         public IEnumerable<SccProject> GetAllUIProjects()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             foreach (SccProjectData pd in AllSccProjects)
             {
                 if (!pd.DontAddToProjectWindow)
@@ -167,6 +176,8 @@ namespace Ankh.Scc
         {
             if (project == null)
                 throw new ArgumentNullException("project");
+
+            ThreadHelper.ThrowIfNotOnUIThread();
 
             if (project.RawHandle == null && !project.IsSolution)
             {
@@ -188,6 +199,8 @@ namespace Ankh.Scc
         {
             if (project == null)
                 throw new ArgumentNullException("project");
+
+            ThreadHelper.ThrowIfNotOnUIThread();
 
             if (project.IsSolution)
             {
@@ -221,6 +234,8 @@ namespace Ankh.Scc
 
         public IEnumerable<string> GetAllFilesOf(ICollection<SccProject> projects, bool exceptExcluded)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             SortedList<string, string> files = new SortedList<string, string>(StringComparer.OrdinalIgnoreCase);
             Hashtable handled = new Hashtable();
             foreach (SccProject p in projects)
@@ -270,6 +285,8 @@ namespace Ankh.Scc
 
         public ICollection<string> GetAllFilesOfAllProjects(bool exceptExcluded)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             List<string> files = new List<string>(UniqueFileCount + 1);
 
             if (SolutionFilename != null && !ContainsFile(SolutionFilename))
@@ -291,6 +308,8 @@ namespace Ankh.Scc
 
         public ISccProjectInfo GetProjectInfo(SccProject project)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (project == null)
                 return null;
 
@@ -335,7 +354,11 @@ namespace Ankh.Scc
             /// <value>The name of the project.</value>
             public string ProjectName
             {
-                get { return _data.ProjectName; }
+                get
+                {
+                    ThreadHelper.ThrowIfNotOnUIThread();
+                    return _data.ProjectName;
+                }
             }
 
             /// <summary>
@@ -344,7 +367,11 @@ namespace Ankh.Scc
             /// <value>The project directory.</value>
             public string ProjectDirectory
             {
-                get { return _data.ProjectDirectory; }
+                get
+                {
+                    ThreadHelper.ThrowIfNotOnUIThread();
+                    return _data.ProjectDirectory;
+                }
             }
 
             #region ISvnProjectInfo Members
@@ -356,7 +383,11 @@ namespace Ankh.Scc
             /// <value>The project file.</value>
             public string ProjectFile
             {
-                get { return _data.ProjectFile; }
+                get
+                {
+                    ThreadHelper.ThrowIfNotOnUIThread();
+                    return _data.ProjectFile;
+                }
             }
 
             /// <summary>
@@ -365,7 +396,11 @@ namespace Ankh.Scc
             /// <value>The full name of the project.</value>
             public string UniqueProjectName
             {
-                get { return _data.UniqueProjectName; }
+                get
+                {
+                    ThreadHelper.ThrowIfNotOnUIThread();
+                    return _data.UniqueProjectName;
+                }
             }
 
             /// <summary>
@@ -374,7 +409,11 @@ namespace Ankh.Scc
             /// <value>The SCC base directory.</value>
             public string SccBaseDirectory
             {
-                get { return _data.SccBaseDirectory; }
+                get
+                {
+                    ThreadHelper.ThrowIfNotOnUIThread();
+                    return _data.SccBaseDirectory;
+                }
                 set { throw new InvalidOperationException(); }
             }
 
@@ -390,7 +429,11 @@ namespace Ankh.Scc
 
             public bool IsSccBindable
             {
-                get { return _data.IsSccBindable; }
+                get
+                {
+                    ThreadHelper.ThrowIfNotOnUIThread();
+                    return _data.IsSccBindable;
+                }
 
             }
 
@@ -399,6 +442,8 @@ namespace Ankh.Scc
 
         public ProjectIconReference GetPathIconHandle(string path)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             SccProjectFile file;
 
             if (!TryGetFile(path, out file))
@@ -424,6 +469,8 @@ namespace Ankh.Scc
 
         public bool IsProjectFileOrSolution(string path)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 

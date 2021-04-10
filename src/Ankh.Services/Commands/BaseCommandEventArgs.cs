@@ -17,6 +17,7 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using Ankh.Selection;
@@ -83,6 +84,8 @@ namespace Ankh.Commands
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 IVsExtensibility3 extensibility = GetService<IVsExtensibility3>(typeof(SVsExtensibility));
 
                 if (extensibility != null)

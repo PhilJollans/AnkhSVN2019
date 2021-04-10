@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using SharpSvn;
 
@@ -23,6 +24,8 @@ namespace Ankh.Scc
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_solutionFile == null)
                     LoadSolutionInfo();
 
@@ -34,6 +37,8 @@ namespace Ankh.Scc
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_solutionFile == null)
                     LoadSolutionInfo();
 
@@ -45,6 +50,8 @@ namespace Ankh.Scc
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_solutionFile == null)
                     LoadSolutionInfo();
 
@@ -54,6 +61,8 @@ namespace Ankh.Scc
 
         void LoadSolutionInfo()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             string dir, path, user;
 
             _rawSolutionDirectory = null;

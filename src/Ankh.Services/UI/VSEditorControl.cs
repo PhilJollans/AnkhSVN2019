@@ -21,6 +21,7 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -84,6 +85,8 @@ namespace Ankh.UI
             if (_frame == null)
                 throw new InvalidOperationException();
 
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Guid value;
             Marshal.ThrowExceptionForHR((_frame.GetGuidProperty((int)__VSFPROPID, out value)));
 
@@ -95,21 +98,39 @@ namespace Ankh.UI
             if (_frame == null)
                 throw new InvalidOperationException();
 
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Marshal.ThrowExceptionForHR((_frame.SetGuidProperty((int)propId, ref value)));
         }
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Guid KeyboardContext
         {
-            get { return GetGuid(__VSFPROPID.VSFPROPID_InheritKeyBindings); }
-            set { SetGuid(__VSFPROPID.VSFPROPID_InheritKeyBindings, value); }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return GetGuid(__VSFPROPID.VSFPROPID_InheritKeyBindings);
+            }
+            set
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                SetGuid(__VSFPROPID.VSFPROPID_InheritKeyBindings, value);
+            }
         }
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Guid CommandContext
         {
-            get { return GetGuid(__VSFPROPID.VSFPROPID_CmdUIGuid); }
-            set { SetGuid(__VSFPROPID.VSFPROPID_CmdUIGuid, value); }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return GetGuid(__VSFPROPID.VSFPROPID_CmdUIGuid);
+            }
+            set
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                SetGuid(__VSFPROPID.VSFPROPID_CmdUIGuid, value);
+            }
         }
         protected void SetFindTarget(object findTarget)
         {
@@ -144,9 +165,9 @@ namespace Ankh.UI
         private void InitializeComponent()
         {
             this.SuspendLayout();
-            // 
+            //
             // VSDocumentForm
-            // 
+            //
             this.ClientSize = new System.Drawing.Size(284, 264);
             this.Name = "VSDocumentForm";
             this.ResumeLayout(false);
@@ -173,6 +194,8 @@ namespace Ankh.UI
 
         void IVSEditorControlInit.InitializedForm(Microsoft.VisualStudio.Shell.Interop.IVsUIHierarchy hier, uint id, IVsWindowFrame frame, IAnkhEditorPane pane)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             _frame = frame;
             _pane = pane;
 
@@ -219,6 +242,8 @@ namespace Ankh.UI
 
         int IVsWindowFrameNotify2.OnClose(ref uint pgrfSaveOptions)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_frameNotifyCookie != 0)
                 try
                 {

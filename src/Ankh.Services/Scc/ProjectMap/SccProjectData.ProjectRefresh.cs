@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.Scc.ProjectMap
@@ -36,6 +37,8 @@ namespace Ankh.Scc.ProjectMap
 
             public RefreshState(IAnkhServiceProvider context, IVsHierarchy hier, IVsProject project, string projectDir)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 _hier = hier;
                 _cache = context.GetService<ISvnStatusCache>();
                 _walker = context.GetService<ISccProjectWalker>();
@@ -65,12 +68,16 @@ namespace Ankh.Scc.ProjectMap
 
             public bool AddItem(SvnItem item)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 uint parentId;
                 return AddItem(item, out parentId);
             }
 
             private bool AddItem(SvnItem item, out uint parentId)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 string itemDir = item.Directory;
 
                 if (itemDir == null)
@@ -127,6 +134,8 @@ namespace Ankh.Scc.ProjectMap
 
             public void RemoveItem(SvnItem item, uint id)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 int found;
                 VsProject.RemoveItem(0, id, out found);
                 _map.Clear(); // Flush the cache to make sure ids stay valid
@@ -135,6 +144,8 @@ namespace Ankh.Scc.ProjectMap
 
         public void PerformRefresh(IEnumerable<SvnClientAction> sccRefreshItems)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Debug.Assert(WebLikeFileHandling, "Refreshing a project that manages itself");
 
             RefreshState state = new RefreshState(_context, ProjectHierarchy, VsProject, ProjectDirectory);
@@ -158,7 +169,7 @@ namespace Ankh.Scc.ProjectMap
                 uint id;
 
                 // Check the real project here instead of our cache to keep the update initiative
-                // at the project. Checking our cache might be unsafe, as we get file add and remove 
+                // at the project. Checking our cache might be unsafe, as we get file add and remove
                 // events from the project while we are updating
                 if (!VSErr.Succeeded(VsProject.IsDocumentInProject(item.FullPath, out found, prio, out id)))
                     continue;

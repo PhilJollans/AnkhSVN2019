@@ -24,6 +24,7 @@ using System.Reflection;
 using Ankh.UI;
 using System.Threading;
 using System.Runtime.InteropServices;
+using Microsoft.VisualStudio.Shell;
 
 namespace Ankh
 {
@@ -67,6 +68,7 @@ namespace Ankh
 
         public void PreLoad()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             VSVersion.Ensure(this);
         }
 
@@ -226,6 +228,8 @@ namespace Ankh
         /// <param name="assembly">The assembly.</param>
         public void LoadServices(IServiceContainer container, System.Reflection.Assembly assembly)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             LoadServices(container, assembly, Context);
         }
 
@@ -237,6 +241,8 @@ namespace Ankh
         /// <param name="context">The context.</param>
         public void LoadServices(IServiceContainer container, System.Reflection.Assembly assembly, IAnkhServiceProvider context)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (assembly == null)
                 throw new ArgumentNullException("assembly");
             else if (context == null)

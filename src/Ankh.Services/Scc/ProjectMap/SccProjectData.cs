@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
 using SharpSvn;
@@ -78,6 +79,8 @@ namespace Ankh.Scc.ProjectMap
         [CLSCompliant(false)]
         public SccProjectData(SccProjectMap context, IVsSccProject2 project)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (context == null)
                 throw new ArgumentNullException("context");
             else if (project == null)
@@ -149,6 +152,8 @@ namespace Ankh.Scc.ProjectMap
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_projectName == null && _hierarchy != null)
                 {
                     _projectName = "";
@@ -171,6 +176,8 @@ namespace Ankh.Scc.ProjectMap
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (!_projectGuid.HasValue)
                 {
                     IVsSolution solution = GetService<IVsSolution>(typeof(SVsSolution));
@@ -191,6 +198,8 @@ namespace Ankh.Scc.ProjectMap
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (!_projectTypeGuid.HasValue)
                 {
                     Guid value;
@@ -210,6 +219,8 @@ namespace Ankh.Scc.ProjectMap
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_projectDirectory == null && _hierarchy != null)
                 {
                     _projectDirectory = "";
@@ -225,7 +236,7 @@ namespace Ankh.Scc.ProjectMap
                         {
                             // Ok, we have users reporting they get here via Analysis services
 
-                            // Wild guess: If we have a valid project file assume its folder 
+                            // Wild guess: If we have a valid project file assume its folder
                             //              is the project directory.
                             dir = ProjectFile;
 
@@ -247,6 +258,8 @@ namespace Ankh.Scc.ProjectMap
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 GC.KeepAlive(ProjectFile);
                 return _projectLocation;
             }
@@ -256,6 +269,8 @@ namespace Ankh.Scc.ProjectMap
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (!_checkedProjectFile && _vsProject != null)
                 {
                     _checkedProjectFile = true;
@@ -279,12 +294,18 @@ namespace Ankh.Scc.ProjectMap
         /// <value>The SCC base directory.</value>
         public string SccBaseDirectory
         {
-            get { return _sccBaseDirectory ?? (_sccBaseDirectory = GetSccBaseDirectory()); }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return _sccBaseDirectory ?? (_sccBaseDirectory = GetSccBaseDirectory());
+            }
             set { _sccBaseDirectory = value; }
         }
 
         string GetSccBaseDirectory()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             string projectDir = ProjectDirectory;
 
             if (projectDir == null)
@@ -326,7 +347,7 @@ namespace Ankh.Scc.ProjectMap
                 }
 
                 // The user deliberately choose not to have the item in the solution root
-                // -> Default to the project directory                
+                // -> Default to the project directory
             }
 
             return ProjectDirectory;
@@ -338,6 +359,8 @@ namespace Ankh.Scc.ProjectMap
             {
                 if (ExcludedFromScc)
                     return false;
+
+                ThreadHelper.ThrowIfNotOnUIThread();
 
                 IVsSccProjectProviderBinding providerBinding = VsProject as IVsSccProjectProviderBinding;
 
@@ -360,6 +383,8 @@ namespace Ankh.Scc.ProjectMap
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_uniqueName != null)
                     return _uniqueName;
                 IVsSolution3 solution = GetService<IVsSolution3>(typeof(SVsSolution));
@@ -379,6 +404,8 @@ namespace Ankh.Scc.ProjectMap
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_svnProjectInstance == null)
                 {
                     if (PerNodeGlyphChange)
@@ -403,6 +430,8 @@ namespace Ankh.Scc.ProjectMap
         /// <param name="newName">The new name.</param>
         public void CheckProjectRename(string oldName, string newName)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_checkedProjectFile && oldName == ProjectFile)
             {
                 _checkedProjectFile = false;
@@ -440,6 +469,8 @@ namespace Ankh.Scc.ProjectMap
 
         public void SetManaged(bool managed)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (managed == IsManaged || ExcludedFromScc)
                 return;
 
@@ -464,6 +495,8 @@ namespace Ankh.Scc.ProjectMap
 
         public void OnClose()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Hook(false);
             while (_files.Count > 0)
             {
@@ -479,12 +512,14 @@ namespace Ankh.Scc.ProjectMap
         bool _disposed;
         public void Dispose()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             _disposed = true;
             Hook(false);
         }
 
         void IDisposable.Dispose()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             Dispose();
         }
 
@@ -502,6 +537,8 @@ namespace Ankh.Scc.ProjectMap
         bool _inLoad;
         public void Load()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_loaded || !_opened)
                 return;
 
@@ -545,6 +582,8 @@ namespace Ankh.Scc.ProjectMap
 
         public void Reload()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             _projectName = null;
             _uniqueName = null;
             OnClose();
@@ -581,6 +620,8 @@ namespace Ankh.Scc.ProjectMap
 
         public void AddPath(string path)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (ExcludedFromScc)
                 return;
 
@@ -654,6 +695,8 @@ namespace Ankh.Scc.ProjectMap
 
         private void AddPath(string path, Dictionary<string, uint> ids)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (ExcludedFromScc)
                 return;
 
@@ -670,6 +713,8 @@ namespace Ankh.Scc.ProjectMap
 
         public void RemovePath(string path)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
@@ -710,6 +755,8 @@ namespace Ankh.Scc.ProjectMap
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (!_sccEnlistChoice.HasValue)
                 {
                     IVsSccProjectEnlistmentChoice pec = VsProject as IVsSccProjectEnlistmentChoice;
@@ -827,6 +874,8 @@ namespace Ankh.Scc.ProjectMap
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_fetchedImgList)
                     return _projectImgList;
 
@@ -851,6 +900,8 @@ namespace Ankh.Scc.ProjectMap
         [CLSCompliant(false)]
         public bool TryGetProjectFileId(string path, out uint itemId)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             int found;
             uint id;
             VSDOCUMENTPRIORITY[] prio = new VSDOCUMENTPRIORITY[1];
@@ -872,6 +923,7 @@ namespace Ankh.Scc.ProjectMap
 
         public override string ToString()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return UniqueProjectName;
         }
 
@@ -884,6 +936,8 @@ namespace Ankh.Scc.ProjectMap
         [DebuggerNonUserCode]
         public void NotifyGlyphsChanged()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (ExcludedFromScc || DontAddToProjectWindow)
                 return;
 
@@ -899,6 +953,8 @@ namespace Ankh.Scc.ProjectMap
 
         internal void ForceGlyphChanges()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             uint[] idsArray;
             string[] namesArray;
             {

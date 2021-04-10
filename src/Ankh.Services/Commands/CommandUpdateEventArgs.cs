@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.OLE.Interop;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.Commands
@@ -157,6 +158,8 @@ namespace Ankh.Commands
                 IVsCommandArgInfo info = GetService<IVsCommandArgInfo>(typeof(SVsCommandWindow));
                 if (info == null)
                     return false;
+
+                ThreadHelper.ThrowIfNotOnUIThread();
 
                 int available;
                 if (info.QueryCommandArgAvailable(out available) == 0)

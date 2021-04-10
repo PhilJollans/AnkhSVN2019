@@ -21,6 +21,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using SharpSvn;
@@ -53,6 +54,8 @@ namespace Ankh.Scc.ProjectMap
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
 
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             _name = name;
 
             if (SvnItem.IsValidPath(name))
@@ -66,6 +69,8 @@ namespace Ankh.Scc.ProjectMap
         [CLSCompliant(false)]
         public void SetFlags(_VSRDTFLAGS flags)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             _flags = flags;
             bool isVirtual = ((flags & (_VSRDTFLAGS.RDT_VirtualDocument | _VSRDTFLAGS.RDT_ProjSlnDocument)) == _VSRDTFLAGS.RDT_VirtualDocument);
 
@@ -126,6 +131,8 @@ namespace Ankh.Scc.ProjectMap
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_fetchedRaw)
                     return _rawDocument;
 
@@ -136,6 +143,8 @@ namespace Ankh.Scc.ProjectMap
 
         private object FetchDocument()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if ((_flags & RDT_PendingInitialization) != 0)
                 return null;
 
@@ -206,6 +215,8 @@ namespace Ankh.Scc.ProjectMap
 
         public void OnClosed()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             SetDirty(false); // Mark as undirty
             Dispose();
         }
@@ -286,7 +297,7 @@ namespace Ankh.Scc.ProjectMap
                 monitor.SetDocumentDirty(FullPath, dirty);
 
             ISelectionContextEx selection = GetService<ISelectionContextEx>(typeof(ISelectionContext));
-            
+
             if (selection != null)
                 selection.MaybeInstallDelayHandler();
         }
@@ -304,6 +315,8 @@ namespace Ankh.Scc.ProjectMap
 
         public void Dispose()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             _disposed = true;
             IAnkhOpenDocumentTracker tracker = GetService<IAnkhOpenDocumentTracker>(typeof(IAnkhOpenDocumentTracker));
 
@@ -331,6 +344,8 @@ namespace Ankh.Scc.ProjectMap
         /// <returns><c>true</c> if the document is reloaded, otherwise false</returns>
         public bool Reload(bool clearUndo)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_disposed)
                 return false;
 
@@ -407,6 +422,8 @@ namespace Ankh.Scc.ProjectMap
         /// </value>
         public bool IsReloadable()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsPersistDocData pdd = RawDocument as IVsPersistDocData;
 
             if (pdd == null)
@@ -421,6 +438,8 @@ namespace Ankh.Scc.ProjectMap
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (!_isPropertyDesigner.HasValue)
                 {
                     _isPropertyDesigner = false;
@@ -448,6 +467,8 @@ namespace Ankh.Scc.ProjectMap
         /// <returns></returns>
         public bool SetReadOnly(bool readOnly)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsPersistDocData2 pdd2 = RawDocument as IVsPersistDocData2;
 
             if (pdd2 == null)
@@ -492,6 +513,8 @@ namespace Ankh.Scc.ProjectMap
         /// </returns>
         public bool IsReadOnly()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsPersistDocData2 pdd2 = RawDocument as IVsPersistDocData2;
 
             if (pdd2 == null)
@@ -509,6 +532,8 @@ namespace Ankh.Scc.ProjectMap
         /// <returns></returns>
         public bool IgnoreFileChanges(bool ignore)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!IsDocumentInitialized)
                 return false;
 
@@ -553,6 +578,8 @@ namespace Ankh.Scc.ProjectMap
         bool _ignoring;
         bool EnsureIgnored(bool ignore)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!IsDocumentInitialized)
                 return false;
             else if (_ignoring == ignore)
@@ -575,6 +602,8 @@ namespace Ankh.Scc.ProjectMap
         [CLSCompliant(false)]
         public bool SaveDocument(IVsRunningDocumentTable rdt)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!IsDocumentInitialized || (_flags & _VSRDTFLAGS.RDT_DontSave) != 0)
                 return true;
 
@@ -597,6 +626,8 @@ namespace Ankh.Scc.ProjectMap
         #region IVsFileChangeEvents Members
         private void HookFileChanges(bool reHook)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsFileChangeEx fileChange = null;
             if (_fileChangeCookies != null)
             {
@@ -682,7 +713,7 @@ namespace Ankh.Scc.ProjectMap
                     return true;
                 else if (!IsDocumentInitialized)
                     return true;
-                //else if ((_flags & projectFlags) == projectFlags 
+                //else if ((_flags & projectFlags) == projectFlags
                 //         && !Name.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
                 //                    return true;
 

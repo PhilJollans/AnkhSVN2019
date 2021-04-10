@@ -20,6 +20,7 @@ using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using IObjectWithSite = Microsoft.VisualStudio.OLE.Interop.IObjectWithSite;
 using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
@@ -173,7 +174,7 @@ namespace Ankh
         /// <summary>
         /// Gets the service container.
         /// </summary>
-        /// <value>The service container.</value>        
+        /// <value>The service container.</value>
         protected IServiceContainer ServiceContainer
         {
             [DebuggerStepThrough]
@@ -245,6 +246,8 @@ namespace Ankh
             if (classType == null)
                 throw new ArgumentNullException("classType");
 
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ILocalRegistry registry = GetService<ILocalRegistry>(typeof(SLocalRegistry));
 
             Guid gType = typeof(T).GUID;
@@ -273,6 +276,8 @@ namespace Ankh
         protected T CreateLocalInstance<T>(Type classType, object site)
             where T : class
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             T instance = CreateLocalInstance<T>(classType);
 
             if (site != null)
@@ -285,6 +290,8 @@ namespace Ankh
         {
             if (instance == null)
                 throw new ArgumentNullException("instance");
+
+            ThreadHelper.ThrowIfNotOnUIThread();
 
             IObjectWithSite sitedObject = instance as IObjectWithSite;
             if (sitedObject != null)
@@ -343,6 +350,8 @@ namespace Ankh
             else if (sink == null)
                 throw new ArgumentNullException("sink");
 
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IOleConnectionPointContainer ct = container as IOleConnectionPointContainer;
             if (ct == null)
             {
@@ -374,6 +383,8 @@ namespace Ankh
         protected static void ReleaseHook<T>(object container, uint cookie)
             where T : class
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ReleaseHook(container, typeof(T), cookie);
         }
 
@@ -394,6 +405,8 @@ namespace Ankh
             if (cookie == 0)
                 return;
 
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IOleConnectionPointContainer ct = container as IOleConnectionPointContainer;
             if (ct == null)
                 return;
@@ -411,6 +424,8 @@ namespace Ankh
         [DebuggerStepThrough]
         int IOleServiceProvider.QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             return GetService<IOleServiceProvider>().QueryService(ref guidService, ref riid, out ppvObject);
         }
 

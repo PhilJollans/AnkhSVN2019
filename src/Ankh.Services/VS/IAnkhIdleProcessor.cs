@@ -17,12 +17,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.OLE.Interop;
 
 namespace Ankh.VS
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class AnkhIdleArgs : EventArgs
     {
@@ -92,7 +93,9 @@ namespace Ankh.VS
         /// <returns></returns>
         public bool ContinueIdle()
         {
-            if(_mgr == null)
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            if (_mgr == null)
                 _mgr = _context.GetService<IOleComponentManager>(typeof(SOleComponentManager));
 
             return _mgr == null || 0 != _mgr.FContinueIdle();

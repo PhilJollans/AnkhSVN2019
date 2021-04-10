@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using SharpSvn;
+using Microsoft.VisualStudio.Shell;
 
 namespace Ankh.Scc
 {
@@ -11,6 +12,8 @@ namespace Ankh.Scc
 
         public void SerializeSccExcludeData(System.IO.Stream store, bool writeData)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ClearSolutionInfo(); // Force the right data
             string baseDir = SolutionDirectory;
 

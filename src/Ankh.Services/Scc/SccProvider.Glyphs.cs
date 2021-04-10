@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.Scc
 {
     /// <summary>
-    /// Identical to Microsoft.VisualStudio.Shell.Interop.__SccStatus 
+    /// Identical to Microsoft.VisualStudio.Shell.Interop.__SccStatus
     /// in Microsoft.VisualStudio.Shell.Interop.9.0
     /// </summary>
     enum SccStatus
@@ -105,7 +106,7 @@ namespace Ankh.Scc
         }
 
         /// <summary>
-        /// This method is called by projects to discover the source control glyphs 
+        /// This method is called by projects to discover the source control glyphs
         /// to use on files and the files' source control status; this is the only way to get status.
         /// </summary>
         /// <param name="cFiles">The c files.</param>
@@ -175,6 +176,8 @@ namespace Ankh.Scc
 
         public void UpdateSolutionGlyph()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!IsActive)
                 return;
 
@@ -194,6 +197,8 @@ namespace Ankh.Scc
 
         public void ClearSolutionGlyph()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsHierarchy hier = GetService<IVsHierarchy>(typeof(SVsSolution));
 
             if (hier == null)
@@ -221,6 +226,8 @@ namespace Ankh.Scc
 
         int IVsSccGlyphs.GetCustomGlyphList(uint baseIndex, out uint pdwImageListHandle)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (baseIndex == _baseIndex && _glyphList != null)
             {
                 pdwImageListHandle = unchecked((uint)_glyphList.Handle);
@@ -288,6 +295,8 @@ namespace Ankh.Scc
 
         private bool SolutionNavigatorInstalled()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!VSVersion.VS2010)
                 return false;
 

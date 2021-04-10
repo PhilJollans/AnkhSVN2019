@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Diagnostics;
 
@@ -113,6 +114,8 @@ namespace Ankh.Scc.ProjectMap
 
         public IEnumerable<string> GetAllFiles()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             HybridCollection<string> mapped = null;
 
             yield return FullPath;

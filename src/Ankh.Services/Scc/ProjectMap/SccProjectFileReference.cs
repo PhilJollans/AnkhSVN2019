@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 using SharpSvn;
@@ -115,6 +116,8 @@ namespace Ankh.Scc.ProjectMap
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_id != 0)
                     return _id;
 
@@ -128,6 +131,8 @@ namespace Ankh.Scc.ProjectMap
 
         public bool TryGetIcon(out ProjectIconReference icon)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             uint id = ProjectItemId;
             icon = null;
 
@@ -180,11 +185,13 @@ namespace Ankh.Scc.ProjectMap
             if (value is ulong) return (int)(ulong)value;
             if (value is IntPtr) return (int)(IntPtr)value;
 
-            return 0; 
+            return 0;
         }
 
         public IList<string> GetSubFiles()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_subFiles != null)
                 return _subFiles;
 

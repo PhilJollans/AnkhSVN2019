@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using System.IO;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Text.RegularExpressions;
 
@@ -69,6 +70,8 @@ namespace Ankh
 
         internal static void Ensure(IAnkhServiceProvider context)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (FullVersion.Major == 0)
             {
                 // Use the old DTE api in an attempt to get the version

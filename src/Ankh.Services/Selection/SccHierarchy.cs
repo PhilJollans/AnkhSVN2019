@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.Selection
@@ -25,6 +26,8 @@ namespace Ankh.Selection
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (!string.IsNullOrEmpty(_name))
                     return _name.Length > 0 ? _name : null;
 
@@ -52,6 +55,8 @@ namespace Ankh.Selection
 
         public bool Equals(SccHierarchy other)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (other == null)
                 return false;
 
@@ -65,6 +70,8 @@ namespace Ankh.Selection
 
         public override int GetHashCode()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             return StringComparer.OrdinalIgnoreCase.GetHashCode(Name);
         }
     }
