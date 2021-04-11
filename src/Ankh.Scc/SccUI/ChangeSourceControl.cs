@@ -24,6 +24,7 @@ using System.Windows.Forms.Design;
 using Ankh.Selection;
 using Ankh.UI;
 using Ankh.VS;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.Scc.SccUI
@@ -37,6 +38,8 @@ namespace Ankh.Scc.SccUI
 
         protected override void OnLoad(EventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             base.OnLoad(e);
 
             if (DesignMode)
@@ -64,6 +67,8 @@ namespace Ankh.Scc.SccUI
         bool _prepared;
         public void Prepare()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_prepared)
                 return;
 
@@ -88,6 +93,8 @@ namespace Ankh.Scc.SccUI
 
         private void InitializeGrid()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             bindingGrid.Rows.Clear();
 
             if (Context == null)
@@ -131,6 +138,8 @@ namespace Ankh.Scc.SccUI
 
         void RefreshGrid()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ISupportInitialize init = bindingGrid;
             init.BeginInit();
             try
@@ -195,11 +204,14 @@ namespace Ankh.Scc.SccUI
 
         private void refreshButton_Click(object sender, EventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             RefreshGrid();
         }
 
         private void connectButton_Click(object sender, EventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (Context == null)
                 return;
 
@@ -214,6 +226,8 @@ namespace Ankh.Scc.SccUI
         }
         private void disconnectButton_Click(object sender, EventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (Context == null)
                 return;
 
@@ -265,6 +279,8 @@ namespace Ankh.Scc.SccUI
 
         private void bindingGrid_SelectionChanged(object sender, EventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (DesignMode)
                 return;
 
@@ -289,6 +305,8 @@ namespace Ankh.Scc.SccUI
 
         private void UpdateSettingTabs()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             string projectBase = null;
             string relativePath = null;
             string projectLocation = null;
@@ -420,6 +438,8 @@ namespace Ankh.Scc.SccUI
 
         private void slnBindBrowse_Click(object sender, EventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             using (ChangeSolutionRoot sr = new ChangeSolutionRoot())
             {
                 sr.ShowDialog(Context);

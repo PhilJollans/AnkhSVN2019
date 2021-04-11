@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Ankh.Scc.ProjectMap;
 
@@ -40,6 +41,7 @@ namespace Ankh.Scc
 
         protected override int GetSccGlyph(string[] namesArray, VsStateIcon[] newGlyphs, uint[] sccState)
         {
+            ThreadHelper.ThrowIfNotOnUIThread() ;
             return Scc.GetSccGlyph(namesArray != null ? namesArray.Length : 0, namesArray, newGlyphs, sccState);
         }
     }

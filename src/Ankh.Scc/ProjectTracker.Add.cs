@@ -21,6 +21,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using SharpSvn;
@@ -132,6 +133,8 @@ namespace Ankh.Scc
         /// <returns></returns>
         public int OnAfterAddFilesEx(int cProjects, int cFiles, IVsProject[] rgpProjects, int[] rgFirstIndices, string[] rgpszMkDocuments, VSADDFILEFLAGS[] rgFlags)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             RegisterForSccCleanup(); // Clear the origins table after adding
 
             SortedList<string, string> copies = null;
@@ -196,6 +199,8 @@ namespace Ankh.Scc
 
         private void TryFindOrigin(string newName, out string origin)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_fileOrigins.TryGetValue(newName, out origin))
             {
                 if (origin != null)
@@ -448,6 +453,8 @@ namespace Ankh.Scc
         /// <remarks>Deny a query only if allowing the operation would compromise your stable state</remarks>
         public int OnAfterAddDirectoriesEx(int cProjects, int cDirectories, IVsProject[] rgpProjects, int[] rgFirstIndices, string[] rgpszMkDocuments, VSADDDIRECTORYFLAGS[] rgFlags)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (rgpProjects == null || rgpszMkDocuments == null)
                 return VSErr.E_POINTER;
 

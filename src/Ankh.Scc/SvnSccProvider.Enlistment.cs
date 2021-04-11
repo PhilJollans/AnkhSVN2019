@@ -20,6 +20,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.OLE.Interop;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using SharpSvn;
 
@@ -186,6 +187,7 @@ namespace Ankh.Scc
 
         bool MapProject(IVsHierarchy pHierarchy, out string slnLocation, out SccProjectData data)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             IVsSccProject2 sccProject = pHierarchy as IVsSccProject2;
 
             if (sccProject != null && ProjectMap.TryGetSccProject(sccProject, out data))
@@ -226,6 +228,8 @@ namespace Ankh.Scc
 
         public bool HasProjectProperties(IVsHierarchy pHierarchy)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             string location;
             SccProjectData data;
 
@@ -245,6 +249,8 @@ namespace Ankh.Scc
 
         public void StoreProjectProperties(IVsHierarchy pHierarchy, IPropertyMap map)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             string location;
             SccProjectData data;
 
@@ -282,6 +288,8 @@ namespace Ankh.Scc
 
         private void UpdateOriginUri(IVsHierarchy pHierarchy)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             string location;
             SccProjectData data;
 
@@ -333,6 +341,8 @@ namespace Ankh.Scc
 
         public void ReadProjectProperties(IVsHierarchy pHierarchy, string pszProjectName, string pszProjectMk, IPropertyMap map)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             string slnProjectName;
 
             if (!_trueNameMap.TryGetValue(pszProjectMk, out slnProjectName))
@@ -349,6 +359,7 @@ namespace Ankh.Scc
 
         void EnsureEnlistment(string slnProjectName, string pszProjectMk, SccSvnOrigin origin)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             SccTranslatePathInfo tpi;
             if (TryGetTranslation(slnProjectName, out tpi))
                 return; // We have existing local data
@@ -415,6 +426,7 @@ namespace Ankh.Scc
 
         public IDictionary<string, object> GetProjectsThatNeedEnlisting()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             if (_translationMap.Count == 0)
                 return null;
 
@@ -461,6 +473,7 @@ namespace Ankh.Scc
 
         internal void EnlistAndCheckout(IVsHierarchy vsHierarchy, string pszProjectMk)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             string slnProjectMk;
 
             if (!_trueNameMap.TryGetValue(pszProjectMk, out slnProjectMk))
@@ -645,7 +658,7 @@ namespace Ankh.Scc
                 foreach (SccTranslatePathInfo tpi in _translationMap.Values)
                 {
                     string[] paths = new string[] { tpi.SolutionPath, tpi.EnlistmentPath, tpi.EnlistmentUNCPath};
- 
+
                     bw.Write((int)paths.Length);
 
                     foreach(string p in paths)

@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using SharpSvn;
 using System.IO;
@@ -64,6 +65,8 @@ namespace Ankh.Scc
 
         public int OnAfterRenameFiles(int cProjects, int cFiles, IVsProject[] rgpProjects, int[] rgFirstIndices, string[] rgszMkOldNames, string[] rgszMkNewNames, VSRENAMEFILEFLAGS[] rgFlags)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (rgszMkNewNames == null || rgpProjects == null || rgszMkOldNames == null || rgszMkOldNames.Length != rgszMkNewNames.Length)
                 return VSErr.E_POINTER;
 
@@ -257,6 +260,8 @@ namespace Ankh.Scc
 
         public int OnAfterRenameDirectories(int cProjects, int cDirs, IVsProject[] rgpProjects, int[] rgFirstIndices, string[] rgszMkOldNames, string[] rgszMkNewNames, VSRENAMEDIRECTORYFLAGS[] rgFlags)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (rgszMkNewNames == null || rgpProjects == null || rgszMkOldNames == null)
                 return VSErr.E_POINTER;
 

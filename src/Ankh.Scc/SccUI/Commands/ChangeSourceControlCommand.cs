@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 
@@ -41,6 +42,8 @@ namespace Ankh.Scc.SccUI.Commands
 
         public void OnExecute(CommandEventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IAnkhServiceProvider context = e.Context;
             if (!EnsureAllProjectsLoaded(context))
                 return;
@@ -58,6 +61,8 @@ namespace Ankh.Scc.SccUI.Commands
 
         List<IVsHierarchy> GetProjects(IAnkhServiceProvider context, __VSENUMPROJFLAGS flags)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsSolution solution = context.GetService<IVsSolution>(typeof(SVsSolution));
             Guid gNone = Guid.Empty;
             IEnumHierarchies hierEnum;
@@ -83,6 +88,8 @@ namespace Ankh.Scc.SccUI.Commands
 
         bool EnsureAllProjectsLoaded(IAnkhServiceProvider context)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             List<IVsHierarchy> unloaded = GetProjects(context, __VSENUMPROJFLAGS.EPF_UNLOADEDINSOLUTION);
 
             if(unloaded != null && unloaded.Count > 0)

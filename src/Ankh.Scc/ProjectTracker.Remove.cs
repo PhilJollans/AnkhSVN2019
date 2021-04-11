@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using SharpSvn;
 
@@ -44,6 +45,8 @@ namespace Ankh.Scc
 
         public int OnAfterRemoveFiles(int cProjects, int cFiles, IVsProject[] rgpProjects, int[] rgFirstIndices, string[] rgpszMkDocuments, VSREMOVEFILEFLAGS[] rgFlags)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (rgpProjects == null || rgpszMkDocuments == null)
                 return VSErr.E_POINTER;
 
@@ -96,6 +99,8 @@ namespace Ankh.Scc
 
         public int OnAfterRemoveDirectories(int cProjects, int cDirectories, IVsProject[] rgpProjects, int[] rgFirstIndices, string[] rgpszMkDocuments, VSREMOVEDIRECTORYFLAGS[] rgFlags)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (rgpProjects == null || rgpszMkDocuments == null)
                 return VSErr.E_POINTER;
 

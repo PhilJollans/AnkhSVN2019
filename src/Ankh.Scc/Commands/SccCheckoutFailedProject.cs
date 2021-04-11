@@ -1,5 +1,6 @@
 ﻿using Ankh.Commands;
 using Ankh.Selection;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace Ankh.Scc.Commands
 
         public void OnUpdate(CommandUpdateEventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             object fm = e.Selection.Cache[_failedProjectsKey];
             IDictionary<string, object> map;
 
@@ -48,6 +51,7 @@ namespace Ankh.Scc.Commands
 
         public void OnExecute(CommandEventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             SvnSccProvider scc = e.GetService<SvnSccProvider>();
             SccHierarchy hier = EnumTools.GetSingle(e.Selection.GetSelectedHierarchies());
 

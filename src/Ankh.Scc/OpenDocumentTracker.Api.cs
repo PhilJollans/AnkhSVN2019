@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Text;
 using Ankh.Scc.ProjectMap;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using SharpSvn;
 using System.IO;
@@ -79,6 +80,8 @@ namespace Ankh.Scc
 
         public bool PromptSaveDocument(string path)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
@@ -277,6 +280,8 @@ namespace Ankh.Scc
 
             public SccDocumentLock(OpenDocumentTracker tracker, HybridCollection<string> locked, HybridCollection<string> ignoring, HybridCollection<string> readOnly)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (tracker == null)
                     throw new ArgumentNullException("tracker");
                 else if (locked == null)
@@ -323,6 +328,8 @@ namespace Ankh.Scc
 
             public override IDisposable MonitorChangesForReload()
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_monitor.Count > 0)
                     return null;
 
@@ -355,12 +362,15 @@ namespace Ankh.Scc
 
                 public void Dispose()
                 {
+                    ThreadHelper.ThrowIfNotOnUIThread();
                     _lck.ReloadModified();
                 }
             }
 
             internal void ReloadModified()
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_monitor == null || _change == null)
                     return;
 
@@ -428,6 +438,8 @@ namespace Ankh.Scc
 
             public override void Reload(IEnumerable<string> paths)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (paths == null)
                     throw new ArgumentNullException("paths");
 
@@ -483,11 +495,14 @@ namespace Ankh.Scc
 
             public override void Dispose()
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
                 StopMonitor();
             }
 
             void StopMonitor()
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 // Stop monitoring
                 foreach (uint v in _monitor.Keys)
                     _change.UnadviseFileChange(v);
@@ -539,6 +554,8 @@ namespace Ankh.Scc
         /// <returns></returns>
         internal string GetParentDocument(SccDocumentData document)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsHierarchy hier = document.Hierarchy;
 
             foreach (SccDocumentData dd in _docMap.Values)

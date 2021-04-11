@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using SharpSvn;
 
@@ -127,7 +128,11 @@ namespace Ankh.Scc
 
             public EnvDTE.DTE DTE
             {
-                get { return Parent.DTE; }
+                get
+                {
+                    ThreadHelper.ThrowIfNotOnUIThread();
+                    return Parent.DTE;
+                }
             }
 
             SvnItem SvnItem
@@ -154,13 +159,13 @@ namespace Ankh.Scc
 
             public string LocalBinding
             {
-                get 
+                get
                 {
                     SvnWorkingCopy wc = WorkingCopy;
 
                     if (wc != null)
                         return wc.FullPath;
-                    
+
                     return null;
                 }
             }
@@ -172,7 +177,7 @@ namespace Ankh.Scc
 
             public string ServerBinding
             {
-                get 
+                get
                 {
                     SvnItem item = SvnItem;
 

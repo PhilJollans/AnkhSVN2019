@@ -20,6 +20,7 @@ using System.Text;
 using SharpSvn;
 using System.IO;
 using System.Diagnostics;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Runtime.InteropServices;
 using SvnEntry = SharpSvn.SvnWorkingCopyEntryEventArgs;
@@ -97,6 +98,8 @@ namespace Ankh.Scc
 
         private void MaybeRevert(string newName, SvnEntry toBefore)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (toBefore == null)
                 return;
 
@@ -163,13 +166,14 @@ namespace Ankh.Scc
                         ra.Depth = SvnDepth.Infinity;
                     }
                 }
-                
+
                 Client.Revert(newName, ra);
             }
         }
 
         private IDisposable MarkIgnoreRecursive(string newDir)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             IAnkhOpenDocumentTracker dt = GetService<IAnkhOpenDocumentTracker>();
             IVsFileChangeEx change = GetService<IVsFileChangeEx>(typeof(SVsFileChangeEx));
 
@@ -189,6 +193,7 @@ namespace Ankh.Scc
             return new DelegateRunner(
                 delegate()
                 {
+                    ThreadHelper.ThrowIfNotOnUIThread();
                     foreach (string file in files)
                     {
                         change.SyncFile(file);
@@ -217,6 +222,7 @@ namespace Ankh.Scc
 
         public IDisposable MarkIgnoreFile(string path)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
@@ -229,6 +235,7 @@ namespace Ankh.Scc
                 return new DelegateRunner(
                     delegate()
                     {
+                        ThreadHelper.ThrowIfNotOnUIThread();
                         change.SyncFile(path);
                         change.IgnoreFile(0, path, 0);
                     });
@@ -239,6 +246,8 @@ namespace Ankh.Scc
 
         public IDisposable MarkIgnoreFiles(IEnumerable<string> paths)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (paths == null)
                 throw new ArgumentNullException("paths");
 

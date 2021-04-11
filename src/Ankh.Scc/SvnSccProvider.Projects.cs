@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using Ankh.Commands;
@@ -48,6 +49,8 @@ namespace Ankh.Scc
 
         public bool IsProjectManaged(SccProject project)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!IsActive)
                 return false;
 
@@ -59,6 +62,7 @@ namespace Ankh.Scc
 
         public bool IsProjectManagedRaw(object project)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             if (!IsActive)
                 return false;
 
@@ -80,6 +84,8 @@ namespace Ankh.Scc
 
         public void SetProjectManaged(SccProject project, bool managed)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!IsActive)
                 return; // Perhaps allow clearing management settings?
 
@@ -96,6 +102,8 @@ namespace Ankh.Scc
 
         public void SetProjectManagedRaw(object project, bool managed)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!IsActive)
                 return;
 
@@ -162,7 +170,7 @@ namespace Ankh.Scc
         }
 
         /// <summary>
-        /// Called by ProjectDocumentTracker when a solution is opened 
+        /// Called by ProjectDocumentTracker when a solution is opened
         /// </summary>
         protected override void OnSolutionOpened(bool onLoad)
         {
@@ -346,6 +354,7 @@ namespace Ankh.Scc
 
         protected override bool TrackProjectChanges(SccProjectData data, out bool trackCopies)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             trackCopies = true;
 
             if (data.WebLikeFileHandling)

@@ -19,6 +19,7 @@ using System.IO;
 using System.Windows.Forms;
 
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using Ankh.Configuration;
@@ -38,6 +39,8 @@ namespace Ankh.Scc
 
         public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             _solutionLoaded = true;
             SccEvents.OnSolutionOpened(true);
 
@@ -101,6 +104,8 @@ namespace Ankh.Scc
 
         private void VerifySolutionNaming()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsSolution sol = GetService<IVsSolution>(typeof(SVsSolution));
 
             string dir, path, user;
@@ -189,6 +194,8 @@ namespace Ankh.Scc
 
         public int OnAfterLoadProject(IVsHierarchy pStubHierarchy, IVsHierarchy pRealHierarchy)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!SccProvider.IsActive)
                 return VSErr.S_OK;
 
@@ -198,12 +205,14 @@ namespace Ankh.Scc
             {
                 SccEvents.OnProjectLoaded(project);
             }
-            
+
             return VSErr.S_OK;
         }
 
         public int OnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!SccProvider.IsActive)
                 return VSErr.S_OK;
 
@@ -223,6 +232,8 @@ namespace Ankh.Scc
 
         public int OnBeforeCloseProject(IVsHierarchy pHierarchy, int fRemoved)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!SccProvider.IsActive)
                 return VSErr.S_OK;
 
@@ -234,10 +245,12 @@ namespace Ankh.Scc
             }
 
             return VSErr.S_OK;
-        }        
+        }
 
         public int OnBeforeUnloadProject(IVsHierarchy pRealHierarchy, IVsHierarchy pStubHierarchy)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!SccProvider.IsActive)
                 return VSErr.S_OK;
 
@@ -308,6 +321,8 @@ namespace Ankh.Scc
 
         public int OnAfterAsynchOpenProject(IVsHierarchy pHierarchy, int fAdded)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!SccProvider.IsActive)
                 return VSErr.S_OK;
 
@@ -328,6 +343,8 @@ namespace Ankh.Scc
 
         public int OnAfterRenameProject(IVsHierarchy pHierarchy)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!SccProvider.IsActive)
                 return VSErr.S_OK;
 
@@ -365,6 +382,8 @@ namespace Ankh.Scc
         /// </returns>
         public int OnAfterUpgradeProject(IVsHierarchy pHierarchy, uint fUpgradeFlag, string bstrCopyLocation, SYSTEMTIME stUpgradeTime, IVsUpgradeLogger pLogger)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!SccProvider.IsActive)
                 return VSErr.S_OK;
 
@@ -376,7 +395,7 @@ namespace Ankh.Scc
 
             if (SccProvider.IsSafeSccPath(bstrCopyLocation))
                 monitor.ScheduleSvnStatus(bstrCopyLocation);
-                
+
             IVsSccProject2 project = pHierarchy as IVsSccProject2;
 
             if (project != null)

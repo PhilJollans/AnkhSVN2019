@@ -21,6 +21,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 using SharpSvn;
@@ -32,7 +33,7 @@ using Ankh.Scc.SccUI;
 namespace Ankh.Scc
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     partial class SvnSccProvider : IVsQueryEditQuerySave2
     {
@@ -51,7 +52,7 @@ namespace Ankh.Scc
         }
 
         /// <summary>
-        /// Ends the batch started by the BeginQuerySaveBatch method and 
+        /// Ends the batch started by the BeginQuerySaveBatch method and
         /// displays any user interface (UI) generated within the batch
         /// </summary>
         /// <returns></returns>
@@ -191,7 +192,7 @@ namespace Ankh.Scc
         /// The function allows the source control systems to take the necessary actions (checkout, flip attributes)
         /// to make the file writable in order to allow the edit to continue
         ///
-        /// There are a lot of cases to deal with during QueryEdit/QuerySave. 
+        /// There are a lot of cases to deal with during QueryEdit/QuerySave.
         /// - called in commmand line mode, when UI cannot be displayed
         /// - called during builds, when save shoudn't probably be allowed
         /// - called during projects migration, when projects are not open and not registered yet with source control
@@ -210,6 +211,8 @@ namespace Ankh.Scc
         /// <returns></returns>
         public int QueryEditFiles(uint rgfQueryEdit, int cFiles, string[] rgpszMkDocuments, uint[] rgrgf, VSQEQS_FILE_ATTRIBUTE_DATA[] rgFileInfo, out uint pfEditVerdict, out uint prgfMoreInfo)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             tagVSQueryEditFlags queryFlags = (tagVSQueryEditFlags)rgfQueryEdit;
             pfEditVerdict = (uint)tagVSQueryEditResult.QER_EditOK;
             prgfMoreInfo = (uint)(tagVSQueryEditResultFlags)0; // Must be 0 when verdict is QER_EditOK or you see failures like issue #624
@@ -391,6 +394,8 @@ namespace Ankh.Scc
 
         bool AllowReadOnlyNonSccWrites()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsSccToolsOptions sccToolsOptions = GetService<IVsSccToolsOptions>(typeof(SVsSccToolsOptions));
             if (sccToolsOptions == null)
                 return true;
@@ -417,6 +422,7 @@ namespace Ankh.Scc
         /// <returns></returns>
         public int QuerySaveFile(string pszMkDocument, uint rgf, VSQEQS_FILE_ATTRIBUTE_DATA[] pFileInfo, out uint pdwQSResult)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return QuerySaveFiles(
                 (uint)tagVSQuerySaveFlags.QSF_DefaultOperation,
                 1,
@@ -583,7 +589,7 @@ namespace Ankh.Scc
         }
 
 #if VS2008_PLUS
-        // TODO: Implement IVsQueryEditQuerySave3 extra's. 
+        // TODO: Implement IVsQueryEditQuerySave3 extra's.
         /// <summary>
         /// Notifies the environment that a file is about to be saved.
         /// </summary>

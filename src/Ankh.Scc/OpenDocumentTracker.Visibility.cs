@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 using Ankh.Scc.ProjectMap;
@@ -28,6 +29,8 @@ namespace Ankh.Scc
     {
         public int OnBeforeDocumentWindowShow(uint docCookie, int fFirstShow, IVsWindowFrame pFrame)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ProjectMap.SccDocumentData dd;
 
             if (TryGetDocument(docCookie, out dd))
@@ -40,10 +43,12 @@ namespace Ankh.Scc
                 }
             }
             return VSErr.S_OK;
-        }        
+        }
 
         public int OnAfterDocumentWindowHide(uint docCookie, IVsWindowFrame pFrame)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ProjectMap.SccDocumentData dd;
 
             if (docCookie != 0 && TryGetDocument(docCookie, out dd))
@@ -60,9 +65,11 @@ namespace Ankh.Scc
 
         private void ProjectPropertyPageFixup(ProjectMap.SccDocumentData dd)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             // Ok, we have a project setting page here.
             // Project settings pages break (our) SCC handling in a number of ways
-            //   * It creates an editor buffer for the AssemblyInfo file, but does 
+            //   * It creates an editor buffer for the AssemblyInfo file, but does
             //     not notify changes or tell the user that you should save the file
             //   * It makes the project dirty without notifying
             //   * Saving the setting pages doesn't save your projec

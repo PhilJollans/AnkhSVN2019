@@ -20,6 +20,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using SharpSvn;
@@ -44,6 +45,8 @@ namespace Ankh.Scc
         public ProjectNotifier(IAnkhServiceProvider context)
             : base(context)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             uint cookie;
             if (VSErr.Succeeded(Shell.AdviseBroadcastMessages(this, out cookie)))
                 _cookie = cookie;
@@ -51,6 +54,8 @@ namespace Ankh.Scc
 
         protected override void Dispose(bool disposing)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             try
             {
                 if (_cookie != 0)

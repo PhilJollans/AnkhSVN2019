@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using SharpSvn;
 
@@ -44,12 +45,16 @@ namespace Ankh.Scc
 
         protected override void OnInitialize()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Hook(true);
             LoadInitial();
         }
 
         protected override void Dispose(bool disposing)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             try
             {
                 if (disposing)
@@ -84,6 +89,8 @@ namespace Ankh.Scc
 
         void LoadInitial()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsRunningDocumentTable rdt = RunningDocumentTable;
             if (rdt == null)
                 return;
@@ -112,6 +119,8 @@ namespace Ankh.Scc
 
         void Hook(bool enable)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (enable == _hooked)
                 return;
 
@@ -137,11 +146,15 @@ namespace Ankh.Scc
 
         bool TryGetDocument(uint cookie, out SccDocumentData data)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             return TryGetDocument(cookie, false, out data);
         }
 
         bool TryGetDocument(uint cookie, bool create, out SccDocumentData data)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (cookie == 0)
             {
                 data = null;
@@ -235,6 +248,8 @@ namespace Ankh.Scc
 
         private bool TryGetDocumentInfo(uint cookie, out string name, out uint flags, out IVsHierarchy hier, out uint itemId, out object document)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (!_documentInfo_init)
             {
                 _documentInfo_init = true;
@@ -348,6 +363,8 @@ namespace Ankh.Scc
 
         public int OnBeforeSave(uint docCookie)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             SccDocumentData data;
             if (TryGetDocument(docCookie, out data))
             {
@@ -359,6 +376,8 @@ namespace Ankh.Scc
 
         public int OnAfterSave(uint docCookie)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             SccDocumentData data;
 
             if (TryGetDocument(docCookie, out data))
@@ -396,6 +415,8 @@ namespace Ankh.Scc
 
         public int OnAfterAttributeChange(uint docCookie, uint grfAttribs)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if ((grfAttribs & HandledRDTAttributes) == 0)
                 return VSErr.S_OK; // Not interested
 
@@ -422,6 +443,8 @@ namespace Ankh.Scc
 
         public int OnAfterAttributeChangeEx(uint docCookie, uint grfAttribs, IVsHierarchy pHierOld, uint itemidOld, string pszMkDocumentOld, IVsHierarchy pHierNew, uint itemidNew, string pszMkDocumentNew)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if ((grfAttribs & TrackedRDTAttributes) == 0)
                 return VSErr.S_OK; // Not interested
 
@@ -509,6 +532,8 @@ namespace Ankh.Scc
 
         bool TryPollDirty(SccDocumentData data, out bool dirty)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (data == null)
                 throw new ArgumentNullException("data");
 
@@ -549,6 +574,8 @@ namespace Ankh.Scc
 
         bool TryPollDirtyFallback(SccDocumentData data, out bool dirty)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (data == null)
                 throw new ArgumentNullException("data");
 
@@ -648,6 +675,8 @@ namespace Ankh.Scc
 
         private bool TryGetOpenDocumentFrame(SccDocumentData data, out IVsWindowFrame wf)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (data == null)
                 throw new ArgumentNullException("data");
             if (data.Hierarchy == null)

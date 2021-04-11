@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using SharpSvn;
 
@@ -53,6 +54,8 @@ namespace Ankh.Scc
 
         protected override void OnInitialize()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             base.OnInitialize();
 
             AnkhServiceEvents ev = GetService<AnkhServiceEvents>();
@@ -70,11 +73,14 @@ namespace Ankh.Scc
 
         private void OnSccProviderDeactivated(object sender, EventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             Hook(true, false);
         }
 
         private void OnSvnSccProviderActivated(object sender, EventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             _sccProvider = GetService<SvnSccProvider>();
             Hook(true, true);
             LoadInitial();
@@ -82,6 +88,8 @@ namespace Ankh.Scc
 
         protected override void Dispose(bool disposing)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             try
             {
                 if (disposing)
@@ -122,6 +130,8 @@ namespace Ankh.Scc
 
         private void LoadInitial()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsSolution solution = GetService<IVsSolution>(typeof(SVsSolution));
 
             if (solution == null)
@@ -160,6 +170,8 @@ namespace Ankh.Scc
 
         public void Hook(bool enableSolution, bool enableProjects)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (enableSolution != _hookedSolution)
             {
                 IVsSolution solution = GetService<IVsSolution>(typeof(SVsSolution));
