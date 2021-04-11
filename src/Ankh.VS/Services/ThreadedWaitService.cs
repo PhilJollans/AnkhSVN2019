@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Ankh.UI;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.VS.Services
@@ -36,6 +37,8 @@ namespace Ankh.VS.Services
 
             public void Tick()
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_dlg == null)
                 {
                     if (_start > DateTime.UtcNow)
@@ -58,7 +61,8 @@ namespace Ankh.VS.Services
 
             public void Dispose()
             {
-                
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_dlg != null)
                     try
                     {

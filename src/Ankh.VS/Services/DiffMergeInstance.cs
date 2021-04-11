@@ -1,6 +1,7 @@
 ﻿using System;
 using Ankh.Commands;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.VS.Services
@@ -24,6 +25,8 @@ namespace Ankh.VS.Services
         public DiffMergeInstance(IAnkhServiceProvider context, IVsWindowFrame frame)
             : base(context)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             _frame = frame;
             _frame2 = frame as IVsWindowFrame2;
 
@@ -45,6 +48,8 @@ namespace Ankh.VS.Services
 
         protected override void Dispose(bool disposing)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             try
             {
                 if (disposing)
@@ -93,6 +98,8 @@ namespace Ankh.VS.Services
 
         public int OnShow(int fShow)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (fShow == (int)__FRAMESHOW.FRAMESHOW_WinClosed)
                 Dispose(true);
             return VSErr.S_OK;

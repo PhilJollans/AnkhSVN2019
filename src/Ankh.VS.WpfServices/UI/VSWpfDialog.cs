@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.VS.WpfServices.UI
@@ -28,6 +29,8 @@ namespace Ankh.VS.WpfServices.UI
 
         public bool? ShowModal(IAnkhServiceProvider context)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             int num = WindowHelper.ShowModal(context, this, IntPtr.Zero);
             if (num == 0)
             {
@@ -41,6 +44,8 @@ namespace Ankh.VS.WpfServices.UI
             // Microsoft.Internal.VisualStudio.PlatformUI.WindowHelper
             public static int ShowModal(IAnkhServiceProvider context, Window window, IntPtr parent)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (window == null)
                     throw new ArgumentNullException("window");
 

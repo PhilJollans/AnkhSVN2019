@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
@@ -81,6 +82,8 @@ namespace Ankh.VS.Selection
         //[CLSCompliant(false)]
         public static bool GetSccFiles(IVsHierarchy hierarchy, IVsSccProject2 sccProject, uint id, out string[] files, out int[] flags, bool includeNoScc, IDictionary<string, uint> map)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (hierarchy == null)
                 throw new ArgumentNullException("hierarchy");
 
@@ -109,7 +112,7 @@ namespace Ankh.VS.Selection
                             ok = true; // Try the GetMkDocument route to find an alternative
                     }
                     else if (hr != VSErr.E_NOTIMPL)
-                        return false; // 
+                        return false; //
                 }
 
                 // If sccProject2.GetSccFiles() returns E_NOTIMPL we must try GetMkDocument
@@ -201,6 +204,8 @@ namespace Ankh.VS.Selection
 
         internal static bool GetSccFiles(SelectionItem item, out string[] files, bool includeSpecial, bool includeNoScc, IDictionary<string, uint> map)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (item == null)
                 throw new ArgumentNullException("item");
 
@@ -251,6 +256,8 @@ namespace Ankh.VS.Selection
         //[CLSCompliant(false)]
         static bool GetSccFiles(IVsHierarchy hierarchy, IVsSccProject2 sccProject, uint id, out string[] files, bool includeSpecial, bool includeNoScc, IDictionary<string, uint> map)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             int[] flags;
             files = null;
 
@@ -289,6 +296,8 @@ namespace Ankh.VS.Selection
         /// </summary>
         public static string GetSolutionFileName(IServiceProvider context)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (context == null)
                 throw new ArgumentNullException("context");
 
@@ -337,6 +346,8 @@ namespace Ankh.VS.Selection
             {
                 get
                 {
+                    ThreadHelper.ThrowIfNotOnUIThread();
+
                     if (_solution != null)
                         return _solution;
 
@@ -348,6 +359,8 @@ namespace Ankh.VS.Selection
             {
                 get
                 {
+                    ThreadHelper.ThrowIfNotOnUIThread();
+
                     if (_solAsHierarchy == null)
                         _solAsHierarchy = Solution as IVsHierarchy;
 
@@ -360,6 +373,8 @@ namespace Ankh.VS.Selection
 
             public int GetSccFiles(uint itemid, Microsoft.VisualStudio.OLE.Interop.CALPOLESTR[] pCaStringsOut, Microsoft.VisualStudio.OLE.Interop.CADWORD[] pCaFlagsOut)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (itemid == VSItemId.Root)
                 {
                     string solutionFilename = SelectionUtils.GetSolutionFileName(_context);
@@ -387,6 +402,8 @@ namespace Ankh.VS.Selection
 
             public int SccGlyphChanged(int cAffectedNodes, uint[] rgitemidAffectedNodes, VsStateIcon[] rgsiNewGlyphs, uint[] rgdwNewSccStatus)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 IVsSccManager2 sccService = _context.GetService<IVsSccManager2>(typeof(SVsSccManager));
 
                 string[] rgpszFullPaths = new string[1];

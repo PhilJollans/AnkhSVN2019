@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 using System.Runtime.InteropServices;
@@ -44,6 +45,8 @@ namespace Ankh.VS.Selection
 
         protected override void OnInitialize()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             base.OnInitialize();
 
             GetService<SelectionContext>(typeof(ISelectionContext)).CmdUIContextChanged += OnCmdUIContextChanged;
@@ -73,6 +76,8 @@ namespace Ankh.VS.Selection
 
         protected override void Dispose(bool disposing)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             try
             {
                 if (_shellPropsCookie != 0)
@@ -114,11 +119,17 @@ namespace Ankh.VS.Selection
         CmdStateCacheItem _codeWindow;
         public bool CodeWindow
         {
-            get { return (_codeWindow ?? (_codeWindow = GetCache(VSConstants.UICONTEXT_CodeWindow))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_codeWindow ?? (_codeWindow = GetCache(VSConstants.UICONTEXT_CodeWindow))).Active;
+            }
         }
 
         private CmdStateCacheItem GetCache(Guid cmdContextId)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             uint cookie;
 
             if (!VSErr.Succeeded(Monitor.GetCmdUIContextCookie(ref cmdContextId, out cookie)))
@@ -137,97 +148,161 @@ namespace Ankh.VS.Selection
         CmdStateCacheItem _debugging;
         public bool Debugging
         {
-            get { return (_debugging ?? (_debugging = GetCache(VSConstants.UICONTEXT_Debugging))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_debugging ?? (_debugging = GetCache(VSConstants.UICONTEXT_Debugging))).Active;
+            }
         }
 
         CmdStateCacheItem _designMode;
         public bool DesignMode
         {
-            get { return (_designMode ?? (_designMode = GetCache(VSConstants.UICONTEXT_DesignMode))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_designMode ?? (_designMode = GetCache(VSConstants.UICONTEXT_DesignMode))).Active;
+            }
         }
 
         CmdStateCacheItem _dragging;
         public bool Dragging
         {
-            get { return (_dragging ?? (_dragging = GetCache(VSConstants.UICONTEXT_Dragging))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_dragging ?? (_dragging = GetCache(VSConstants.UICONTEXT_Dragging))).Active;
+            }
         }
 
         CmdStateCacheItem _emptySolution;
         public bool EmptySolution
         {
-            get { return (_emptySolution ?? (_emptySolution = GetCache(VSConstants.UICONTEXT_EmptySolution))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_emptySolution ?? (_emptySolution = GetCache(VSConstants.UICONTEXT_EmptySolution))).Active;
+            }
         }
 
         CmdStateCacheItem _fullScreenMode;
         public bool FullScreenMode
         {
-            get { return (_fullScreenMode ?? (_fullScreenMode = GetCache(VSConstants.UICONTEXT_FullScreenMode))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_fullScreenMode ?? (_fullScreenMode = GetCache(VSConstants.UICONTEXT_FullScreenMode))).Active;
+            }
         }
 
         CmdStateCacheItem _noSolution;
         public bool NoSolution
         {
-            get { return (_noSolution ?? (_noSolution = GetCache(VSConstants.UICONTEXT_NoSolution))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_noSolution ?? (_noSolution = GetCache(VSConstants.UICONTEXT_NoSolution))).Active;
+            }
         }
 
         CmdStateCacheItem _solutionBuilding;
         public bool SolutionBuilding
         {
-            get { return (_solutionBuilding ?? (_solutionBuilding = GetCache(VSConstants.UICONTEXT_SolutionBuilding))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_solutionBuilding ?? (_solutionBuilding = GetCache(VSConstants.UICONTEXT_SolutionBuilding))).Active;
+            }
         }
 
         CmdStateCacheItem _solutionExists;
         public bool SolutionExists
         {
-            get { return (_solutionExists ?? (_solutionExists = GetCache(VSConstants.UICONTEXT_SolutionExists))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_solutionExists ?? (_solutionExists = GetCache(VSConstants.UICONTEXT_SolutionExists))).Active;
+            }
         }
 
         CmdStateCacheItem _solutionHasMultipleProjects;
         public bool SolutionHasMultipleProjects
         {
-            get { return (_solutionHasMultipleProjects ?? (_solutionHasMultipleProjects = GetCache(VSConstants.UICONTEXT_SolutionHasMultipleProjects))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_solutionHasMultipleProjects ?? (_solutionHasMultipleProjects = GetCache(VSConstants.UICONTEXT_SolutionHasMultipleProjects))).Active;
+            }
         }
 
         CmdStateCacheItem _solutionHasSingleProject;
         public bool SolutionHasSingleProject
         {
-            get { return (_solutionHasSingleProject ?? (_solutionHasSingleProject = GetCache(VSConstants.UICONTEXT_SolutionHasSingleProject))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_solutionHasSingleProject ?? (_solutionHasSingleProject = GetCache(VSConstants.UICONTEXT_SolutionHasSingleProject))).Active;
+            }
         }
 
         CmdStateCacheItem _ankhSvnActiveScc;
         public bool SccProviderActive
         {
-            get { return (_ankhSvnActiveScc ?? (_ankhSvnActiveScc = GetCache(AnkhId.SccProviderGuid))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_ankhSvnActiveScc ?? (_ankhSvnActiveScc = GetCache(AnkhId.SccProviderGuid))).Active;
+            }
         }
 
         CmdStateCacheItem _sccManagerLoaded;
         public bool SccManagerLoaded
         {
-            get { return (_sccManagerLoaded ?? (_sccManagerLoaded = GetCache(typeof(ISccManagerLoaded).GUID))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_sccManagerLoaded ?? (_sccManagerLoaded = GetCache(typeof(ISccManagerLoaded).GUID))).Active;
+            }
         }
 
         CmdStateCacheItem _sccEnlistingInProject;
         public bool SccEnlistingInProject
         {
-            get { return (_sccEnlistingInProject ?? (_sccEnlistingInProject = GetCache(typeof(IEnlistingInProject).GUID))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_sccEnlistingInProject ?? (_sccEnlistingInProject = GetCache(typeof(IEnlistingInProject).GUID))).Active;
+            }
         }
 
         CmdStateCacheItem _sccEnableOpenFromScc;
         public bool SccEnableOpenFromScc
         {
-            get { return (_sccEnableOpenFromScc ?? (_sccEnableOpenFromScc = GetCache(new Guid("795635A1-4522-11d1-8DCE-00AA00A3F593")))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_sccEnableOpenFromScc ?? (_sccEnableOpenFromScc = GetCache(new Guid("795635A1-4522-11d1-8DCE-00AA00A3F593")))).Active;
+            }
         }
 
         CmdStateCacheItem _notBuildingAndNotDebugging;
         public bool NotBuildingAndNotDebugging
         {
-            get { return (_notBuildingAndNotDebugging ?? (_notBuildingAndNotDebugging = GetCache(new Guid("48EA4A80-F14E-4107-88FA-8D0016F30B9C")))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_notBuildingAndNotDebugging ?? (_notBuildingAndNotDebugging = GetCache(new Guid("48EA4A80-F14E-4107-88FA-8D0016F30B9C")))).Active;
+            }
         }
 
         CmdStateCacheItem _solutionOrProjectUpgrading;
         public bool SolutionOrProjectUpgrading
         {
-            get { return (_solutionOrProjectUpgrading ?? (_solutionOrProjectUpgrading = GetCache(new Guid("EF4F870B-7B85-4F29-9D15-CE1ABFBE733B")))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_solutionOrProjectUpgrading ?? (_solutionOrProjectUpgrading = GetCache(new Guid("EF4F870B-7B85-4F29-9D15-CE1ABFBE733B")))).Active;
+            }
         }
 
         /*CmdStateCacheItem _dataSourceWindowSupported;
@@ -239,47 +314,75 @@ namespace Ankh.VS.Selection
         CmdStateCacheItem _dataSourceWindowAutoVisible;
         public bool DataSourceWindowAutoVisible
         {
-            get { return (_dataSourceWindowAutoVisible ?? (_dataSourceWindowAutoVisible = GetCache(new Guid("2E78870D-AC7C-4460-A4A1-3FE37D00EF81")))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_dataSourceWindowAutoVisible ?? (_dataSourceWindowAutoVisible = GetCache(new Guid("2E78870D-AC7C-4460-A4A1-3FE37D00EF81")))).Active;
+            }
         }
 
         CmdStateCacheItem _toolboxInitialized;
         public bool ToolboxInitialized
         {
-            get { return (_toolboxInitialized ?? (_toolboxInitialized = GetCache(new Guid("DC5DB425-F0FD-4403-96A1-F475CDBA9EE0")))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_toolboxInitialized ?? (_toolboxInitialized = GetCache(new Guid("DC5DB425-F0FD-4403-96A1-F475CDBA9EE0")))).Active;
+            }
         }
 
         CmdStateCacheItem _solutionExistsAndNotBuildingAndNotDebugging;
         public bool SolutionExistsAndNotBuildingAndNotDebugging
         {
-            get { return (_solutionExistsAndNotBuildingAndNotDebugging ?? (_solutionExistsAndNotBuildingAndNotDebugging = GetCache(new Guid("D0E4DEEC-1B53-4CDA-8559-D454583AD23B")))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_solutionExistsAndNotBuildingAndNotDebugging ?? (_solutionExistsAndNotBuildingAndNotDebugging = GetCache(new Guid("D0E4DEEC-1B53-4CDA-8559-D454583AD23B")))).Active;
+            }
         }
 
         CmdStateCacheItem _solutionExistsAndFullyLoaded;
         public bool SolutionExistsAndFullyLoaded
         {
             // VS2010+
-            get { return (_solutionExistsAndFullyLoaded ?? (_solutionExistsAndFullyLoaded = GetCache(new Guid("10534154-102D-46E2-ABA8-A6BFA25BA0BE")))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_solutionExistsAndFullyLoaded ?? (_solutionExistsAndFullyLoaded = GetCache(new Guid("10534154-102D-46E2-ABA8-A6BFA25BA0BE")))).Active;
+            }
         }
 
         CmdStateCacheItem _solutionOpening;
         public bool SolutionOpening
         {
             // VS2010+
-            get { return (_solutionOpening ?? (_solutionOpening = GetCache(new Guid("D2567162-F94F-4091-8798-A096E61B8B50")))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_solutionOpening ?? (_solutionOpening = GetCache(new Guid("D2567162-F94F-4091-8798-A096E61B8B50")))).Active;
+            }
         }
 
         CmdStateCacheItem _projectRetargeting;
         public bool ProjectRetargeting
         {
             // VS2010+
-            get { return (_projectRetargeting ?? (_projectRetargeting = GetCache(new Guid("DE039A0E-C18F-490c-944A-888B8E86DA4B")))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_projectRetargeting ?? (_projectRetargeting = GetCache(new Guid("DE039A0E-C18F-490c-944A-888B8E86DA4B")))).Active;
+            }
         }
 
         CmdStateCacheItem _historicalDebugging;
         public bool HistoricalDebugging
         {
             // VS2010+
-            get { return (_historicalDebugging ?? (_historicalDebugging = GetCache(new Guid("D1B1E38F-1A7E-4236-AF55-6FA8F5FA76E6")))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_historicalDebugging ?? (_historicalDebugging = GetCache(new Guid("D1B1E38F-1A7E-4236-AF55-6FA8F5FA76E6")))).Active;
+            }
         }
 
         /*CmdStateCacheItem _dataSourceWizardSuppressed;
@@ -300,45 +403,73 @@ namespace Ankh.VS.Selection
         public bool SolutionHasImmersiveProject
         {
             // VS11+
-            get { return (_solutionHasImmersiveProject ?? (_solutionHasImmersiveProject = GetCache(new Guid("7CAC4AE1-2E6B-4B02-A91C-71611E86F273")))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_solutionHasImmersiveProject ?? (_solutionHasImmersiveProject = GetCache(new Guid("7CAC4AE1-2E6B-4B02-A91C-71611E86F273")))).Active;
+            }
         }
 
         CmdStateCacheItem _firstLaunchSetup;
         public bool FirstLaunchSetup
         {
             // VS11+
-            get { return (_firstLaunchSetup ?? (_firstLaunchSetup = GetCache(new Guid("E7B2B2DB-973B-4CE9-A8D7-8498895DEA73")))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_firstLaunchSetup ?? (_firstLaunchSetup = GetCache(new Guid("E7B2B2DB-973B-4CE9-A8D7-8498895DEA73")))).Active;
+            }
         }
 
         CmdStateCacheItem _osWindows8OrHigher;
         public bool OsWindows8OrHigher
         {
             // VS11+
-            get { return (_osWindows8OrHigher ?? (_osWindows8OrHigher = GetCache(new Guid("67CFF80C-0863-4202-A4E4-CE80FDF8506E")))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_osWindows8OrHigher ?? (_osWindows8OrHigher = GetCache(new Guid("67CFF80C-0863-4202-A4E4-CE80FDF8506E")))).Active;
+            }
         }
 
         CmdStateCacheItem _backgroundProjectLoad;
         public bool BackgroundProjectLoad
         {
-            get { return (_backgroundProjectLoad ?? (_backgroundProjectLoad = GetCache(new Guid("DC769521-31A2-41A5-9BBB-210B5D63568D")))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_backgroundProjectLoad ?? (_backgroundProjectLoad = GetCache(new Guid("DC769521-31A2-41A5-9BBB-210B5D63568D")))).Active;
+            }
         }
 
         CmdStateCacheItem _twSolutionExplorer;
         public bool SolutionExplorerActive
         {
-            get { return (_twSolutionExplorer ?? (_twSolutionExplorer = GetCache(new Guid(ToolWindowGuids80.SolutionExplorer)))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_twSolutionExplorer ?? (_twSolutionExplorer = GetCache(new Guid(ToolWindowGuids80.SolutionExplorer)))).Active;
+            }
         }
 
         CmdStateCacheItem _twClassViewer;
         public bool ClassViewerActive
         {
-            get { return (_twClassViewer ?? (_twClassViewer = GetCache(new Guid(ToolWindowGuids80.ClassView)))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_twClassViewer ?? (_twClassViewer = GetCache(new Guid(ToolWindowGuids80.ClassView)))).Active;
+            }
         }
 
         CmdStateCacheItem _twPendingChanges;
         public bool PendingChangesActive
         {
-            get { return (_twPendingChanges ?? (_twPendingChanges = GetCache(AnkhId.PendingChangeContextGuid))).Active; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (_twPendingChanges ?? (_twPendingChanges = GetCache(AnkhId.PendingChangeContextGuid))).Active;
+            }
         }
 
         public bool ShiftDown
@@ -452,6 +583,8 @@ namespace Ankh.VS.Selection
             bool _active;
             public CmdStateCacheItem(IVsMonitorSelection monitor, uint cookie)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (monitor == null)
                     throw new ArgumentNullException("monitor");
 
@@ -462,6 +595,8 @@ namespace Ankh.VS.Selection
 
             internal void Reload(IVsMonitorSelection monitor)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 int active;
                 _active = VSErr.Succeeded(monitor.IsCmdUIContextActive(_cookie, out active)) && active != 0;
             }
@@ -479,7 +614,11 @@ namespace Ankh.VS.Selection
         bool? _otherSccProviderActive;
         public bool OtherSccProviderActive
         {
-            get { return (bool)(_otherSccProviderActive ?? (_otherSccProviderActive = GetOtherSccProviderActive())); }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (bool)(_otherSccProviderActive ?? (_otherSccProviderActive = GetOtherSccProviderActive()));
+            }
         }
 
         class SccData
@@ -508,6 +647,8 @@ namespace Ankh.VS.Selection
 
         bool GetOtherSccActive()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             EnsureContexts();
 
             try
@@ -539,6 +680,8 @@ namespace Ankh.VS.Selection
 
         private void EnsureContexts()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_otherSccProviderContexts == null)
             {
                 List<SccData> sccs = new List<SccData>();
@@ -595,6 +738,8 @@ namespace Ankh.VS.Selection
 
         private bool GetOtherSccProviderActive()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (SccProviderActive)
                 return false; // We are active
 
@@ -603,6 +748,8 @@ namespace Ankh.VS.Selection
 
         public bool GetRawOtherSccProviderActive()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsSccManager2 manager = GetService<IVsSccManager2>(typeof(SVsSccManager));
 
             if (manager == null)

@@ -15,6 +15,7 @@
 //  limitations under the License.
 
 using System;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 using System.Runtime.InteropServices;
@@ -75,28 +76,35 @@ namespace Ankh.VS.SolutionExplorer
 
         private void OnSccProviderDeactivated(object sender, EventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             EnableAnkhIcons(false);
         }
 
         private void OnSolutionClosed(object sender, EventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             EnableAnkhIcons(false);
         }
 
         private void OnSolutionOpened(object sender, EventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             if (GetService<IAnkhSccService>().IsActive)
                 EnableAnkhIcons(true);
         }
 
         void MaybeEnsure()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_hookImageList && SolutionExplorerFrame.IsVisible() == VSErr.S_OK)
                 _manager.Ensure(this);
         }
 
         void OnUIShellActivate(object sender, EventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IAnkhCommandStates states = Context.GetService<IAnkhCommandStates>();
 
             if (states != null && states.SccProviderActive)
@@ -105,6 +113,8 @@ namespace Ankh.VS.SolutionExplorer
 
         public void Dispose()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_hookImageList && _solutionExplorer2 != null)
             {
                 try
@@ -124,6 +134,8 @@ namespace Ankh.VS.SolutionExplorer
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_solutionExplorer == null)
                 {
                     IVsUIShell shell = GetService<IVsUIShell>(typeof(SVsUIShell));
@@ -161,6 +173,8 @@ namespace Ankh.VS.SolutionExplorer
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_tree == null)
                 {
                     IVsWindowFrame frame = SolutionExplorerFrame;
@@ -189,12 +203,16 @@ namespace Ankh.VS.SolutionExplorer
 
         int IVsWindowFrameNotify.OnShow(int fShow)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             _manager.Ensure(this);
             return VSErr.S_OK;
         }
 
         int IVsWindowFrameNotify.OnSize()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             _manager.Ensure(this);
             return VSErr.S_OK;
         }
@@ -207,6 +225,8 @@ namespace Ankh.VS.SolutionExplorer
         #region IAnkhSolutionExplorerToolWindow Members
         public void EnableAnkhIcons(bool enabled)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_hookImageList)
             {
                 _manager.Ensure(this);

@@ -22,6 +22,7 @@ using System.Windows.Forms.Design;
 using System.Runtime.InteropServices;
 
 using Microsoft.VisualStudio.OLE.Interop;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using Ankh.UI;
@@ -67,6 +68,8 @@ namespace Ankh.VS.Dialogs
 
         public void OnContainerCreated(Ankh.UI.VSContainerForm form)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             VSCommandRouting routing = VSCommandRouting.FromForm(form);
 
             if (routing != null)

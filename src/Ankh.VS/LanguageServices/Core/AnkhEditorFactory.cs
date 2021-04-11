@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
@@ -16,11 +17,11 @@ namespace Ankh.VS.LanguageServices.Core
 {
     /// <include file='doc\EditorFactory.uex' path='docs/doc[@for="EditorFactory"]/*' />
     /// <summary>
-    /// You must inherit from this class and simply add a [ComVisible] and 
-    /// [GuidAttribute] and then specify the EditorFactoryGuid, EditorFactoryGuid 
+    /// You must inherit from this class and simply add a [ComVisible] and
+    /// [GuidAttribute] and then specify the EditorFactoryGuid, EditorFactoryGuid
     /// and EditorName variables in your Registration class.
     /// This base class provides a default editor factory implementation
-    /// that hosts the Visual Studio Core editor.  
+    /// that hosts the Visual Studio Core editor.
     /// </summary>
     [CLSCompliant(false), ComVisible(true), Guid(AnkhId.EditorFactoryId)]
     public class AnkhEditorFactory : IVsEditorFactory
@@ -117,7 +118,7 @@ namespace Ankh.VS.LanguageServices.Core
         }
 
         /// <include file='doc\EditorFactory.uex' path='docs/doc[@for="EditorFactory.GetExtensions"]/*' />
-        /// <summary>Return list of file extensions registered for this editor factory under 
+        /// <summary>Return list of file extensions registered for this editor factory under
         /// HKLM\Software\Microsoft\Visual Studio\9.0\Editors\\{" + this.GetType().GUID.ToString() + "}\\Extensions
         /// </summary>
         public virtual string[] GetExtensions()
@@ -146,7 +147,7 @@ namespace Ankh.VS.LanguageServices.Core
             return GetEditorExtensions().ContainsKey("*");
         }
 
-        // Return your language service Guid here, this is used to set the language service on the 
+        // Return your language service Guid here, this is used to set the language service on the
         // IVsTextLines buffer returned from CreateEditorInstance.
         /// <include file='doc\EditorFactory.uex' path='docs/doc[@for="EditorFactory.GetLanguageServiceGuid"]/*' />
         public virtual Guid GetLanguageServiceGuid()
@@ -192,7 +193,7 @@ namespace Ankh.VS.LanguageServices.Core
         }
 
         /// <summary>Returns true if the file extension is one that you registered for this editor
-        /// factory, or your have registered the "*" extension and (this file type matches your 
+        /// factory, or your have registered the "*" extension and (this file type matches your
         /// GetLanguageServiceGuid() or there is no other language service registered for this file extension).</summary>
         bool IsFileExtensionWeShouldEditAnyway(string ext)
         {
@@ -233,7 +234,7 @@ namespace Ankh.VS.LanguageServices.Core
         /// <include file='doc\EditorFactory.uex' path='docs/doc[@for="EditorFactory.IsOurFileFormat"]/*' />
         // This method is called when the user has not explicitly requested your editor
         // and if the file extension doesn't match an explicit extension you registered,
-        // and if you have registered the extension "*" to determine if this file is 
+        // and if you have registered the extension "*" to determine if this file is
         // really something you want to take over or not.  If you return false then VS
         // will find the next best editor in the list.
         public virtual bool IsOurFileFormat(string moniker)
@@ -246,20 +247,20 @@ namespace Ankh.VS.LanguageServices.Core
         /// <include file='doc\EditorFactory.uex' path='docs/doc[@for="EditorFactory.CreateEditorInstance"]/*' />
         /// <summary>
         /// This method checks to see if the specified file is one that your editor supports
-        /// and if so, creates the core text editor and associated your language service 
+        /// and if so, creates the core text editor and associated your language service
         /// with it.  To figure out if the file is one that your editor supports it performs
         /// the following check:
         /// <list>
         /// <item>
-        /// Call IsRegisteredExtension to see if the file extension is explicitly 
-        /// registered to your editor.      
+        /// Call IsRegisteredExtension to see if the file extension is explicitly
+        /// registered to your editor.
         /// </item>
         /// <item>
         /// Call GetUserDefinedEditor to see if the user has explicitly mapped the
         /// extension to your editor.
         /// </item>
         /// <item>
-        /// If your editor registered the "*" extension, then it also calls 
+        /// If your editor registered the "*" extension, then it also calls
         /// IsFileExtensionWeShouldEditAnyway and IsOurFileFormat to let you sniff
         /// the file and see if you think it contains stuff that your editor recognizes
         /// </item>
@@ -276,7 +277,7 @@ namespace Ankh.VS.LanguageServices.Core
         /// flags you have provided via the CodePagePrompt property.
         /// </list>
         /// <list>
-        /// Calls SetLanguageServiceID to pass in your language service Guid and 
+        /// Calls SetLanguageServiceID to pass in your language service Guid and
         /// sets the GuidVSBufferDetectLangSid IVsUserData to false to stop the core
         /// text editor from looking up a different language service.
         /// </list>
@@ -284,6 +285,8 @@ namespace Ankh.VS.LanguageServices.Core
         /// </summary>
         public virtual int CreateEditorInstance(uint createDocFlags, string moniker, string physicalView, IVsHierarchy pHier, uint itemid, IntPtr existingDocData, out IntPtr docView, out IntPtr docData, out string editorCaption, out Guid cmdUI, out int cancelled)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             docView = IntPtr.Zero;
             docData = IntPtr.Zero;
             editorCaption = null;

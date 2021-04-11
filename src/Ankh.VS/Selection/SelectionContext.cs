@@ -84,6 +84,8 @@ namespace Ankh.VS.Selection
 
         protected override void OnInitialize()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsMonitorSelection monitor = GetService<IVsMonitorSelection>();
 
             if (monitor != null)
@@ -97,6 +99,8 @@ namespace Ankh.VS.Selection
 
         protected override void Dispose(bool disposing)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             try
             {
                 ClearCache();
@@ -199,6 +203,8 @@ namespace Ankh.VS.Selection
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (!_checkedMisc)
                 {
                     _checkedMisc = true;
@@ -212,6 +218,8 @@ namespace Ankh.VS.Selection
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_solution == null)
                     _solution = (IVsSolution)Context.GetService(typeof(SVsSolution));
 
@@ -223,6 +231,8 @@ namespace Ankh.VS.Selection
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_solutionFilename == null)
                 {
                     if (Solution != null)
@@ -269,6 +279,8 @@ namespace Ankh.VS.Selection
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (!_isSolutionExplorer.HasValue)
                 {
                     _isSolutionExplorer = false;
@@ -307,6 +319,8 @@ namespace Ankh.VS.Selection
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (!_isSingleNodeSelection.HasValue)
                 {
                     if (current.id == VSItemId.Selection
@@ -347,16 +361,19 @@ namespace Ankh.VS.Selection
 
         internal protected IEnumerable<SelectionItem> GetSelectedItems(bool recursive)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return recursive ? GetSelectedItemsRecursive() : GetSelectedItems();
         }
 
         protected IEnumerable<SelectionItem> GetSelectedItems()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return _selectionItems ?? (_selectionItems = new CachedEnumerable<SelectionItem>(InternalGetSelectedItems(), Disposer));
         }
 
         protected IEnumerable<SelectionItem> GetSelectedItemsRecursive()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return _selectionItemsRecursive ?? (_selectionItemsRecursive = new CachedEnumerable<SelectionItem>(InternalGetSelectedItemsRecursive(), Disposer));
         }
 
@@ -366,6 +383,8 @@ namespace Ankh.VS.Selection
         /// <returns></returns>
         IEnumerable<SelectionItem> InternalGetSelectedItems()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             HierarchySelection sel = current; // Cache the selection to make sure we don't use an id for another hierarchy
 
             if (sel.id == VSItemId.Selection)
@@ -435,6 +454,8 @@ namespace Ankh.VS.Selection
         /// <returns></returns>
         IEnumerable<SelectionItem> InternalGetSelectedItemsRecursive()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Dictionary<SelectionItem, SelectionItem> ticked = new Dictionary<SelectionItem, SelectionItem>();
             foreach (SelectionItem si in GetSelectedItems())
             {
@@ -474,6 +495,8 @@ namespace Ankh.VS.Selection
         /// <returns></returns>
         private IEnumerable<SelectionItem> GetDescendants(SelectionItem si, Dictionary<SelectionItem, SelectionItem> previous, ProjectWalkDepth depth)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (si == null)
                 throw new ArgumentNullException("si");
 
@@ -558,6 +581,8 @@ namespace Ankh.VS.Selection
 
         private bool RecurseInto(SelectionItem si, ProjectWalkDepth depth)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             object value;
 
             if (VSErr.Succeeded(si.Hierarchy.GetProperty(si.Id,
@@ -621,16 +646,19 @@ namespace Ankh.VS.Selection
 
         protected IEnumerable<string> GetSelectedFiles()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return _filenames ?? (_filenames = new CachedEnumerable<string>(InternalGetSelectedFiles(false), Disposer));
         }
 
         protected IEnumerable<string> GetSelectedFilesRecursive()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return _filenamesRecursive ?? (_filenamesRecursive = new CachedEnumerable<string>(InternalGetSelectedFiles(true), Disposer));
         }
 
         public IEnumerable<string> GetSelectedFiles(bool recursive)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return recursive ? GetSelectedFilesRecursive() : GetSelectedFiles();
         }
 
@@ -641,6 +669,8 @@ namespace Ankh.VS.Selection
         /// <returns></returns>
         IEnumerable<string> InternalGetSelectedFiles(bool recursive)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             HybridCollection<string> foundFiles = new HybridCollection<string>(StringComparer.OrdinalIgnoreCase);
 
             foreach (SelectionItem i in GetSelectedItems(recursive))
@@ -664,21 +694,26 @@ namespace Ankh.VS.Selection
 
         protected IEnumerable<SvnItem> GetSelectedSvnItems()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return _svnItems ?? (_svnItems = new CachedEnumerable<SvnItem>(InternalGetSelectedSvnItems(false), Disposer));
         }
 
         protected IEnumerable<SvnItem> GetSelectedSvnItemsRecursive()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return _svnItemsRecursive ?? (_svnItemsRecursive = new CachedEnumerable<SvnItem>(InternalGetSelectedSvnItems(true), Disposer));
         }
 
         public IEnumerable<SvnItem> GetSelectedSvnItems(bool recursive)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return recursive ? GetSelectedSvnItemsRecursive() : GetSelectedSvnItems();
         }
 
         IEnumerable<SvnItem> InternalGetSelectedSvnItems(bool recursive)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (SvnCache == null)
                 yield break;
 
@@ -694,11 +729,14 @@ namespace Ankh.VS.Selection
 
         public IEnumerable<SccProject> GetOwnerProjects()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return _ownerProjects ?? (_ownerProjects = new CachedEnumerable<SccProject>(InternalGetOwnerProjects(), Disposer));
         }
 
         protected IEnumerable<SccProject> InternalGetOwnerProjects()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Hashtable ht = new Hashtable();
             bool searchedProjectMapper = false;
             IProjectFileMapper projectMapper = null;
@@ -755,26 +793,32 @@ namespace Ankh.VS.Selection
 
         protected IEnumerable<SccProject> GetSelectedProjects()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return _selectedProjects ?? (_selectedProjects = new CachedEnumerable<SccProject>(InternalGetSelectedProjects(false), Disposer));
         }
 
         protected IEnumerable<SccProject> GetSelectedProjectsRecursive()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return _selectedProjectsRecursive ?? (_selectedProjectsRecursive = new CachedEnumerable<SccProject>(InternalGetSelectedProjects(true), Disposer));
         }
 
         public IEnumerable<SccProject> GetSelectedProjects(bool recursive)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return recursive ? GetSelectedProjectsRecursive() : GetSelectedProjects();
         }
 
         public IEnumerable<SccHierarchy> GetSelectedHierarchies()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return _selectedHierarchies ?? (_selectedHierarchies = new CachedEnumerable<SccHierarchy>(InternalGetSelectedHierarchies(false), Disposer));
         }
 
         protected IEnumerable<SccProject> InternalGetSelectedProjects(bool recursive)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             foreach (SelectionItem item in GetSelectedItems(recursive))
             {
                 if (item.Id == VSItemId.Root)
@@ -787,6 +831,8 @@ namespace Ankh.VS.Selection
 
         protected IEnumerable<SccHierarchy> InternalGetSelectedHierarchies(bool recursive)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             foreach (SelectionItem item in GetSelectedItems(recursive))
             {
                 if (item.Id == VSItemId.Root)
@@ -801,6 +847,8 @@ namespace Ankh.VS.Selection
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_isSolutionSelected.HasValue)
                     return _isSolutionSelected.Value;
 
@@ -837,6 +885,8 @@ namespace Ankh.VS.Selection
         IEnumerable<T> InternalGetSelection<T>()
             where T : class
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ISelectionContainer sc = _currentContainer;
 
             uint nItems;
@@ -884,6 +934,8 @@ namespace Ankh.VS.Selection
         /// <remarks>The list might contain duplicates if files are included more than once</remarks>
         public IEnumerable<string> GetSccFiles(IVsHierarchy hierarchy, uint id, ProjectWalkDepth depth, IDictionary<string, uint> map)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             // Note: This command is not cached like the other commands on this object!
             if (hierarchy == null)
                 throw new ArgumentNullException("hierarchy");

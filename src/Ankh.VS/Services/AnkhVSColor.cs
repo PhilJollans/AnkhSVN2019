@@ -16,6 +16,7 @@
 
 using System;
 using System.Drawing;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.VS.Services
@@ -36,6 +37,8 @@ namespace Ankh.VS.Services
 
         public bool TryGetColor(__VSSYSCOLOREX vsColor, out Color color)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             uint rgb;
             if (VSErr.Succeeded(UIShell.GetVSSysColorEx((int)vsColor, out rgb)))
             {

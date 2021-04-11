@@ -22,6 +22,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using IMessageFilter = System.Windows.Forms.IMessageFilter;
 using OLEConstants = Microsoft.VisualStudio.OLE.Interop.Constants;
@@ -53,6 +54,8 @@ namespace Ankh.VS.Dialogs
         public VSCommandRouting(IAnkhServiceProvider context, VSContainerForm form)
             : base(context)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (form == null)
                 throw new ArgumentNullException("form");
 
@@ -96,6 +99,8 @@ namespace Ankh.VS.Dialogs
 
         protected override void Dispose(bool disposing)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             try
             {
                 if (_priorityCommandTarget != null)
@@ -185,6 +190,8 @@ namespace Ankh.VS.Dialogs
         /// </returns>
         public bool PreFilterMessage(ref Message m)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             int hr;
             IVsToolWindowToolbarHost host = _tbHost;
             if (host != null)
@@ -332,6 +339,8 @@ namespace Ankh.VS.Dialogs
         bool _loadRegistered;
         internal void OnHandleCreated()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_pane == null)
             {
                 if (_panel == null)
@@ -389,6 +398,8 @@ namespace Ankh.VS.Dialogs
 
         void OnLoad(object sender, EventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_fKeys == null)
                 _fKeys = GetService<IVsFilterKeys2>(typeof(SVsFilterKeys));
 
@@ -413,6 +424,8 @@ namespace Ankh.VS.Dialogs
 
         void VSForm_SizeChanged(object sender, EventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Size formSz = _form.ClientRectangle.Size;
 
             Size sz = new Size(
@@ -455,6 +468,8 @@ namespace Ankh.VS.Dialogs
         bool _initialSet;
         public int SetBorderSpace(RECT[] pbw)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if ((reserved.left == pbw[0].left) &&
                 (reserved.top == pbw[0].top) &&
                 (reserved.right == pbw[0].right) &&
@@ -488,6 +503,8 @@ namespace Ankh.VS.Dialogs
 
         int IOleCommandTarget.Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             int hr = VSErr.OLECMDERR_E_NOTSUPPORTED;
 
             if (!Enabled)
@@ -551,6 +568,8 @@ namespace Ankh.VS.Dialogs
 
         int IOleCommandTarget.QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             int hr = VSErr.OLECMDERR_E_NOTSUPPORTED;
 
             if (Enabled && _ctList != null)

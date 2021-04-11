@@ -64,6 +64,8 @@ namespace Ankh.VS.Selection
 
         public void MaybeInstallDelayHandler()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_delayedDirty)
                 return;
 
@@ -77,6 +79,8 @@ namespace Ankh.VS.Selection
 
         DelayData ShouldInstallDelayHandler()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsWindowFrame frame = ActiveFrame;
 
             if (frame != null)
@@ -147,6 +151,8 @@ namespace Ankh.VS.Selection
             GetService<IAnkhCommandService>().DelayPostCommands(
                 delegate
                 {
+                    ThreadHelper.ThrowIfNotOnUIThread();
+
                     bool cont;
                     if (dd.TextView != null)
                     {
@@ -173,6 +179,8 @@ namespace Ankh.VS.Selection
 
         private IVsTextView GetTextView(IVsWindowFrame windowFrame)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (windowFrame == null)
                 throw new ArgumentException("windowFrame");
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using Ankh.Scc.UI;
@@ -67,6 +68,8 @@ namespace Ankh.VS.Services
         OpenComparisonWindow2 _ocw2;
         public bool RunDiff(AnkhDiffArgs args)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (args == null)
                 throw new ArgumentNullException("args");
             else if (!HasDiff)
@@ -145,6 +148,8 @@ namespace Ankh.VS.Services
         QueryMergeWindowState _qmws;
         public bool RunMerge(AnkhMergeArgs args)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (args == null)
                 throw new ArgumentNullException("args");
             else if (!HasMerge)

@@ -142,11 +142,13 @@ namespace Ankh.VS.Dialogs
 
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return _pane.Exec(ref pguidCmdGroup, nCmdexecopt, nCmdexecopt, pvaIn, pvaOut);
         }
 
         public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return _pane.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
         }
 
@@ -155,6 +157,7 @@ namespace Ankh.VS.Dialogs
 
 
     [ComVisible(true)]
+    [CLSCompliant(false)]
     public sealed class VSDocumentFormPane : WindowPane, IOleCommandTarget
     {
         readonly List<IOleCommandTarget> _targets = new List<IOleCommandTarget>();
@@ -277,6 +280,8 @@ namespace Ankh.VS.Dialogs
 
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             int hr = VSErr.OLECMDERR_E_NOTSUPPORTED;
             foreach (IOleCommandTarget target in _targets)
             {
@@ -296,6 +301,8 @@ namespace Ankh.VS.Dialogs
 
         public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             int hr = VSErr.OLECMDERR_E_NOTSUPPORTED;
             foreach (IOleCommandTarget target in _targets)
             {

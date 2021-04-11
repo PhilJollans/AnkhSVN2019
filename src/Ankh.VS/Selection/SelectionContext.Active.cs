@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Windows.Forms;
 using Microsoft.VisualStudio;
@@ -47,6 +48,8 @@ namespace Ankh.VS.Selection
 
         public int OnElementValueChanged(uint elementid, object varValueOld, object varValueNew)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             switch ((VSConstants.VSSELELEMID)elementid)
             {
                 case VSConstants.VSSELELEMID.SEID_WindowFrame:
@@ -106,6 +109,8 @@ namespace Ankh.VS.Selection
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_activeFrameObject == null && ActiveFrame != null)
                 {
                     object v;
@@ -121,7 +126,11 @@ namespace Ankh.VS.Selection
 
         public Control ActiveFrameControl
         {
-            get { return _activeFrameControl ?? (_activeFrameControl = FindControl(ActiveFrameObject)); }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return _activeFrameControl ?? (_activeFrameControl = FindControl(ActiveFrameObject));
+            }
         }
 
         private Control FindControl(object frameObject)
@@ -143,6 +152,8 @@ namespace Ankh.VS.Selection
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_activeDocumentFrameObject == null && ActiveDocumentFrame != null)
                 {
                     object v;
@@ -158,13 +169,19 @@ namespace Ankh.VS.Selection
 
         public Control ActiveDocumentFrameControl
         {
-            get { return _activeDocumentControl ?? (_activeDocumentControl = FindControl(ActiveDocumentFrameObject)); }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return _activeDocumentControl ?? (_activeDocumentControl = FindControl(ActiveDocumentFrameObject));
+            }
         }
 
         public string ActiveDocumentFilename
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 // ### The cached active document filename might be invalid if the document is saved to another name!
                 if (_activeDocumentFileName != null)
                     return string.IsNullOrEmpty(_activeDocumentFileName) ? null : _activeDocumentFileName;
@@ -189,6 +206,8 @@ namespace Ankh.VS.Selection
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 string p = ActiveDocumentFilename;
 
                 if (p != null)
@@ -202,6 +221,8 @@ namespace Ankh.VS.Selection
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (!_determinedActiveFrameTextView)
                 {
                     _determinedActiveFrameTextView = true;
@@ -230,6 +251,8 @@ namespace Ankh.VS.Selection
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (!_determinedActiveDocumentFrameTextView)
                 {
                     _determinedActiveDocumentFrameTextView = true;
@@ -262,6 +285,8 @@ namespace Ankh.VS.Selection
 
         private void RefreshContext()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_shouldRefresh)
             {
                 _shouldRefresh = false;
@@ -299,6 +324,8 @@ namespace Ankh.VS.Selection
 
             public void Dispose()
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_context._topPopup == _control)
                 {
                     Stack<Control> _stack = _context._popups;
@@ -346,12 +373,18 @@ namespace Ankh.VS.Selection
         /// <value>The active dialog or frame control.</value>
         public System.Windows.Forms.Control ActiveDialogOrFrameControl
         {
-            get { return ActiveDialog ?? ActiveFrameControl; }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return ActiveDialog ?? ActiveFrameControl;
+            }
         }
 
         public TControl GetActiveControl<TControl>()
             where TControl : class
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Control ctrl = ActiveDialogOrFrameControl;
 
             IContainerControl cc;
@@ -441,6 +474,8 @@ namespace Ankh.VS.Selection
 
             public int OnSelectChange(ISelectionContainer pSC)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_ctx._topPopup == _top)
                 {
                     _ctx.OnSelectionChanged(_ctx.current.hierarchy, _ctx.current.id, _ctx.current.selection, _ctx._currentContainer,
@@ -452,6 +487,8 @@ namespace Ankh.VS.Selection
 
             public int OnSelectChangeEx(IntPtr pHier, uint itemid, IVsMultiItemSelect pMIS, IntPtr pSC)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_ctx._topPopup == _top)
                 {
                     IVsHierarchy hier = (pHier != IntPtr.Zero) ? Marshal.GetObjectForIUnknown(pHier) as IVsHierarchy : null;

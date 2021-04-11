@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using Ankh.Scc.UI;
@@ -20,6 +21,7 @@ namespace Ankh.Diff
 
         public bool RunDiff(AnkhDiffArgs args)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return RunInternalDiff(args);
         }
 
@@ -40,6 +42,8 @@ namespace Ankh.Diff
 
         private bool RunInternalDiff(AnkhDiffArgs args)
         {
+            ThreadHelper.ThrowIfNotOnUIThread() ;
+
             DiffEditorControl diffEditor = new DiffEditorControl();
 
             IAnkhEditorResolver er = GetService<IAnkhEditorResolver>();

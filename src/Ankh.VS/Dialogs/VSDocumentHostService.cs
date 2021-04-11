@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Text;
 using Ankh.UI;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.VS.Dialogs
@@ -52,6 +53,8 @@ namespace Ankh.VS.Dialogs
 
         public void InitializeEditor(VSEditorControl form, IVsUIHierarchy hier, IVsWindowFrame frame, uint docid)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             VSDocumentFormPane pane = null;
             object value;
             if (VSErr.Succeeded(frame.GetProperty((int)__VSFPROPID.VSFPROPID_DocView, out value)))

@@ -200,6 +200,8 @@ namespace Ankh.VS.TextEditor
 
         public void Clear(bool clearUndoBuffer)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_nativeWindow != null)
                 _nativeWindow.Clear(clearUndoBuffer);
             else
@@ -219,6 +221,8 @@ namespace Ankh.VS.TextEditor
 
         protected override void OnHandleCreated(EventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             base.OnHandleCreated(e);
 
             if (DesignMode)
@@ -276,6 +280,8 @@ namespace Ankh.VS.TextEditor
 
         void InitializeForm(VSContainerForm ownerForm)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_nativeWindow == null)
             {
                 Init(ownerForm.Context, true, false);
@@ -291,6 +297,8 @@ namespace Ankh.VS.TextEditor
         bool _inToolWindow;
         void InitializeToolWindow(IAnkhToolWindowControl toolWindow)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             _inToolWindow = true;
             Init(toolWindow.ToolWindowHost, false, false);
             toolWindow.ToolWindowHost.AddCommandTarget(_nativeWindow);
@@ -299,6 +307,8 @@ namespace Ankh.VS.TextEditor
         bool _inDocumentForm;
         void InitializeDocumentForm(VSEditorControl documentForm)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             _inDocumentForm = true;
             Init(documentForm.Context, false, false);
             documentForm.AddCommandTarget(_nativeWindow);
@@ -311,6 +321,8 @@ namespace Ankh.VS.TextEditor
         /// <param name="modal">if set to <c>true</c> [allow modal].</param>
         protected void Init(IAnkhServiceProvider context, bool modal, bool toolWindow)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (context == null)
                 throw new ArgumentNullException("context");
 
@@ -629,6 +641,8 @@ namespace Ankh.VS.TextEditor
 
         public void LoadFile(string path, bool monitorChanges)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_nativeWindow == null)
                 throw new InvalidOperationException();
 
@@ -924,6 +938,8 @@ namespace Ankh.VS.TextEditor
         /// <param name="codeWindow">Represents a multiple-document interface (MDI) child that contains one or more code views.</param>
         private void CreateCodeWindow(IntPtr parentHandle, Rectangle place, bool modal, bool toolWindow, bool readOnly, Guid? forceLanguageService, out IVsCodeWindow codeWindow)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             codeWindow = CreateLocalInstance<IVsCodeWindow>(typeof(VsCodeWindowClass), _serviceProvider);
 
             // initialize code window
@@ -1044,6 +1060,8 @@ namespace Ankh.VS.TextEditor
         /// <param name="forceLanguageService"><c>null</c> or the language service to force.</param>
         public void Init(bool allowModal, bool toolWindow, bool readOnly, Guid? forceLanguageService)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             //Create window
             CreateCodeWindow(_container.Handle, _container.ClientRectangle, allowModal, toolWindow, readOnly, forceLanguageService, out _codeWindow);
             commandTarget = _codeWindow as IOleCommandTarget;
@@ -1145,6 +1163,8 @@ namespace Ankh.VS.TextEditor
         /// <returns></returns>
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (HasFocus)
                 return commandTarget.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
             else
@@ -1162,6 +1182,8 @@ namespace Ankh.VS.TextEditor
         /// <returns></returns>
         public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (HasFocus)
                 return commandTarget.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
             else
@@ -1193,6 +1215,8 @@ namespace Ankh.VS.TextEditor
 
         internal void ReplaceContents(string pathToReplaceWith)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsTextBuffer tempBuffer = CreateLocalInstance<IVsTextBuffer>(typeof(VsTextBufferClass), _serviceProvider);
             IntPtr buffer = IntPtr.Zero;
             bool setReadOnly = false;
@@ -1237,12 +1261,16 @@ namespace Ankh.VS.TextEditor
 
         internal void LoadFile(string path)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsPersistDocData2 docData = (IVsPersistDocData2)_textBuffer;
             Marshal.ThrowExceptionForHR(docData.LoadDocData(path));
         }
 
         internal void Clear(bool clearUndoBuffer)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Text = "";
 
             if (clearUndoBuffer)
@@ -1258,6 +1286,8 @@ namespace Ankh.VS.TextEditor
 
         internal void IgnoreFileChanges(bool ignore)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsDocDataFileChangeControl dfc = (IVsDocDataFileChangeControl)_textBuffer;
 
             Marshal.ThrowExceptionForHR(dfc.IgnoreFileChanges(ignore ? 1 : 0));

@@ -16,6 +16,7 @@
 
 using System;
 using System.Diagnostics;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.VS.Selection
@@ -52,6 +53,8 @@ namespace Ankh.VS.Selection
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_sccProject == null && !_checkedSccProject)
                 {
                     _checkedSccProject = true;
@@ -69,7 +72,11 @@ namespace Ankh.VS.Selection
 
         public bool IsSolution
         {
-            get { return (SccProject != null) && SelectionUtils.IsSolutionSccProject(SccProject); }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return (SccProject != null) && SelectionUtils.IsSolutionSccProject(SccProject);
+            }
         }
 
         #region IEquatable<SelectionItem> Members

@@ -16,6 +16,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.VS.OutputPane
@@ -37,7 +38,9 @@ namespace Ankh.VS.OutputPane
         }
 
         public void WriteToPane(string s)
-        {           
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsOutputWindowPane pane;
             Marshal.ThrowExceptionForHR(Window.GetPane(ref g, out pane));            
             Marshal.ThrowExceptionForHR(pane.OutputString(s));

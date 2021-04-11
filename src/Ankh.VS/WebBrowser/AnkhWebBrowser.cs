@@ -17,6 +17,7 @@
 using System;
 using System.Diagnostics;
 using Ankh.Configuration;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.VS.WebBrowser
@@ -31,11 +32,14 @@ namespace Ankh.VS.WebBrowser
 
         public void Navigate(Uri url)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             Navigate(url, new AnkhBrowserArgs());
         }
 
         public void Navigate(Uri url, AnkhBrowserArgs args)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             AnkhBrowserResults results;
 
             bool useExternal = args.External;
@@ -58,6 +62,8 @@ namespace Ankh.VS.WebBrowser
 
         public void Navigate(Uri url, AnkhBrowserArgs args, out AnkhBrowserResults results)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsWebBrowsingService browserSvc = GetService<IVsWebBrowsingService>(typeof(SVsWebBrowsingService));
 
             Guid windowGuid = new Guid(ToolWindowGuids80.WebBrowserWindow);

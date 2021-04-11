@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Ankh.VS.LanguageServices.Core;
+using Microsoft.VisualStudio.Shell;
 
 namespace Ankh.VS.LanguageServices
 {
@@ -28,6 +29,8 @@ namespace Ankh.VS.LanguageServices
         public AnkhEditorResolver(IAnkhServiceProvider context)
             : base(context)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             _factory = new AnkhEditorFactory();
             _factory.SetSite(this);
         }

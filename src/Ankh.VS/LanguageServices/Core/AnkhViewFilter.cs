@@ -61,6 +61,8 @@ namespace Ankh.VS.LanguageServices.Core
 
         int IOleCommandTarget.QueryStatus(ref Guid cmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             /* TODO: Handle things that *must* be handled on every language service; bubble everything else
              *       up the chain */
             Debug.Assert(cCmds == 1);
@@ -98,6 +100,8 @@ namespace Ankh.VS.LanguageServices.Core
         [CLSCompliant(false)]
         public virtual int Exec(ref Guid cmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (cmdGroup == VSConstants.VSStd2K)
             {
                 switch ((VSConstants.VSStd2KCmdID)nCmdID)
@@ -121,6 +125,8 @@ namespace Ankh.VS.LanguageServices.Core
         [CLSCompliant(false)]
         public virtual void ShowContextMenu(Guid cmdGroup, int menuId, IOleCommandTarget target)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsUIShell uiShell = GetService<IVsUIShell>(typeof(SVsUIShell));
 
             if (uiShell != null)

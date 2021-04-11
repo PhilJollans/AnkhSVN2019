@@ -23,6 +23,7 @@ using System.Threading;
 
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using Ankh.Commands;
@@ -73,32 +74,39 @@ namespace Ankh.Services
         public CommandResult ExecCommand(AnkhCommand command)
         {
             // The commandhandler in the package always checks enabled; no need to do it here
+            ThreadHelper.ThrowIfNotOnUIThread();
             return ExecCommand(command, false);
         }
 
         public CommandResult ExecCommand(AnkhCommand command, bool verifyEnabled)
         {
             // The commandhandler in the package always checks enabled; no need to do it here
+            ThreadHelper.ThrowIfNotOnUIThread();
             return ExecCommand(new CommandID(AnkhId.CommandSetGuid, (int)command), verifyEnabled);
         }
 
         public CommandResult ExecCommand(AnkhCommand command, bool verifyEnabled, object argument)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return ExecCommand(new CommandID(AnkhId.CommandSetGuid, (int)command), verifyEnabled, argument);
         }
 
         public CommandResult ExecCommand(System.ComponentModel.Design.CommandID command)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return ExecCommand(command, true);
         }
 
         public CommandResult ExecCommand(System.ComponentModel.Design.CommandID command, bool verifyEnabled)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return ExecCommand(command, verifyEnabled, null);
         }
 
         public CommandResult ExecCommand(System.ComponentModel.Design.CommandID command, bool verifyEnabled, object argument)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (command == null)
                 throw new ArgumentNullException("command");
 
@@ -185,6 +193,8 @@ namespace Ankh.Services
         /// <returns></returns>
         public bool PostTickCommand(ref bool tick, AnkhCommand command)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (IsTickCommand(command))
                 _ticks[command - AnkhCommand.TickFirst] = 1;
 
@@ -218,21 +228,26 @@ namespace Ankh.Services
 
         public bool PostExecCommand(AnkhCommand command)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return PostExecCommand(command, null, CommandPrompt.DoDefault);
         }
 
         public bool PostExecCommand(AnkhCommand command, object args)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return PostExecCommand(command, args, CommandPrompt.DoDefault);
         }
 
         public bool PostExecCommand(AnkhCommand command, object args, CommandPrompt prompt)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return PostExecCommand(new CommandID(AnkhId.CommandSetGuid, (int)command), args, prompt);
         }
 
         public bool PostExecCommand(System.ComponentModel.Design.CommandID command)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (command == null)
                 throw new ArgumentNullException("command");
 
@@ -241,6 +256,7 @@ namespace Ankh.Services
 
         public bool PostExecCommand(System.ComponentModel.Design.CommandID command, object args)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return PostExecCommand(command, args, CommandPrompt.DoDefault);
         }
 
@@ -249,6 +265,8 @@ namespace Ankh.Services
 
         public bool PostExecCommand(CommandID command, object args, CommandPrompt prompt)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (command == null)
                 throw new ArgumentNullException("command");
 
@@ -284,6 +302,8 @@ namespace Ankh.Services
 
         bool PerformPost(CommandID command, CommandPrompt prompt, object args)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsUIShell shell = UIShell;
 
             if (shell != null)
@@ -322,6 +342,8 @@ namespace Ankh.Services
         readonly List<DelayDelegateCheck> _checks = new List<DelayDelegateCheck>();
         public void DelayPostCommands(DelayDelegateCheck check)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (check == null)
                 throw new ArgumentNullException("check");
 
@@ -410,6 +432,8 @@ namespace Ankh.Services
         /// <param name="performImmediately">if set to <c>true</c> [perform immediately].</param>
         public void UpdateCommandUI(bool performImmediately)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsUIShell shell = UIShell;
 
             if (shell != null)
@@ -448,6 +472,8 @@ namespace Ankh.Services
 
         public void OnIdle(AnkhIdleArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_delayed)
                 TryReleaseDelayed();
             else
@@ -464,7 +490,7 @@ namespace Ankh.Services
                 }
 
             if (e.NonPeriodic)
-            {                
+            {
                 AnkhAction action;
 
                 while (null != (action = GetIdleAction()))
@@ -498,7 +524,7 @@ namespace Ankh.Services
 
                 return null;
             }
-        }                
+        }
 
         public void PostIdleCommand(AnkhCommand command)
         {

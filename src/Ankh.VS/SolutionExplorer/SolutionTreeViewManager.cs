@@ -48,6 +48,8 @@ namespace Ankh.VS.SolutionExplorer
 
         public void Ensure(SolutionExplorerWindow solutionExplorerWindow)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (solutionExplorerWindow == null)
                 throw new ArgumentNullException("solutionExplorerWindow");
 
@@ -59,6 +61,8 @@ namespace Ankh.VS.SolutionExplorer
 
         private void EnsureControl(SolutionExplorerWindow solutionExplorerWindow)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_treeViewControl != null && _treeViewControl.IsValid)
                 return;
 

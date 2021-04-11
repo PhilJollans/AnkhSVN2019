@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -18,6 +19,8 @@ namespace Ankh.VS.Services
 
         public void HookCommand(System.ComponentModel.Design.CommandID command, EventHandler handler)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (command == null)
                 throw new ArgumentNullException("command");
             else if (handler == null)
@@ -51,6 +54,8 @@ namespace Ankh.VS.Services
 
         public void UnhookCommand(System.ComponentModel.Design.CommandID command, EventHandler handler)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (command == null)
                 throw new ArgumentNullException("command");
             else if (handler == null)
@@ -86,6 +91,8 @@ namespace Ankh.VS.Services
 
         protected override void Dispose(bool disposing)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             try
             {
                 if (disposing)
@@ -99,6 +106,8 @@ namespace Ankh.VS.Services
 
         void Unhook()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_hooked)
             {
                 _hooked = false;
