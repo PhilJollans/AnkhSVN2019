@@ -17,6 +17,7 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VSSDK.Tools.VsIdeTesting;
@@ -61,6 +62,8 @@ namespace IntegrationTests
         {
             UIThreadInvoker.Invoke((ThreadInvoker)delegate()
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 TestUtils testUtils = new TestUtils();
                 testUtils.CloseCurrentSolution(__VSSLNSAVEOPTIONS.SLNSAVEOPT_NoSave);
                 testUtils.CreateEmptySolution(TestContext.TestDir, "EmptySolution");

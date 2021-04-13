@@ -54,6 +54,7 @@ namespace Ankh.VSPackage
     {
         public void ShowToolWindow(AnkhToolWindow window)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             ShowToolWindow(window, 0, true);
         }
 
@@ -78,6 +79,8 @@ namespace Ankh.VSPackage
 
         public void ShowToolWindow(AnkhToolWindow toolWindow, int id, bool create)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ToolWindowPane pane = FindToolWindow(GetPaneType(toolWindow), id, create);
 
             IVsWindowFrame frame = pane.Frame as IVsWindowFrame;
@@ -91,6 +94,8 @@ namespace Ankh.VSPackage
 
         public void CloseToolWindow(AnkhToolWindow toolWindow, int id, FrameCloseMode close)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             ToolWindowPane pane = FindToolWindow(GetPaneType(toolWindow), id, false);
 
             if (pane == null)
@@ -162,7 +167,11 @@ namespace Ankh.VSPackage
 
         public IVsWindowFrame Frame
         {
-            get { return ((IVsWindowFrame)_pane.Frame); }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return ((IVsWindowFrame)_pane.Frame);
+            }
         }
 
         public IVsWindowPane Pane
@@ -275,6 +284,8 @@ namespace Ankh.VSPackage
 
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             foreach (IOleCommandTarget target in _targets)
             {
                 int hr = target.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
@@ -293,6 +304,8 @@ namespace Ankh.VSPackage
 
         public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             foreach (IOleCommandTarget target in _targets)
             {
                 int hr = target.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
@@ -320,18 +333,36 @@ namespace Ankh.VSPackage
 
         public Guid KeyboardContext
         {
-            get { return GetGuid(__VSFPROPID.VSFPROPID_InheritKeyBindings); }
-            set { SetGuid(__VSFPROPID.VSFPROPID_InheritKeyBindings, value); }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return GetGuid(__VSFPROPID.VSFPROPID_InheritKeyBindings);
+            }
+            set
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                SetGuid(__VSFPROPID.VSFPROPID_InheritKeyBindings, value);
+            }
         }
 
         public Guid CommandContext
         {
-            get { return GetGuid(__VSFPROPID.VSFPROPID_CmdUIGuid); }
-            set { SetGuid(__VSFPROPID.VSFPROPID_CmdUIGuid, value); }
+            get
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                return GetGuid(__VSFPROPID.VSFPROPID_CmdUIGuid);
+            }
+            set
+            {
+                ThreadHelper.ThrowIfNotOnUIThread();
+                SetGuid(__VSFPROPID.VSFPROPID_CmdUIGuid, value);
+            }
         }
 
         private Guid GetGuid(__VSFPROPID id)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Guid gResult;
             if (VSErr.Succeeded(Frame.GetGuidProperty((int)id, out gResult)))
                 return gResult;
@@ -341,6 +372,8 @@ namespace Ankh.VSPackage
 
         private void SetGuid(__VSFPROPID id, Guid value)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Marshal.ThrowExceptionForHR(Frame.SetGuidProperty((int)id, ref value));
         }
 
@@ -353,6 +386,8 @@ namespace Ankh.VSPackage
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 IVsWindowFrame frame = Frame;
                 if (frame != null)
                 {
@@ -506,6 +541,8 @@ namespace Ankh.VSPackage
 
         public override void OnToolBarAdded()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             base.OnToolBarAdded();
 
             if (ExtraToolBarId != AnkhToolBar.None)
@@ -570,16 +607,19 @@ namespace Ankh.VSPackage
 
         public int OnDockableChange(int fDockable)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return OnDockableChange(fDockable, 0, 0, 0, 0);
         }
 
         public int OnMove()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return OnMove(0, 0, 0, 0);
         }
 
         public int OnSize()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return OnSize(0, 0, 0, 0);
         }
 

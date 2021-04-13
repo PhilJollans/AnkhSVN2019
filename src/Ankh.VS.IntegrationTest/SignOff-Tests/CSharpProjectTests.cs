@@ -17,6 +17,7 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VsSDK.IntegrationTestLibrary;
 using Microsoft.VSSDK.Tools.VsIdeTesting;
@@ -77,6 +78,8 @@ namespace IntegrationTests
         {
             UIThreadInvoker.Invoke((ThreadInvoker)delegate()
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 TestUtils testUtils = new TestUtils();
 
                 testUtils.CreateEmptySolution(TestContext.TestDir, "CSWinApp");

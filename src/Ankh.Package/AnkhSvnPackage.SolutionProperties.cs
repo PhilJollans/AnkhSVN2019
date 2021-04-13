@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.OLE.Interop;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Ankh.Scc;
 using Ankh.Scc.Native;
@@ -51,8 +52,8 @@ namespace Ankh.VSPackage
             get { return _scc ?? (_scc = GetService<IAnkhSccService>()); }
         }
 
-        // Global note: 
-        // The same trick we do here for the solution (loading the package when encountering a solution property) 
+        // Global note:
+        // The same trick we do here for the solution (loading the package when encountering a solution property)
         // can be done on several project types using IVsProjectStartupServices
         public int QuerySaveSolutionProps(IVsHierarchy pHierarchy, VSQUERYSAVESLNPROPS[] pqsspSave)
         {
@@ -102,13 +103,15 @@ namespace Ankh.VSPackage
 
         public int SaveSolutionProps(IVsHierarchy pHierarchy, IVsSolutionPersistence pPersistence)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             try
             {
                 int hr = VSErr.S_OK;
 
                 // This function gets called by the shell after QuerySaveSolutionProps returned QSP_HasDirtyProps
 
-                // The package will pass in the key under which it wants to save its properties, 
+                // The package will pass in the key under which it wants to save its properties,
                 // and the IDE will call back on WriteSolutionProps
 
                 // The properties will be saved in the Pre-Load section
@@ -232,6 +235,8 @@ namespace Ankh.VSPackage
 
         public int LoadUserOptions(IVsSolutionPersistence pPersistence, uint grfLoadOpts)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if ((grfLoadOpts & (uint)__VSLOADUSEROPTS.LUO_OPENEDDSW) != 0)
             {
                 return VSErr.S_OK; // We only know .suo; let's ignore old style projects
@@ -263,6 +268,8 @@ namespace Ankh.VSPackage
 
         public bool ForceLoadUserSettings(string streamName)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsSolutionPersistence persistence = GetService<IVsSolutionPersistence>(typeof(SVsSolutionPersistence));
             if (persistence == null)
                 return false;
@@ -339,6 +346,8 @@ namespace Ankh.VSPackage
 
         public int SaveUserOptions([In] IVsSolutionPersistence pPersistence)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             try
             {
                 IAnkhSccService scc = GetService<IAnkhSccService>();

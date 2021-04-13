@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Ankh.Commands;
 using System.Windows.Forms;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.UI.SvnInfoGrid.Commands
@@ -38,6 +39,8 @@ namespace Ankh.UI.SvnInfoGrid.Commands
 
         public void OnExecute(CommandEventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_control == null)
                 return; // Can never happen as update already checked this
 

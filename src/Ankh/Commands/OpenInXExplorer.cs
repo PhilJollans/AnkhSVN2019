@@ -57,6 +57,8 @@ namespace Ankh.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             SvnItem node = EnumTools.GetFirst(e.Selection.GetSelectedSvnItems(false));
 
             IAnkhCommandService cmd = e.GetService<IAnkhCommandService>();

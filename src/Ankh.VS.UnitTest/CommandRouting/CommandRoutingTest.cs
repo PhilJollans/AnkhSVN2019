@@ -23,6 +23,7 @@ using Ankh.Commands;
 using Ankh;
 using AnkhSvn_UnitTestProject.Mocks;
 using Ankh.Selection;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Ankh.UI.Services;
 using Ankh.UI;
@@ -67,6 +68,8 @@ namespace AnkhSvn_UnitTestProject.CommandRouting
         [SetUp]
         public void Initialize()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             // Create the package
             IVsPackage package = new AnkhSvnPackage() as IVsPackage;
             Assert.IsNotNull(package, "The object does not implement IVsPackage");

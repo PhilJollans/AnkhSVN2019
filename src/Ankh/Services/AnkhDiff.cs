@@ -20,6 +20,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using SharpSvn;
 
@@ -66,6 +67,8 @@ namespace Ankh.Services
 
         public bool RunDiff(AnkhDiffArgs args)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (args == null)
                 throw new ArgumentNullException("args");
             else if (!args.Validate())
@@ -151,6 +154,8 @@ namespace Ankh.Services
 
         public bool RunMerge(AnkhMergeArgs args)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (args == null)
                 throw new ArgumentNullException("args");
             else if (!args.Validate())
@@ -230,6 +235,8 @@ namespace Ankh.Services
 
         public bool RunPatch(AnkhPatchArgs args)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (args == null)
                 throw new ArgumentNullException("args");
             else if (!args.Validate())
@@ -320,6 +327,8 @@ namespace Ankh.Services
             public DiffToolMonitor(IAnkhServiceProvider context, string monitor, bool monitorDir, int[] resolvedExitCodes)
                 : base(context)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (string.IsNullOrEmpty(monitor))
                     throw new ArgumentNullException("monitor");
                 else if (!SvnItem.IsValidPath(monitor))
@@ -367,6 +376,8 @@ namespace Ankh.Services
 
             public void Dispose()
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_cookie != 0)
                 {
                     uint ck = _cookie;
@@ -410,6 +421,8 @@ namespace Ankh.Services
 
             void OnExited(object sender, EventArgs e)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 Process process = sender as Process;
                 IAnkhCommandService cmd = GetService<IAnkhCommandService>();
 
@@ -450,6 +463,8 @@ namespace Ankh.Services
 
             public int FilesChanged(uint cChanges, string[] rgpszFile, uint[] rggrfChange)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (rgpszFile == null)
                     return VSErr.E_POINTER;
 
@@ -499,7 +514,7 @@ namespace Ankh.Services
             else if (args == null)
                 throw new ArgumentNullException("args");
 
-            // Ok: We received a string with a program and arguments and windows 
+            // Ok: We received a string with a program and arguments and windows
             // wants a program and arguments separated. Let's find the program before substituting
 
             reference = reference.TrimStart();
@@ -597,6 +612,8 @@ namespace Ankh.Services
 
             public string Replace(Match match)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 string key;
                 string value;
                 bool vsStyle = true;
@@ -617,7 +634,7 @@ namespace Ankh.Services
                         isTrue = !string.IsNullOrEmpty(value);
 
                     value = match.Groups[isTrue ? "ifbody" : "elsebody"].Value ?? "";
-                    
+
                     value = value.Replace("''", "'").Replace("\"\"", "\"");
 
                     return _diff.SubstituteArguments(value, _diffArgs, _toolMode);
@@ -664,6 +681,8 @@ namespace Ankh.Services
 
             bool TryGetValue(string key, bool vsStyle, string arg, out string value)
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (key == null)
                     throw new ArgumentNullException("key");
 

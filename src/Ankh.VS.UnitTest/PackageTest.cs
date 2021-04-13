@@ -39,6 +39,7 @@ using Ankh.Scc;
 using NUnit.Framework;
 using Moq;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.OLE.Interop;
 
@@ -56,6 +57,8 @@ namespace UnitTestProject
         [Test]
         public void IsIVsPackage()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             AnkhSvnPackage package = new AnkhSvnPackage();
             Assert.IsNotNull(package as IVsPackage, "The object does not implement IVsPackage");
         }
@@ -63,6 +66,8 @@ namespace UnitTestProject
         [Test]
         public void SetSite()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             // Create the package
             IVsPackage package = new AnkhSvnPackage() as IVsPackage;
             Assert.IsNotNull(package, "The object does not implement IVsPackage");

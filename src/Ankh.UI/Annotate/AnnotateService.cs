@@ -56,6 +56,8 @@ namespace Ankh.UI.Annotate
                               SvnIgnoreSpacing ignoreSpacing,
                               bool             retrieveMergeInfo )
         {
+            ThreadHelper.ThrowIfNotOnUIThread() ;
+
             // There are two SVN related operations:
             // [1] Getting the file at revisionEnd, which will be displayed in the editor
             // [2] Getting the blame information, which will be displayed in the margin

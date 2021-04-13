@@ -27,6 +27,7 @@ using Ankh.Scc;
 using Ankh.Selection;
 using Ankh.UI.VSSelectionControls;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Ankh.UI.PendingChanges.Commits
@@ -251,6 +252,8 @@ namespace Ankh.UI.PendingChanges.Commits
         IVsUIShell _shell;
         protected override void OnItemChecked(ItemCheckedEventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             base.OnItemChecked(e);
 
             if (_shell == null)

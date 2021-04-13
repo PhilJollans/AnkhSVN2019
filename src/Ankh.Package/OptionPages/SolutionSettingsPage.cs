@@ -84,7 +84,9 @@ namespace Ankh.VSPackage.OptionPages
 
 		public int TranslateAccelerator(MSG[] pMsg)
 		{
-			if (pMsg == null)
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            if (pMsg == null)
 				return VSErr.E_POINTER;
 
 			Message message = Message.Create(pMsg[0].hwnd, (int)pMsg[0].message, pMsg[0].wParam, pMsg[0].lParam);
@@ -93,10 +95,10 @@ namespace Ankh.VSPackage.OptionPages
 
 			if (control != null && control.PreProcessMessage(ref message))
 				return VSErr.S_OK;
-			
+
 			if (Site != null)
 				return Site.TranslateAccelerator(pMsg);
-			
+
 			return VSErr.S_OK;
 		}
 
@@ -113,7 +115,8 @@ namespace Ankh.VSPackage.OptionPages
 
 		void IPropertyPage2.Apply()
 		{
-			Apply();
+            ThreadHelper.ThrowIfNotOnUIThread();
+            Apply();
 		}
 
 		#endregion

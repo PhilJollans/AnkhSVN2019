@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Text;
 using Ankh.UI;
 using System.Globalization;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 using System.Windows.Forms;
@@ -36,6 +37,8 @@ namespace Ankh.Services
 
         public void RunHelp(VSDialogForm form)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             UriBuilder ub = new UriBuilder("http://svc.ankhsvn.net/svc/go/");
             ub.Query = string.Format("t=dlgHelp&v={0}&l={1}&dt={2}", GetService<IAnkhPackage>().UIVersion, CultureInfo.CurrentUICulture.LCID, Uri.EscapeUriString(form.DialogHelpTypeName));
 
@@ -62,6 +65,8 @@ namespace Ankh.Services
 
         public void RunHelp(IAnkhControlWithHelp control)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             UriBuilder ub = new UriBuilder("http://svc.ankhsvn.net/svc/go/");
             ub.Query = string.Format("t=ctrlHelp&v={0}&l={1}&dt={2}", GetService<IAnkhPackage>().UIVersion, CultureInfo.CurrentUICulture.LCID, Uri.EscapeUriString(control.DialogHelpTypeName));
 

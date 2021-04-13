@@ -150,6 +150,8 @@ namespace Microsoft.VsSDK.IntegrationTestLibrary
         /// </summary>
         internal void Start()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             // We ask for the uishell here since we cannot do that on the therad that we will spawn.
             IVsUIShell uiShell = Package.GetGlobalService(typeof(SVsUIShell)) as IVsUIShell;
 
@@ -194,7 +196,7 @@ namespace Microsoft.VsSDK.IntegrationTestLibrary
             {
                 lock (Mutex)
                 {
-                    // Set the exit thread to true. Next time the thread will kill itselfes if it sees 
+                    // Set the exit thread to true. Next time the thread will kill itselfes if it sees
                     this.exitThread = true;
                 }
 
@@ -206,10 +208,12 @@ namespace Microsoft.VsSDK.IntegrationTestLibrary
         }
 
         /// <summary>
-        /// This is the thread method. 
+        /// This is the thread method.
         /// </summary>
         private void HandleDialogBoxes()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             // No synchronization numberOfDialogsToWaitFor since it is readonly
             IntPtr[] hwnds = new IntPtr[this.numberOfDialogsToWaitFor];
             bool[] dialogBoxCloseResults = new bool[this.numberOfDialogsToWaitFor];

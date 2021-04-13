@@ -22,6 +22,7 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using Ankh.UI.Services;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Ankh.Commands;
 using Microsoft.VisualStudio;
@@ -281,6 +282,8 @@ namespace Ankh.UI.PendingChanges
         static bool _vertical;
         protected override void OnFrameSize(FrameEventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Size sz = e.Location.Size;
 
             if (sz.Height > 50 && sz.Width > 50)
@@ -307,6 +310,8 @@ namespace Ankh.UI.PendingChanges
 
         private void ChangeOrientation()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_vertical)
                 pendingChangesTabs.Dock = DockStyle.Bottom;
             else

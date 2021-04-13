@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 using Moq;
@@ -27,6 +28,8 @@ namespace AnkhSvn_UnitTestProject.Mocks
     {
         public static IVsShell GetInstance()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             var shell = new Mock<SVsShell>().As<IVsShell2>().As<IVsShell>();
 
             object r;

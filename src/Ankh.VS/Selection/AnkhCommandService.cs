@@ -357,6 +357,8 @@ namespace Ankh.Services
 
         void TryRelease(object v)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_delayed)
                 TryReleaseDelayed();
 
@@ -366,6 +368,8 @@ namespace Ankh.Services
 
         void PostCheck()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             AnkhAction pt = delegate()
             {
                 Thread.Sleep(50);

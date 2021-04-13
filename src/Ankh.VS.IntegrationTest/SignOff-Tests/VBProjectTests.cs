@@ -17,6 +17,7 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VsSDK.IntegrationTestLibrary;
 using Microsoft.VSSDK.Tools.VsIdeTesting;
@@ -78,6 +79,8 @@ namespace IntegrationTests
         {
             UIThreadInvoker.Invoke((ThreadInvoker)delegate()
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 //Solution and project creation parameters
                 string solutionName = "VBWinApp";
                 string projectName = "VBWinApp";

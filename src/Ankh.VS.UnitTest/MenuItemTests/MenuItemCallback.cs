@@ -54,6 +54,8 @@ namespace UnitTestProject.MenuItemTests
         [SetUp]
         public void SetUp()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             // Create the package
             package = new AnkhSvnPackage();
 
@@ -93,7 +95,7 @@ namespace UnitTestProject.MenuItemTests
             ServiceProviderHelper.DisposeServices();
         }
         /// <summary>
-        /// Verify that a new menu command object gets added to the OleMenuCommandService. 
+        /// Verify that a new menu command object gets added to the OleMenuCommandService.
         /// This action takes place In the Initialize method of the Package object
         /// </summary>
         [Test]

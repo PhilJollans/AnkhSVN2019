@@ -64,6 +64,7 @@ namespace IntegrationTestProject
         {
             UIThreadInvoker.Invoke((ThreadInvoker)delegate()
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
 
                 //Get the Shell Service
                 IVsShell shellService = VsIdeTestHostContext.ServiceProvider.GetService(typeof(SVsShell)) as IVsShell;

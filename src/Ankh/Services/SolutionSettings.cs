@@ -22,6 +22,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
 using SharpSvn;
@@ -44,6 +45,8 @@ namespace Ankh.Settings
         public SolutionSettings(IAnkhServiceProvider context)
             : base(context)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsShell shell = GetService<IVsShell>(typeof(SVsShell));
 
             if (shell == null)
@@ -230,7 +233,7 @@ namespace Ankh.Settings
 
         private bool LoadSolutionProperties(SettingsCache cache, SvnItem item)
         {
-            // Subversion loads all properties in memory at once; loading them 
+            // Subversion loads all properties in memory at once; loading them
             // all is always faster than loading a few
             // We must change this algorithm if Subversions implementation changes
 
@@ -291,7 +294,7 @@ namespace Ankh.Settings
 
         private void LoadRootProperties(SettingsCache cache, SvnItem item)
         {
-            // Subversion loads all properties in memory at once; loading them 
+            // Subversion loads all properties in memory at once; loading them
             // all at once is always faster than loading a few
             using (SvnClient client = GetService<ISvnClientPool>().GetNoUIClient())
             {
@@ -516,6 +519,8 @@ namespace Ankh.Settings
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_allProjectTypesFilter != null)
                     return _allProjectTypesFilter;
 
@@ -537,6 +542,8 @@ namespace Ankh.Settings
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_projectFilterName != null)
                     return _projectFilterName;
 
@@ -557,6 +564,8 @@ namespace Ankh.Settings
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 IVsShell shell = GetService<IVsShell>(typeof(SVsShell));
 
                 if (shell != null)
@@ -580,6 +589,8 @@ namespace Ankh.Settings
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 IVsShell shell = GetService<IVsShell>(typeof(SVsShell));
 
                 if (shell != null)
@@ -746,6 +757,8 @@ namespace Ankh.Settings
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (_solutionFilter != null)
                     return _solutionFilter;
 
@@ -763,7 +776,7 @@ namespace Ankh.Settings
                         _solutionFilter = "*" + (string)filter;
                     }
                 }
-               
+
                 return _solutionFilter;
             }
         }
@@ -772,16 +785,22 @@ namespace Ankh.Settings
 
         public void OpenProjectFile(string projectFile)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             OpenOrAddProjectFile(projectFile, false);
         }
 
         public void AddProjectFile(string projectFile)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             OpenOrAddProjectFile(projectFile, true);
         }
 
         public void OpenOrAddProjectFile(string projectFile, bool add)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (string.IsNullOrEmpty(projectFile))
                 throw new ArgumentNullException("projectFile");
 

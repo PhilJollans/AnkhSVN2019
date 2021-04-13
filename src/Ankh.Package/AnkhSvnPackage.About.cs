@@ -107,6 +107,8 @@ namespace Ankh.VSPackage
 
         public int OfficialName(out string pbstrName)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (InCommandLineMode)
             {
                 // We are running in /setup. The text is cached for the about box

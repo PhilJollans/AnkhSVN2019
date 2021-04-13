@@ -74,7 +74,7 @@ namespace Microsoft.VsSDK.IntegrationTestLibrary
             return result;
         }
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="embeddedResourceName"></param>
         /// <param name="baseFileName"></param>
@@ -186,7 +186,7 @@ namespace Microsoft.VsSDK.IntegrationTestLibrary
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="directory"></param>
         /// <param name="baseFileName"></param>
@@ -226,6 +226,8 @@ namespace Microsoft.VsSDK.IntegrationTestLibrary
         /// <param name="solutionName">Name of new solution.</param>
         public void CreateEmptySolution(string directory, string solutionName)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             CloseCurrentSolution(__VSSLNSAVEOPTIONS.SLNSAVEOPT_NoSave);
 
             string solutionDirectory = GetNewDirectoryName(directory, solutionName);
@@ -240,6 +242,8 @@ namespace Microsoft.VsSDK.IntegrationTestLibrary
 
         public void CloseCurrentSolution(__VSSLNSAVEOPTIONS saveoptions)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             // Get solution service
             IVsSolution solutionService = (IVsSolution)VsIdeTestHostContext.ServiceProvider.GetService(typeof(IVsSolution));
 
@@ -249,6 +253,8 @@ namespace Microsoft.VsSDK.IntegrationTestLibrary
 
         public void ForceSaveSolution()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             // Get solution service
             IVsSolution solutionService = (IVsSolution)VsIdeTestHostContext.ServiceProvider.GetService(typeof(IVsSolution));
 
@@ -262,6 +268,8 @@ namespace Microsoft.VsSDK.IntegrationTestLibrary
         /// <returns></returns>
         public int ProjectCount()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             // Get solution service
             IVsSolution solutionService = (IVsSolution)VsIdeTestHostContext.ServiceProvider.GetService(typeof(IVsSolution));
             object projectCount;
@@ -280,6 +288,8 @@ namespace Microsoft.VsSDK.IntegrationTestLibrary
         /// <returns>New project.</returns>
         public void CreateProjectFromTemplate(string projectName, string templateName, string language, bool exclusive)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             DTE dte = (DTE)VsIdeTestHostContext.ServiceProvider.GetService(typeof(DTE));
 
             Solution2 sol = dte.Solution as Solution2;
@@ -304,6 +314,8 @@ namespace Microsoft.VsSDK.IntegrationTestLibrary
         /// <returns></returns>
         public ProjectItem AddNewItemFromVsTemplate(ProjectItems parent, string templateName, string language, string name)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (parent == null)
                 throw new ArgumentException("project");
             if (name == null)
@@ -326,6 +338,8 @@ namespace Microsoft.VsSDK.IntegrationTestLibrary
         /// <param name="documentMoniker">for filebased documents this is the full path to the document</param>
         public void SaveDocument(string documentMoniker)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             // Get document cookie and hierarchy for the file
             IVsRunningDocumentTable runningDocumentTableService = (IVsRunningDocumentTable)VsIdeTestHostContext.ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
             uint docCookie;
@@ -347,6 +361,8 @@ namespace Microsoft.VsSDK.IntegrationTestLibrary
 
         public void CloseInEditorWithoutSaving(string fullFileName)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             // Get the RDT service
             IVsRunningDocumentTable runningDocumentTableService = (IVsRunningDocumentTable)VsIdeTestHostContext.ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
             Assert.IsNotNull(runningDocumentTableService, "Failed to get the Running Document Table Service");
@@ -379,6 +395,8 @@ namespace Microsoft.VsSDK.IntegrationTestLibrary
         #region Methods: Handling Toolwindows
         public bool CanFindToolwindow(Guid persistenceGuid)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsUIShell uiShellService = VsIdeTestHostContext.ServiceProvider.GetService(typeof(SVsUIShell)) as IVsUIShell;
             Assert.IsNotNull(uiShellService);
             IVsWindowFrame windowFrame;
@@ -392,6 +410,8 @@ namespace Microsoft.VsSDK.IntegrationTestLibrary
         #region Methods: Loading packages
         public IVsPackage LoadPackage(Guid packageGuid)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsShell shellService = (IVsShell)VsIdeTestHostContext.ServiceProvider.GetService(typeof(SVsShell));
             IVsPackage package;
             shellService.LoadPackage(ref packageGuid, out package);
@@ -405,6 +425,8 @@ namespace Microsoft.VsSDK.IntegrationTestLibrary
         /// </summary>
         public void ExecuteCommand(CommandID cmd)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             object Customin = null;
             object Customout = null;
             string guidString = cmd.Guid.ToString("B").ToUpper();

@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 using Ankh.UI;
@@ -114,6 +115,8 @@ namespace Ankh.Services
 
         public bool TryGetIcon(string path, out IntPtr hIcon)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             hIcon = IntPtr.Zero;
 
             if (_giff == null)

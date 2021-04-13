@@ -55,6 +55,8 @@ namespace Ankh.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             AnkhMessageBox mb = new AnkhMessageBox(e.Context);
 
             // Cache items to avoid problems when selection changes by opening editor

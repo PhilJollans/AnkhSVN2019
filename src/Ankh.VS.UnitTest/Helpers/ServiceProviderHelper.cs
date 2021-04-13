@@ -17,6 +17,7 @@
 using System;
 using Microsoft.VsSDK.UnitTestLibrary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Collections.Generic;
 
@@ -60,6 +61,8 @@ namespace AnkhSvn_UnitTestProject.Helpers
 
         public static IDisposable SetSite(IVsPackage package)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Assert.AreEqual(0, package.SetSite(serviceProvider), "SetSite did not return S_OK");
             return null;// new ServiceProviderHelper();
         }

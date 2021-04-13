@@ -18,6 +18,7 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using EnvDTE;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VsSDK.IntegrationTestLibrary;
@@ -81,6 +82,8 @@ namespace IntegrationTests
 
         internal void ReloadProject(int n)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             DTE dte = (DTE)VsIdeTestHostContext.ServiceProvider.GetService(typeof(DTE));
 
             Project proj = dte.Solution.Projects.Item(1);
@@ -113,6 +116,8 @@ namespace IntegrationTests
         {
             UIThreadInvoker.Invoke((ThreadInvoker)delegate()
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 //Solution and project creation parameters
                 string solutionName = "VBWinApp";
                 string projectName = "VBWinApp";

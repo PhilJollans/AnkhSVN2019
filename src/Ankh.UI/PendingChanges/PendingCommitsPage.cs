@@ -35,7 +35,7 @@ namespace Ankh.UI.PendingChanges
     partial class PendingCommitsPage : PendingChangesPage
     {
         PendingCommitsView pendingCommits;
-        IPendingChangeControl pendingChangeControl;
+        IPendingChangeControl pendingChangeControl = null ;
         IPendingChangeUI _ui;
 
         public PendingCommitsPage()
@@ -172,7 +172,7 @@ namespace Ankh.UI.PendingChanges
         }
 
         IPendingChangesManager _manager;
-        
+
         private void HookList()
         {
             if (_manager != null || Context == null)

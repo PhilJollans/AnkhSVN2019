@@ -45,6 +45,8 @@ namespace Ankh.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             List<SvnItem> toDelete = new List<SvnItem>(e.Selection.GetSelectedSvnItems(true));
 
             AnkhMessageBox mb = new AnkhMessageBox(e.Context);

@@ -15,6 +15,7 @@
 //  limitations under the License.
 
 using System;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 using Ankh.UI.RepositoryOpen;
@@ -44,6 +45,8 @@ namespace Ankh.Commands
 
         public override void OnExecute(CommandEventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             Uri selectedUri = null;
             Uri rootUri = null;
 
@@ -254,6 +257,8 @@ namespace Ankh.Commands
 
         private static void OpenSolution(CommandEventArgs e, CheckoutProject dlg)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IVsSolution2 sol = e.GetService<IVsSolution2>(typeof(SVsSolution));
 
             if (sol != null)

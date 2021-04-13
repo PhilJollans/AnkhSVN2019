@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using System.Runtime.InteropServices;
 using Ankh.UI;
 using Ankh.VS;
@@ -30,6 +31,8 @@ namespace Ankh.VSPackage
         uint _componentId;
         void RegisterAsOleComponent()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_componentId != 0)
                 return;
 

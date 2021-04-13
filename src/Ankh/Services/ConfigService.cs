@@ -20,6 +20,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
 
@@ -132,7 +133,7 @@ namespace Ankh.Configuration
                 foreach (PropertyDescriptor pd in TypeDescriptor.GetProperties(config))
                 {
                     string value = reg.GetValue(pd.Name, null) as string;
-                    
+
                     if (pd.Name == "DiffExePaths")
                     {
                         RegistryKey diffRegKey = OpenHKCUKey("Configuration");
@@ -235,7 +236,7 @@ namespace Ankh.Configuration
                                 reg.CreateSubKey(pd.Name);
                                 RegistryKey extToolReg = OpenHKCUKey("Configuration");
                                 extToolReg = extToolReg.OpenSubKey(pd.Name, true);
-                                
+
                                 if (extToolReg != null)
                                 {
                                     foreach (string extToolDef in extToolReg.GetValueNames())
@@ -470,6 +471,8 @@ namespace Ankh.Configuration
 
         public RegistryKey OpenVSInstanceKey(string name)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             RegistryKey rootKey = null;
             if (VSVersion.VS2005)
             {
@@ -514,7 +517,9 @@ namespace Ankh.Configuration
 
 		public RegistryKey OpenVSUserKey(string name)
 		{
-			RegistryKey rootKey = null;
+            ThreadHelper.ThrowIfNotOnUIThread();
+
+            RegistryKey rootKey = null;
 			if (VSVersion.VS2005)
 			{
 				ILocalRegistry3 lr3 = GetService<ILocalRegistry3>(typeof(SLocalRegistry));

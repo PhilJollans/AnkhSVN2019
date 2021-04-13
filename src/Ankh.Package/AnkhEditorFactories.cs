@@ -154,6 +154,8 @@ namespace Ankh.VSPackage
 
         public override int CreateEditorInstance(uint grfCreateDoc, string pszMkDocument, string pszPhysicalView, IVsHierarchy pvHier, uint itemid, IntPtr punkDocDataExisting, out IntPtr ppunkDocView, out IntPtr ppunkDocData, out string pbstrEditorCaption, out Guid pguidCmdUI, out int pgrfCDW)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             if (_forms.Count == 0)
             {
                 ppunkDocView = IntPtr.Zero;

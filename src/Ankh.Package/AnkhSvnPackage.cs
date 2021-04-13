@@ -139,6 +139,8 @@ namespace Ankh.VSPackage
 
         void InitializeRuntime()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             _runtime.PreLoad();
 
             IServiceContainer container = GetService<IServiceContainer>();
@@ -162,6 +164,8 @@ namespace Ankh.VSPackage
 
         private void NotifyLoaded(bool started)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             // We set the user context AnkhLoadCompleted active when we are loaded
             // This event can be used to trigger loading other packages that depend on AnkhSVN
             //
@@ -200,6 +204,8 @@ namespace Ankh.VSPackage
         {
             get
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
+
                 if (!_inCommandLineMode.HasValue)
                 {
                     IVsShell shell = (IVsShell)GetService(typeof(SVsShell));
@@ -226,6 +232,8 @@ namespace Ankh.VSPackage
 
         public T QueryService<T>(Guid serviceGuid) where T : class
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
+
             IOleServiceProvider sp = GetService<IOleServiceProvider>();
             IntPtr handle;
 
