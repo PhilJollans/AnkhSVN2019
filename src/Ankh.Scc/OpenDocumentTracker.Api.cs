@@ -23,6 +23,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using SharpSvn;
 using System.IO;
+using System.Linq;
 using System.Diagnostics;
 using Microsoft.VisualStudio.TextManager.Interop;
 
@@ -585,7 +586,15 @@ namespace Ankh.Scc
 
         public void RefreshDirtyState()
         {
-            foreach (SccDocumentData data in _docMap.Values)
+            // Github Issue #15.
+            // Multiple reports of the error "Collection was modified; enumeration operation may not execute" in this function.
+            // This most likely means that the the collection _docMap.Values is being modified in the body of the loop.
+            // Alternatively, it might mean that it is being modified by an asynchronous method on another thread.
+            // I can't reproduce this error, and I can't find figure out where the collection might be modified, causing the
+            // error. Sticking .ToList() is almost certainly to fix it, by enumerating the dictionary before entering the loop,
+            // but it has the feel of fixing a symptom and not the cause.
+            // By the way, _poller is a call-back function in this class.
+            foreach (SccDocumentData data in _docMap.Values.ToList())
             {
                 data.CheckDirty(_poller);
             }
