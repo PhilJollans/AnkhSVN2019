@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Version="1.00.0012" Id="AnkhSVN2019.321833BC-D00D-4076-9FDD-AC485EFDAEB2" Language="en-US" Publisher="Phil Jollans" />
+        <Identity Version="1.00.0013" Id="AnkhSVN2019.321833BC-D00D-4076-9FDD-AC485EFDAEB2" Language="en-US" Publisher="Phil Jollans" />
         <DisplayName>AnkhSVN2019</DisplayName>
         <Description>AnkhSVN2019 - Subversion Support for Visual Studio</Description>
         <License>LICENSE.rtf</License>
